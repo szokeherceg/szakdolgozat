@@ -1,8 +1,8 @@
-function Input({ type, ...rest }) {
+function Input({ type, ...maradek }) {
     return (
         <input 
             type={type}
-            {...rest}
+            {...maradek}
         />
     );  
 } 
