@@ -1,4 +1,5 @@
 import Input from "./input";
+
 function Forms() {
   return (<div>
     <form>
