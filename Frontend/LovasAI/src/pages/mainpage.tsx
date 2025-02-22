@@ -9,12 +9,16 @@ export const MainPage: React.FC = () => {
   const location = useLocation();
   const { email } = location.state || {};
 
+  const consoleMessage = () => {
+    console.log("Bejelentkezett email:", email || "Nincs megadva");
+  };
+
   return (
     <div>
       <FormSetUp height="100vh" width="100vh">
-        <Button className="list-button">
+        <div className="list-button" onClick={consoleMessage}>
           <Image src={list} height="40px" width="40px" />
-        </Button>
+        </div>
         <div>
           <h1>Üdvözöllek a főoldalon!</h1>
           <p>
