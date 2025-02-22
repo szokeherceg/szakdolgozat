@@ -1,4 +1,3 @@
-import { useLocation } from "react-router-dom";
 import { Image, FormSetUp, SideBar } from "../components";
 
 import "./pages.css";
@@ -6,10 +5,8 @@ import "./pages.css";
 import list from "./../assets/list.svg";
 import { useState } from "react";
 
-export const MainPage: React.FC = () => {
+export const Profile: React.FC = () => {
   const [showSideBar, setShowSideBar] = useState(false);
-  const location = useLocation();
-  const { email } = location.state || {};
 
   const consoleMessage = () => {
     setShowSideBar((prev) => !prev);
@@ -21,12 +18,7 @@ export const MainPage: React.FC = () => {
         <div className="list-button" onClick={consoleMessage}>
           <Image src={list} height="40px" width="40px" />
         </div>
-        <div>
-          <h1>Üdvözöllek a főoldalon!</h1>
-          <p>
-            <strong>Email:</strong> {email || "Nincs megadva"}
-          </p>
-        </div>
+        <div>Profil </div>
       </FormSetUp>
       {showSideBar && (
         <div className="side-bar">

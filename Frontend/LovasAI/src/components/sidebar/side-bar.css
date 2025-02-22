@@ -1,0 +1,35 @@
+.side-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: dodgerblue;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-bar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-bar li {
+  margin: 20px 0;
+}
+
+.side-bar li :hover {
+  color: white;
+}
+
+.side-bar a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  padding: 12px;
+  display: block;
+  border-radius: 8px;
+}

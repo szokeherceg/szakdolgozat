@@ -1,8 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
-import { SignIn } from "../pages/registration/signin";
-import { SignUp } from "../pages/registration/signup";
-import { MainPage } from "../pages/mainpage";
+import { SignIn, SignUp, MainPage, Profile } from "../pages";
 
 import "./App.css";
 
@@ -13,6 +11,7 @@ function App() {
         <Route path="/" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/MainPage" element={<MainPage />} />
+        <Route path="/Profile" element={<Profile />} />
       </Routes>
     </>
   );
