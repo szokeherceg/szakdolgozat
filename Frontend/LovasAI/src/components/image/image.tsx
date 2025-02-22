@@ -1,5 +1,4 @@
 import React from "react";
-import "./image.css";
 import SZE from "../../assets/SZE.png";
 
 interface ImageProps {
