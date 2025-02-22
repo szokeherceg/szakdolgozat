@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: scroll; /* A tartalom görgethető lesz */
+  height: auto; /* A magasság dinamikusan változik */
+  width: 100vw;
+  scroll-behavior: smooth;
+
+  /* Görgetősáv eltüntetése */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.container::-webkit-scrollbar {
+  display: none; /* Görgetősáv elrejtése Webkit-alapú böngészőkben (Chrome, Safari) */
+}
