@@ -5,7 +5,7 @@ import "./pages.css";
 import list from "./../assets/list.svg";
 import { useState } from "react";
 
-export const MainPage = () => {
+export const AI = () => {
   const [showSideBar, setShowSideBar] = useState(false);
 
   const SideBarFunction = () => {

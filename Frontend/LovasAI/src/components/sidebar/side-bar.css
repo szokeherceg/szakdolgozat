@@ -4,32 +4,44 @@
   left: 0;
   width: 250px;
   height: 100vh;
-  background-color: dodgerblue;
+  background: #121b3b;
   border-radius: 10px;
-  color: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  color: white;
 }
 
 .side-bar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  width: 100%;
+  padding-left: 10px;
 }
 
 .side-bar li {
-  margin: 20px 0;
-}
-
-.side-bar li :hover {
+  list-style-type: none;
+  margin-bottom: 10px;
   color: white;
 }
 
-.side-bar a {
-  text-decoration: none;
-  color: black;
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none !important;
+  color: white !important;
   font-size: 18px;
-  padding: 12px;
-  display: block;
+  padding: 10px 15px;
+  width: 140%;
   border-radius: 8px;
+}
+
+.sidebar-link:hover {
+  background: rgba(0, 0, 0, 0.411);
+}
+
+.menu {
+  font-size: xx-large;
+  padding-bottom: 40px;
 }

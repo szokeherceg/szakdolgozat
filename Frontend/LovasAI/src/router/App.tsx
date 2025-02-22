@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
-import { SignIn, SignUp, MainPage, Profile } from "../pages";
+import { AI, SignIn, SignUp, MainPage, Profile } from "../pages";
 
 import "./App.css";
 
@@ -12,6 +12,7 @@ function App() {
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/MainPage" element={<MainPage />} />
         <Route path="/Profile" element={<Profile />} />
+        <Route path="/AI" element={<AI />} />
       </Routes>
     </>
   );

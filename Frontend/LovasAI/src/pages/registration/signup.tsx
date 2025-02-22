@@ -50,7 +50,7 @@ export const SignUp: React.FC = () => {
           />
         </div>
 
-        <Button type="submit" className="btn btn-primary">
+        <Button type="submit" className="button">
           Regisztráció
         </Button>
       </FormSetUp>

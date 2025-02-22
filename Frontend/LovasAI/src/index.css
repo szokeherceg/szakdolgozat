@@ -1,9 +1,13 @@
 html,
 body {
   height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: lightblue;
+  background: radial-gradient(#728599, #121b3b);
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   font-family: "Poppins", sans-serif;
 }

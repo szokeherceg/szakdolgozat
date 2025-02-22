@@ -1,26 +1,37 @@
 import { Link } from "react-router-dom";
+import { Image } from "../image/image";
+import Profilsvg from "../../assets/profile.svg";
+import HomePagesvg from "../../assets/homepage.svg";
+import WhiteHorse from "../../assets/whitehorse.svg";
+
 import "./side-bar.css";
 
 export const SideBar = () => {
   return (
-    <div className="side-bar">
-      <div className="h-full px-4 py-8">
-        <ul>
-          <li>
-            <Link to="/" className="block py-2 px-4 hover:bg-gray-700 rounded">
-              Főoldal
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/profil"
-              className="block py-2 px-4 hover:bg-gray-700 rounded"
-            >
-              Profil
-            </Link>
-          </li>
-        </ul>
-      </div>
+    <div>
+      <strong>
+        <div className="menu">Menü</div>
+      </strong>
+      <ul className="w-full space-y-4">
+        <li>
+          <Link to="/mainpage" className="sidebar-link">
+            <Image height="24px" width="24px" src={HomePagesvg} />
+            <span>Főoldal</span>
+          </Link>
+        </li>
+        <li>
+          <Link to="/profil" className="sidebar-link">
+            <Image height="24px" width="24px" src={Profilsvg} />
+            <span>Profil</span>
+          </Link>
+        </li>
+        <li>
+          <Link to="/AI" className="sidebar-link">
+            <Image height="24px" width="24px" src={WhiteHorse} />
+            <span>AI</span>
+          </Link>
+        </li>
+      </ul>
     </div>
   );
 };
