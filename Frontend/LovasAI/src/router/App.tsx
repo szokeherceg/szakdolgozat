@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
-import { SignIn } from "../pages/signin";
-import { SignUp } from "../pages/signup";
+import { SignIn } from "../pages/registration/signin";
+import { SignUp } from "../pages/registration/signup";
 import { MainPage } from "../pages/mainpage";
 
 import "./App.css";
