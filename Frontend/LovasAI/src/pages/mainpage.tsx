@@ -15,7 +15,7 @@ export const MainPage = () => {
 
   return (
     <div>
-      <FormSetUp height="80vh" width="120vh">
+      <FormSetUp height="70vh" width="120vh">
         <div className="list-button" onClick={SideBarFunction}>
           <Image src={list} height="40px" width="40px" />
         </div>

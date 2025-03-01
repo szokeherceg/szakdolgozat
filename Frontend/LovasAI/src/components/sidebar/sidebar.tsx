@@ -20,7 +20,7 @@ export const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/profil" className="sidebar-link">
+          <Link to="/profile" className="sidebar-link">
             <Image height="24px" width="24px" src={Profilsvg} />
             <span>Profil</span>
           </Link>
