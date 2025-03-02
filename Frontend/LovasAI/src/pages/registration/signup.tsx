@@ -1,7 +1,13 @@
 import { ChangeEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FormSetUp } from "../../components";
 import { Image, Input, Button } from "../../components";
+
+import SZE from "../../assets/SZE.png";
+import Show from "../../assets/show-password.svg";
+import Hide from "../../assets/hide-password.svg";
+
+import "./registration.css";
 
 export const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -18,13 +24,13 @@ export const SignUp: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    navigate("/", { state: { email, password } });
+    navigate("/MainPage", { state: { email, password } });
   };
 
   return (
     <div>
       <FormSetUp height="60vh" width="50vh" onSubmit={handleSubmit}>
-        <Image />
+        <Image src={SZE} />
 
         <div className="form-group">
           <Input
@@ -47,12 +53,17 @@ export const SignUp: React.FC = () => {
             value={password}
             onChange={setPasswordValue}
             required
+            srcShow={Show}
+            srcHide={Hide}
           />
         </div>
 
         <Button type="submit" className="button">
           Regisztráció
         </Button>
+        <Link to="/" className="nav">
+          Van már profilja?
+        </Link>
       </FormSetUp>
     </div>
   );

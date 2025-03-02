@@ -1,5 +1,4 @@
 import React from "react";
-import SZE from "../../assets/SZE.png";
 
 interface ImageProps {
   src?: string;
@@ -10,12 +9,14 @@ interface ImageProps {
 }
 
 export const Image: React.FC<ImageProps> = ({
-  src = SZE,
+  src,
   height = "auto",
   width = "40vh",
   className = "",
   onClick,
 }) => {
+  if (!src) return null;
+
   return (
     <img
       src={src}
