@@ -16,3 +16,11 @@
 .list-button:hover {
   transform: scale(1.05);
 }
+
+.settings button {
+  margin-top: 70px;
+}
+
+.settings h2 {
+  padding-bottom: 20px;
+}
