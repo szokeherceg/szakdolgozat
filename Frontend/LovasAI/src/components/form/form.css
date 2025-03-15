@@ -1,18 +1,11 @@
-.container {
+form {
+  height: 100vh;
+  width: 100vh;
   display: flex;
-  position: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background: linear-gradient(135deg, #f9f9f9, #e3e3e3);
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.container::-webkit-scrollbar {
-  display: none;
 }

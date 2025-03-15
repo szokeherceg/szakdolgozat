@@ -1,30 +1,17 @@
-import { ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 import { Image } from "../image/image";
-
 import "./input.css";
 
-interface InputProps {
-  type: string;
-  className?: string;
-  id?: string;
-  placeholder?: string;
-  value: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-  required?: boolean;
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   srcShow?: string;
   srcHide?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
   type,
-  className = "",
-  id,
-  placeholder,
-  required,
-  value,
-  onChange,
   srcShow,
   srcHide,
+  ...props
 }) => {
   const [inputType, setInputType] = useState(type);
 
@@ -36,18 +23,14 @@ export const Input: React.FC<InputProps> = ({
     <div className="input-container">
       <input
         type={inputType}
-        className={`input-field ${className}`}
-        id={id}
-        value={value}
-        placeholder={placeholder}
-        required={required}
-        onChange={onChange}
+        className="w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+        {...props}
       />
       {type === "password" && srcShow && srcHide && (
         <Image
-          src={inputType === "password" ? srcShow : srcHide}
-          height="20px"
-          width="20px"
+          src={inputType === "password" ? srcHide : srcShow}
+          height="30px"
+          width="25px"
           className="password-toggle"
           onClick={togglePasswordVisibility}
         />

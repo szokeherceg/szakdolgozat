@@ -4,3 +4,20 @@
   color: black;
   font-weight: bold;
 }
+
+.container {
+  height: 400px;
+  display: flex;
+  position: relative;
+  width: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: white !important;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
