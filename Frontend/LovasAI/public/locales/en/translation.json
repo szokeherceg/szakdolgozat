@@ -1,6 +1,6 @@
 {
   "settings": "Settings",
-  "email": "Email",
+  "email": "Email address",
   "password": "Password",
   "language": "Language",
   "select_language": "Select language",
@@ -25,5 +25,21 @@
   "login": "Log In",
   "noprofile": "Don't have a profile yet?",
   "signup": "Sign Up",
-  "hasprofile": "Do you already have a profile?"
+  "hasprofile": "Do you already have a profile?",
+  "what_is_this": "What is this?",
+  "what_is_this_desc": "An AI-based web application that recognizes horses, analyzes their physical characteristics, and assesses their health.",
+  "goal": "Goal",
+  "goal_desc": "Fast and accurate horse analysis based on images using artificial intelligence.",
+  "who_is_it_for": "Who is it for?",
+  "farmers": "Farmers – Health monitoring and decision support",
+  "veterinarians": "Veterinarians – Diagnostic assistance",
+  "breeders": "Breeders – Performance and health assessment",
+  "how_it_works": "How does it work?",
+  "step_upload": "Upload an image",
+  "step_analysis": "AI analysis",
+  "step_results": "Results and recommendations",
+  "why_use_it": "Why use it?",
+  "fast_accurate": "Fast and accurate analysis",
+  "user_friendly": "User-friendly",
+  "ai_processing": "AI-based data processing"
 }

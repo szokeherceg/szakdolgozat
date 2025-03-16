@@ -25,5 +25,21 @@
   "login": "Bejelentkezés",
   "noprofile": "Még nincs profilja?",
   "signup": "Regisztráció",
-  "hasprofile": "Van már profilja?"
+  "hasprofile": "Van már profilja?",
+  "what_is_this": "Mi ez?",
+  "what_is_this_desc": "Egy AI-alapú webalkalmazás, amely felismeri a lovakat, elemzi fizikai jellemzőiket és egészségi állapotukat.",
+  "goal": "Célja",
+  "goal_desc": "Gyors és pontos lóelemzés képek alapján, mesterséges intelligencia segítségével.",
+  "who_is_it_for": "Kinek szól?",
+  "farmers": "Gazdáknak – Állapotkövetés és döntéshozatal",
+  "veterinarians": "Állatorvosoknak – Diagnosztikai támogatás",
+  "breeders": "Tenyésztőknek – Teljesítmény- és egészségértékelés",
+  "how_it_works": "Hogyan működik?",
+  "step_upload": "Kép feltöltése",
+  "step_analysis": "AI elemzés",
+  "step_results": "Eredmények és ajánlások",
+  "why_use_it": "Miért használd?",
+  "fast_accurate": "Gyors és pontos elemzés",
+  "user_friendly": "Felhasználóbarát",
+  "ai_processing": "AI alapú adatfeldolgozás"
 }

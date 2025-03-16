@@ -31,13 +31,13 @@
 
 .draganddrop {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-items: center;
+  text-align: center;
   background-color: rgba(128, 128, 128, 0.1);
   border: 2px dashed #4a90e2;
   border-radius: 10px;
   color: #4a4a4a;
-  height: 20px;
+  height: 100px;
   margin-bottom: 20px;
 }
 
@@ -46,8 +46,12 @@
   border-color: #2a6ebf;
 }
 
-.main {
-  padding-left: 20px;
-  padding-right: 20px;
-  text-align: justify;
+li {
+  list-style: none;
+  text-align: left;
+}
+
+.settings {
+  position: relative;
+  top: 30%;
 }

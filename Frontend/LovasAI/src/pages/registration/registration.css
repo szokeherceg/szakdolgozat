@@ -10,6 +10,7 @@
   padding: 20px;
   display: flex;
   position: relative;
+  top: 40%;
   width: auto;
   flex-direction: column;
   justify-content: center;

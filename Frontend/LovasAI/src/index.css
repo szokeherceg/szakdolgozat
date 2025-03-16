@@ -2,12 +2,14 @@ html,
 body {
   height: 100%;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(#728599, #121b3b);
-
-  background-size: 100% 100%;
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle, #728599, #121b3b);
+  background-size: cover;
   background-repeat: no-repeat;
   font-family: "Poppins", sans-serif;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
