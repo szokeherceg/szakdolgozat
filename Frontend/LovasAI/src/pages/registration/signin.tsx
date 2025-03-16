@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +10,7 @@ import Show from "./../../assets/show-password.svg";
 import Hide from "./../../assets/hide-password.svg";
 
 import "./registration.css";
+import { useTranslation } from "react-i18next";
 
 const schema = yup.object().shape({
   email: yup
@@ -18,7 +19,7 @@ const schema = yup.object().shape({
     .required("Az email megadása kötelező!"),
   password: yup
     .string()
-    .min(6, "A jelszónak legalább 6 karakter hosszúnak kell lennie!")
+    .min(6, "Minimum 6 karakter!")
     .required("A jelszó megadása kötelező!"),
 });
 
@@ -55,6 +56,10 @@ export const SignIn: React.FC = () => {
     navigate("/MainPage");
   };
 
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {}, [i18n.language]);
+
   return (
     <FormSetUp
       onSubmit={handleSubmit(onSubmit)}
@@ -63,7 +68,7 @@ export const SignIn: React.FC = () => {
     >
       <Image src={SZE} />
       <div className="form-group">
-        <Input type="email" placeholder="Enter email" {...register("email")} />
+        <Input type="email" placeholder={t("email")} {...register("email")} />
         {errors.email && (
           <p className="error-message">{errors.email.message}</p>
         )}
@@ -72,7 +77,7 @@ export const SignIn: React.FC = () => {
       <div className="form-group">
         <Input
           type="password"
-          placeholder="Password"
+          placeholder={t("password")}
           {...register("password")}
           srcShow={Show}
           srcHide={Hide}
@@ -85,10 +90,10 @@ export const SignIn: React.FC = () => {
       {error && <p className="error-message">{error}</p>}
 
       <Button type="submit" className="button">
-        Bejelentkezés
+        {t("login")}
       </Button>
       <Link to="/signup" className="nav">
-        Még nincs profilja?
+        {t("noprofile")}
       </Link>
     </FormSetUp>
   );

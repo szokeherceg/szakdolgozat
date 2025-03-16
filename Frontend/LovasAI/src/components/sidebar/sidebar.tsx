@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Image } from "../image/image";
 
 import Profilesvg from "./../../assets/profile.svg";
@@ -8,6 +8,8 @@ import X from "./../../assets/whitex.svg";
 
 import "./side-bar.css";
 import { Dropdown } from "../dropdown/dropdown";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 interface SideBarProps {
   setIsOpen: (isOpen: boolean) => void;
@@ -15,6 +17,11 @@ interface SideBarProps {
 
 export const SideBar = ({ setIsOpen }: SideBarProps) => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    console.log("Nyelv változott:", i18n.language);
+  }, [i18n.language]);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -25,7 +32,7 @@ export const SideBar = ({ setIsOpen }: SideBarProps) => {
   return (
     <div className="side-bar">
       <div className="menu-container">
-        <strong className="menu">Menü</strong>
+        <strong className="menu">{t("menu")}</strong>
         <Image
           src={X}
           height="30px"
@@ -36,43 +43,50 @@ export const SideBar = ({ setIsOpen }: SideBarProps) => {
       </div>
 
       <ul className="w-full space-y-4">
-        <li>
-          <Link to="/mainpage" className="sidebar-link">
-            <Image height="24px" width="24px" src={HomePagesvg} />
-            <span>Főoldal</span>
-          </Link>
+        <li className="sidebar-link" onClick={() => navigate("/MainPage")}>
+          <Image height="24px" width="24px" src={HomePagesvg} />
+          <span>{t("mainpage")}</span>
         </li>
         <li>
           <Dropdown
             buttonLabel={
               <span className="sidebar-link">
                 <Image height="24px" width="24px" src={Profilesvg} />
-                Profil
+                {t("profile")}
               </span>
             }
             items={[
               {
-                label: "Beállítások",
+                label: t("settings"),
                 onClick: () => navigate("/Settings"),
               },
               {
-                label: "Lovaim",
-                onClick: () => navigate("/HorsesList"),
-              },
-              {
-                label: "Kijelentkezés",
+                label: t("logout"),
                 className: "logout",
                 onClick: handleLogout,
               },
             ]}
           />
-        </li>
-
+        </li>{" "}
         <li>
-          <Link to="/AI" className="sidebar-link">
-            <Image height="24px" width="24px" src={WhiteHorse} />
-            <span>AI</span>
-          </Link>
+          <Dropdown
+            buttonLabel={
+              <span className="sidebar-link">
+                <Image height="24px" width="24px" src={WhiteHorse} />
+                {t("horses")}
+              </span>
+            }
+            items={[
+              {
+                label: t("myhorses"),
+                onClick: () => navigate("/HorsesList"),
+              },
+              {
+                label: "AI",
+                onClick: () => navigate("/AI"),
+              },
+            ]}
+          />
         </li>
       </ul>
     </div>

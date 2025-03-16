@@ -10,12 +10,14 @@ import Show from "./../../assets/show-password.svg";
 import Hide from "./../../assets/hide-password.svg";
 
 import "./registration.css";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const schema = yup.object().shape({
   email: yup.string().email("Érvénytelen email!").required("Email kötelező!"),
   password: yup
     .string()
-    .min(6, "A jelszónak legalább 6 karakter hosszúnak kell lennie!")
+    .min(6, "Minimum 6 karakter!")
     .required("Jelszó kötelező!"),
 });
 
@@ -49,6 +51,10 @@ export const SignUp: React.FC = () => {
     navigate("/");
   };
 
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {}, [i18n.language]);
+
   return (
     <FormSetUp
       onSubmit={handleSubmit(onSubmit)}
@@ -58,7 +64,7 @@ export const SignUp: React.FC = () => {
       <Image src={SZE} />
 
       <div className="form-group">
-        <Input type="email" placeholder="Enter email" {...register("email")} />
+        <Input type="email" placeholder={t("email")} {...register("email")} />
         {errors.email && (
           <p className="error-message">{errors.email.message}</p>
         )}
@@ -67,7 +73,7 @@ export const SignUp: React.FC = () => {
       <div className="form-group">
         <Input
           type="password"
-          placeholder="Password"
+          placeholder={t("password")}
           {...register("password")}
           srcShow={Show}
           srcHide={Hide}
@@ -78,11 +84,11 @@ export const SignUp: React.FC = () => {
       </div>
 
       <Button type="submit" className="button">
-        Regisztráció
+        {t("signup")}
       </Button>
 
       <Link to="/" className="nav">
-        Van már profilja?
+        {t("hasprofile")}
       </Link>
     </FormSetUp>
   );
