@@ -9,8 +9,8 @@ import "./pages.css";
 
 const horseSchema = yup.object().shape({
   name: yup.string().required("A név megadása kötelező!"),
-  weight: yup.number().optional(),
-  age: yup.number().optional(),
+  weight: yup.number().min(0, "A súly nem lehet negatív!").optional(),
+  age: yup.number().min(0, "Az életkor nem lehet negatív!").optional(),
   image: yup
     .mixed()
     .required("Kép feltöltése kötelező")

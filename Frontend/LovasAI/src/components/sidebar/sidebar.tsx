@@ -9,7 +9,9 @@ import X from "./../../assets/whitex.svg";
 import "./side-bar.css";
 import { Dropdown } from "../dropdown/dropdown";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Modal } from "../../pages/modal/modal";
+import { Settings } from "../../pages";
 
 interface SideBarProps {
   setIsOpen: (isOpen: boolean) => void;
@@ -18,6 +20,7 @@ interface SideBarProps {
 export const SideBar = ({ setIsOpen }: SideBarProps) => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {}, [i18n.language]);
 
@@ -56,7 +59,7 @@ export const SideBar = ({ setIsOpen }: SideBarProps) => {
             items={[
               {
                 label: t("settings"),
-                onClick: () => navigate("/Settings"),
+                onClick: () => setIsSettingsOpen(true),
               },
               {
                 label: t("logout"),
@@ -87,6 +90,9 @@ export const SideBar = ({ setIsOpen }: SideBarProps) => {
           />
         </li>
       </ul>
+      <Modal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)}>
+        <Settings onClose={() => setIsSettingsOpen(false)} />
+      </Modal>
     </div>
   );
 };

@@ -2,17 +2,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input, Button, FormSetUp } from "../components";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 import Show from "./../assets/show-password.svg";
 import Hide from "./../assets/hide-password.svg";
 
 import "./pages.css";
 
-export const Settings = () => {
+interface SettingsProps {
+  onClose: () => void;
+}
+
+export const Settings = ({ onClose }: SettingsProps) => {
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language);
-  const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm({
     defaultValues: { email: "", password: "", language: i18n.language },
@@ -29,14 +31,15 @@ export const Settings = () => {
   }) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("i18nextLng", lang);
-  };
-
-  const backButton = () => {
-    navigate(-1);
+    onClose();
   };
 
   return (
-    <FormSetUp onSubmit={handleSubmit(onSubmit)} className="settings" hasModal>
+    <FormSetUp
+      onSubmit={handleSubmit(onSubmit)}
+      className="settings"
+      hasModal={false}
+    >
       <h2 className="text-2xl font-semibold text-center text-gray-700">
         {t("settings")}
       </h2>
@@ -75,7 +78,7 @@ export const Settings = () => {
 
       <div className="settings-buttons">
         <Button type="submit">{t("save")}</Button>
-        <Button type="submit" onClick={backButton}>
+        <Button type="button" onClick={onClose}>
           {t("back")}
         </Button>
       </div>
