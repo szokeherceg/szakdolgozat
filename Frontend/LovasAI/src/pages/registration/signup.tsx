@@ -13,35 +13,32 @@ import "./registration.css";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-const schema = yup.object().shape({
-  email: yup.string().email("Érvénytelen email!").required("Email kötelező!"),
-  password: yup
-    .string()
-    .min(6, "Minimum 6 karakter!")
-    .required("Jelszó kötelező!"),
-});
-
-type FormValues = {
-  email: string;
-  password: string;
-};
-
 export const SignUp: React.FC = () => {
+  const { t, i18n } = useTranslation();
+
+  const schema = yup.object().shape({
+    email: yup.string().email(t("invalid_email")).required(t("required_field")),
+    password: yup
+      .string()
+      .min(6, t("password_too_short"))
+      .required(t("required_field")),
+  });
+
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: { email: string; password: string }) => {
     const users = JSON.parse(localStorage.getItem("users") || "[]");
 
     if (users.some((user: { email: string }) => user.email === data.email)) {
-      alert("Ez az email már létezik!");
+      alert(t("email_already_exists"));
       return;
     }
 
@@ -50,8 +47,6 @@ export const SignUp: React.FC = () => {
 
     navigate("/");
   };
-
-  const { t, i18n } = useTranslation();
 
   useEffect(() => {}, [i18n.language]);
 

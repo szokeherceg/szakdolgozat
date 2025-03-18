@@ -6,6 +6,8 @@
   "select_language": "Select language",
   "hungarian": "Hungarian",
   "english": "English",
+  "german": "German",
+  "japanese": "Japanese",
   "menu": "Menu",
   "mainpage": "Main Page",
   "profile": "Profile",
@@ -41,5 +43,17 @@
   "fast_accurate": "Fast and accurate analysis",
   "user_friendly": "User-friendly",
   "ai_processing": "AI-based data processing",
-  "back": "Cancel"
+  "back": "Cancel",
+  "enter_description": "Enter description",
+  "required_field": "This field is required.",
+  "invalid_email": "Invalid email address.",
+  "password_too_short": "Minimum 6 characters.",
+  "file_required": "File upload is required.",
+  "invalid_file_type": "Only image files are allowed! (jpg, png)",
+  "file_too_large": "The file size cannot exceed 5MB.",
+  "required_name": "The name is required!",
+  "invalid_weight": "The weight cannot be negative!",
+  "invalid_age": "The age cannot be negative!",
+  "invalid_credentials": "Invalid email or password!",
+  "email_already_exists": "This email already exists!"
 }

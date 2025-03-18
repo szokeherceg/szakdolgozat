@@ -7,44 +7,49 @@ import { useEffect } from "react";
 
 import "./pages.css";
 
-const horseSchema = yup.object().shape({
-  name: yup.string().required("A név megadása kötelező!"),
-  weight: yup.number().min(0, "A súly nem lehet negatív!").optional(),
-  age: yup.number().min(0, "Az életkor nem lehet negatív!").optional(),
-  image: yup
-    .mixed()
-    .required("Kép feltöltése kötelező")
-    .test("fileType", "Csak képfájlok engedélyezettek! (jpg, png)", (value) => {
-      if (!value || !(value instanceof FileList) || value.length === 0) {
-        return true;
-      }
-      return ["image/jpeg", "image/png"].includes(value[0].type);
-    })
-    .test("fileSize", "A fájl mérete nem lehet nagyobb 5MB-nál!", (value) => {
-      if (!value || !(value instanceof FileList) || value.length === 0) {
-        return true;
-      }
-      return value[0].size <= 5 * 1024 * 1024;
-    }),
-});
-
-type HorseFormData = yup.InferType<typeof horseSchema>;
+type HorseDataType = {
+  name: string;
+  weight?: number;
+  age?: number;
+  image: FileList;
+};
 
 export const AI = () => {
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {}, [i18n.language]);
+
+  const horseSchema = yup.object().shape({
+    name: yup.string().required(t("required_name")),
+    weight: yup.number().min(0, t("invalid_weight")).optional(),
+    age: yup.number().min(0, t("invalid_age")).optional(),
+    image: yup
+      .mixed<FileList>()
+      .required(t("file_required"))
+      .test("fileType", t("invalid_file_type"), (value) => {
+        if (!value || !(value instanceof FileList) || value.length === 0) {
+          return false;
+        }
+        return ["image/jpeg", "image/png"].includes(value[0].type);
+      })
+      .test("fileSize", t("file_too_large"), (value) => {
+        if (!value || !(value instanceof FileList) || value.length === 0) {
+          return false;
+        }
+        return value[0].size <= 5 * 1024 * 1024;
+      }),
+  });
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<HorseFormData>({
+  } = useForm<HorseDataType>({
     resolver: yupResolver(horseSchema),
   });
 
-  const { t, i18n } = useTranslation();
-
-  useEffect(() => {}, [i18n.language]);
-
-  const onSubmit = (data: HorseFormData) => {
+  const onSubmit = (data: HorseDataType) => {
     console.log("Beküldött ló adatok:", data);
     reset();
   };

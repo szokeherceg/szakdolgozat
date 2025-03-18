@@ -6,6 +6,8 @@
   "select_language": "Válassz nyelvet",
   "hungarian": "Magyar",
   "english": "Angol",
+  "german": "Német",
+  "japanese": "Japán",
   "menu": "Menü",
   "mainpage": "Főoldal",
   "profile": "Profil",
@@ -41,5 +43,17 @@
   "fast_accurate": "Gyors és pontos elemzés",
   "user_friendly": "Felhasználóbarát",
   "ai_processing": "AI alapú adatfeldolgozás",
-  "back": "Mégse"
+  "back": "Mégse",
+  "enter_description": "Leírás megadása",
+  "required_field": "Ez a mező kötelező.",
+  "invalid_email": "Érvénytelen e-mail cím.",
+  "password_too_short": "Minimum 6 karakter.",
+  "required_name": "A név megadása kötelező!",
+  "invalid_weight": "A súly nem lehet negatív!",
+  "invalid_age": "Az életkor nem lehet negatív!",
+  "file_required": "Kép feltöltése kötelező!",
+  "invalid_file_type": "Csak képfájlok engedélyezettek! (jpg, png)",
+  "file_too_large": "A fájl mérete nem lehet nagyobb 5MB-nál!",
+  "invalid_credentials": "Hibás email vagy jelszó!",
+  "email_already_exists": "Ez az email már létezik!"
 }

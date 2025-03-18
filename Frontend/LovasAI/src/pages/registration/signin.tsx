@@ -12,18 +12,17 @@ import Hide from "./../../assets/hide-password.svg";
 import "./registration.css";
 import { useTranslation } from "react-i18next";
 
-const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Érvénytelen email formátum!")
-    .required("Az email megadása kötelező!"),
-  password: yup
-    .string()
-    .min(6, "Minimum 6 karakter!")
-    .required("A jelszó megadása kötelező!"),
-});
-
 export const SignIn: React.FC = () => {
+  const { t, i18n } = useTranslation();
+
+  const schema = yup.object().shape({
+    email: yup.string().email(t("invalid_email")).required(t("required_field")),
+    password: yup
+      .string()
+      .min(6, t("password_too_short"))
+      .required(t("required_field")),
+  });
+
   const navigate = useNavigate();
   const {
     register,
@@ -46,7 +45,7 @@ export const SignIn: React.FC = () => {
     );
 
     if (!user) {
-      setError("Hibás email vagy jelszó!");
+      setError(t("invalid_credentials"));
       return;
     }
 
@@ -55,8 +54,6 @@ export const SignIn: React.FC = () => {
 
     navigate("/MainPage");
   };
-
-  const { t, i18n } = useTranslation();
 
   useEffect(() => {}, [i18n.language]);
 
