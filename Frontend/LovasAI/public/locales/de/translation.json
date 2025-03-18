@@ -55,5 +55,6 @@
   "invalid_weight": "Das Gewicht darf nicht negativ sein!",
   "invalid_age": "Das Alter darf nicht negativ sein!",
   "invalid_credentials": "Ungültige E-Mail oder Passwort!",
-  "email_already_exists": "Diese E-Mail existiert bereits!"
+  "email_already_exists": "Diese E-Mail existiert bereits!",
+  "AI": "Künstliche Intelligenz"
 }

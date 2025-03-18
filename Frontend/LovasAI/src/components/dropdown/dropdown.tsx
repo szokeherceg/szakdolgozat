@@ -25,6 +25,7 @@ export const Dropdown = ({ buttonLabel, items, className }: DropdownProps) => {
             {items.map((item, index) => (
               <li key={index} className={classnames(item.className)}>
                 <button
+                  className="dropdown-li"
                   onClick={() => {
                     item.onClick();
                     setIsOpen(false);

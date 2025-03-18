@@ -55,5 +55,6 @@
   "invalid_file_type": "Csak képfájlok engedélyezettek! (jpg, png)",
   "file_too_large": "A fájl mérete nem lehet nagyobb 5MB-nál!",
   "invalid_credentials": "Hibás email vagy jelszó!",
-  "email_already_exists": "Ez az email már létezik!"
+  "email_already_exists": "Ez az email már létezik!",
+  "AI": "Mesterséges intelligencia"
 }

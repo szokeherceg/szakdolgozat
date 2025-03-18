@@ -55,5 +55,6 @@
   "invalid_weight": "体重は負の値にできません！",
   "invalid_age": "年齢は負の値にできません！",
   "invalid_credentials": "無効なメールアドレスまたはパスワードです！",
-  "email_already_exists": "このメールアドレスは既に存在します！"
+  "email_already_exists": "このメールアドレスは既に存在します！",
+  "AI": "人工知能"
 }

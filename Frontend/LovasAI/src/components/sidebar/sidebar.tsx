@@ -6,12 +6,13 @@ import HomePagesvg from "./../../assets/homepage.svg";
 import WhiteHorse from "./../../assets/whitehorse.svg";
 import X from "./../../assets/whitex.svg";
 
-import "./side-bar.css";
 import { Dropdown } from "../dropdown/dropdown";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Modal } from "../../pages/modal/modal";
 import { Settings } from "../../pages";
+
+import "./side-bar.css";
 
 interface SideBarProps {
   setIsOpen: (isOpen: boolean) => void;
@@ -83,8 +84,9 @@ export const SideBar = ({ setIsOpen }: SideBarProps) => {
                 onClick: () => navigate("/HorsesList"),
               },
               {
-                label: "AI",
+                label: t("AI"),
                 onClick: () => navigate("/AI"),
+                className: "AI",
               },
             ]}
           />
