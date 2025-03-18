@@ -6,7 +6,6 @@
   "select_language": "Válassz nyelvet",
   "hungarian": "Magyar",
   "english": "Angol",
-  "submit": "Küldés",
   "menu": "Menü",
   "mainpage": "Főoldal",
   "profile": "Profil",
@@ -41,5 +40,6 @@
   "why_use_it": "Miért használd?",
   "fast_accurate": "Gyors és pontos elemzés",
   "user_friendly": "Felhasználóbarát",
-  "ai_processing": "AI alapú adatfeldolgozás"
+  "ai_processing": "AI alapú adatfeldolgozás",
+  "back": "Mégse"
 }

@@ -6,7 +6,6 @@
   "select_language": "Select language",
   "hungarian": "Hungarian",
   "english": "English",
-  "submit": "Submit",
   "menu": "Menu",
   "mainpage": "Main Page",
   "profile": "Profile",
@@ -41,5 +40,6 @@
   "why_use_it": "Why use it?",
   "fast_accurate": "Fast and accurate analysis",
   "user_friendly": "User-friendly",
-  "ai_processing": "AI-based data processing"
+  "ai_processing": "AI-based data processing",
+  "back": "Cancel"
 }

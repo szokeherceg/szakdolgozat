@@ -69,9 +69,7 @@ export const SignIn: React.FC = () => {
       <Image src={SZE} />
       <div className="form-group">
         <Input type="email" placeholder={t("email")} {...register("email")} />
-        {errors.email && (
-          <p className="error-message">{errors.email.message}</p>
-        )}
+        {errors.email && <p className="errors">{errors.email.message}</p>}
       </div>
 
       <div className="form-group">
@@ -82,12 +80,10 @@ export const SignIn: React.FC = () => {
           srcShow={Show}
           srcHide={Hide}
         />
-        {errors.password && (
-          <p className="error-message">{errors.password.message}</p>
-        )}
+        {errors.password && <p className="errors">{errors.password.message}</p>}
       </div>
 
-      {error && <p className="error-message">{error}</p>}
+      {error && <p className="errors">{error}</p>}
 
       <Button type="submit" className="button">
         {t("login")}

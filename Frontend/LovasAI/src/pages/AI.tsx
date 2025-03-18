@@ -9,32 +9,22 @@ import "./pages.css";
 
 const horseSchema = yup.object().shape({
   name: yup.string().required("A név megadása kötelező!"),
-  weight: yup
-    .number()
-    .typeError("A súlynak számnak kell lennie!")
-    .required("A súly megadása kötelező!")
-    .min(1, "A súlynak legalább 1-nek kell lennie!"),
-  age: yup
-    .number()
-    .typeError("Az életkornak számnak kell lennie!")
-    .required("Az életkor megadása kötelező!")
-    .min(0, "Az életkornak legalább 0-nak kell lennie!"),
-  height: yup
-    .number()
-    .typeError("A magasságnak számnak kell lennie!")
-    .required("A magasság megadása kötelező!")
-    .min(50, "A magasságnak legalább 50 cm-nek kell lennie!"),
+  weight: yup.number().optional(),
+  age: yup.number().optional(),
   image: yup
     .mixed()
-    .test("fileRequired", "A kép feltöltése kötelező!", (value) => {
-      return value instanceof FileList && value.length > 0;
-    })
+    .required("Kép feltöltése kötelező")
     .test("fileType", "Csak képfájlok engedélyezettek! (jpg, png)", (value) => {
-      return (
-        value instanceof FileList &&
-        value.length > 0 &&
-        ["image/jpeg", "image/png"].includes(value[0].type)
-      );
+      if (!value || !(value instanceof FileList) || value.length === 0) {
+        return true;
+      }
+      return ["image/jpeg", "image/png"].includes(value[0].type);
+    })
+    .test("fileSize", "A fájl mérete nem lehet nagyobb 5MB-nál!", (value) => {
+      if (!value || !(value instanceof FileList) || value.length === 0) {
+        return true;
+      }
+      return value[0].size <= 5 * 1024 * 1024;
     }),
 });
 
@@ -61,65 +51,39 @@ export const AI = () => {
 
   return (
     <FormSetUp onSubmit={handleSubmit(onSubmit)} hasModal>
-      <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-        {t("enter_data")}
-      </h2>
-      <div className="mb-4">
-        <label className="block text-gray-700 font-semibold">
-          {t("horse_name")}:
-        </label>
-        <Input
-          type="text"
-          placeholder={t("horse_name")}
-          {...register("name")}
-        />
-        {errors.name && <p className="text-red-500">{errors.name.message}</p>}
-      </div>
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <h2>{t("enter_data")}</h2>
+      <div>
         <div>
-          <label className="block text-gray-700 font-semibold">
-            {t("weight")}:
-          </label>
+          <label>{t("horse_name")}:</label>
           <Input
-            type="number"
-            placeholder={t("weight")}
-            {...register("weight")}
+            type="text"
+            placeholder={t("horse_name")}
+            {...register("name")}
           />
-          {errors.weight && (
-            <p className="text-red-500">{errors.weight.message}</p>
-          )}
+          {errors.name && <p className="errors">{errors.name.message}</p>}
         </div>
 
-        <div>
-          <label className="block text-gray-700 font-semibold">
-            {t("age")}:
-          </label>
-          <Input type="number" placeholder={t("age")} {...register("age")} />
-          {errors.age && <p className="text-red-500">{errors.age.message}</p>}
-        </div>
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 font-semibold">
-          {t("height")}:
-        </label>
+        <label>{t("weight")}:</label>
         <Input
           type="number"
-          placeholder={t("height")}
-          {...register("height")}
+          placeholder={t("weight")}
+          {...register("weight")}
         />
-        {errors.height && (
-          <p className="text-red-500">{errors.height.message}</p>
-        )}
+
+        <div className="mb-4">
+          <label>{t("age")}:</label>
+          <Input type="number" placeholder={t("age")} {...register("age")} />
+        </div>
       </div>
 
-      <div className="mb-4">
+      <div>
         <Input
           isFileInput
           {...register("image")}
           className="draganddrop"
           placeholder={t("upload_hint")}
         />
-        {errors.image && <p className="text-red-500">{errors.image.message}</p>}
+        {errors.image && <p className="errors">{errors.image.message}</p>}
       </div>
 
       <Button type="submit">{t("save")}</Button>

@@ -65,9 +65,7 @@ export const SignUp: React.FC = () => {
 
       <div className="form-group">
         <Input type="email" placeholder={t("email")} {...register("email")} />
-        {errors.email && (
-          <p className="error-message">{errors.email.message}</p>
-        )}
+        {errors.email && <p className="errors">{errors.email.message}</p>}
       </div>
 
       <div className="form-group">
@@ -78,9 +76,7 @@ export const SignUp: React.FC = () => {
           srcShow={Show}
           srcHide={Hide}
         />
-        {errors.password && (
-          <p className="error-message">{errors.password.message}</p>
-        )}
+        {errors.password && <p className="errors">{errors.password.message}</p>}
       </div>
 
       <Button type="submit" className="button">

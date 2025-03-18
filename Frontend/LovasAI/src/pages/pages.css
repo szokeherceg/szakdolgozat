@@ -55,3 +55,12 @@ li {
   position: relative;
   top: 20%;
 }
+
+.errors {
+  color: red;
+}
+
+.settings-buttons {
+  display: flex;
+  gap: 20px;
+}

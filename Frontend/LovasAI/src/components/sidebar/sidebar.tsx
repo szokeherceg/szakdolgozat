@@ -19,9 +19,7 @@ export const SideBar = ({ setIsOpen }: SideBarProps) => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
-  useEffect(() => {
-    console.log("Nyelv változott:", i18n.language);
-  }, [i18n.language]);
+  useEffect(() => {}, [i18n.language]);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");

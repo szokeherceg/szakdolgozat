@@ -41,7 +41,7 @@ export const FormSetUp: React.FC<FormSetUpProps> = ({
       <form
         onSubmit={onSubmit}
         data-has-modal={hasModal}
-        className={classNames(className)} // Dinamikus osztályok
+        className={classNames(className)}
       >
         {children}
       </form>
