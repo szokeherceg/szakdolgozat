@@ -56,5 +56,10 @@
   "invalid_age": "年齢は負の値にできません！",
   "invalid_credentials": "無効なメールアドレスまたはパスワードです！",
   "email_already_exists": "このメールアドレスは既に存在します！",
-  "AI": "人工知能"
+  "AI": "人工知能",
+  "registration_successful": "登録成功",
+  "login_successful": "ログイン成功",
+  "logout_successful": "ログアウト成功",
+  "registration_failed": "登録失敗",
+  "login_failed": "ログイン失敗"
 }

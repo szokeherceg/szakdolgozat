@@ -1,8 +1,12 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
+import { toast } from "react-toastify";
+
 import { FormSetUp, Image, Input, Button } from "../../components";
 
 import SZE from "./../../assets/SZE.png";
@@ -32,27 +36,25 @@ export const SignIn: React.FC = () => {
 
   const [error, setError] = useState("");
 
-  const generateToken = () => {
-    return Math.random().toString(36).substring(2) + Date.now().toString(36);
-  };
+  const onSubmit = async (data: { email: string; password: string }) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8080/user/login/",
+        data
+      );
+      const token = response.data.token;
 
-  const onSubmit = (data: { email: string; password: string }) => {
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
+      localStorage.setItem("authToken", token);
 
-    const user = users.find(
-      (user: { email: string; password: string }) =>
-        user.email === data.email && user.password === data.password
-    );
-
-    if (!user) {
-      setError(t("invalid_credentials"));
-      return;
+      toast(t("login_successful"));
+      navigate("/MainPage");
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setError(error.response.data.error || t("login_failed"));
+      } else {
+        setError(t("login_failed"));
+      }
     }
-
-    const token = generateToken();
-    localStorage.setItem("authToken", token);
-
-    navigate("/MainPage");
   };
 
   useEffect(() => {}, [i18n.language]);

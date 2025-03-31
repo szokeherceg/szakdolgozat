@@ -1,7 +1,11 @@
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
+
+import { toast } from "react-toastify";
+
 import { FormSetUp } from "../../components";
 import { Image, Input, Button } from "../../components";
 
@@ -34,18 +38,18 @@ export const SignUp: React.FC = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: { email: string; password: string }) => {
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-    if (users.some((user: { email: string }) => user.email === data.email)) {
-      alert(t("email_already_exists"));
-      return;
+  const onSubmit = async (data: { email: string; password: string }) => {
+    try {
+      await axios.post("http://127.0.0.1:8080/user/register/", data);
+      toast(t("registration_successful"));
+      navigate("/");
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        toast(error.response.data.error || t("email_already_exists"));
+      } else {
+        toast(t("registration_failed"));
+      }
     }
-
-    users.push(data);
-    localStorage.setItem("users", JSON.stringify(users));
-
-    navigate("/");
   };
 
   useEffect(() => {}, [i18n.language]);

@@ -56,5 +56,9 @@
   "file_too_large": "A fájl mérete nem lehet nagyobb 5MB-nál!",
   "invalid_credentials": "Hibás email vagy jelszó!",
   "email_already_exists": "Ez az email már létezik!",
-  "AI": "Mesterséges intelligencia"
+  "AI": "Mesterséges intelligencia",
+  "registration_successful": "Sikeres regisztráció",
+  "registration_failed": "A regisztráció sikertelen",
+  "login_successful": "Sikeres bejelentkezés",
+  "login_failed": "A bejelentkezés sikertelen"
 }

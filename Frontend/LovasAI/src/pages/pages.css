@@ -80,3 +80,33 @@ li {
   align-items: center;
   z-index: 1000;
 }
+
+@media (max-width: 768px) {
+  .list-button {
+    top: 10px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+  }
+  .lang {
+    margin-top: 10px;
+    margin-bottom: 40px;
+  }
+  .draganddrop {
+    height: 80px;
+  }
+  .settings {
+    top: 10%;
+  }
+  .settings-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .modal-overlay {
+    padding: 20px;
+  }
+  .modal-content {
+    width: 90%;
+    max-width: 500px;
+  }
+}
