@@ -24,9 +24,6 @@
   scrollbar-width: none;
 }
 
-.form-group p {
-  margin-bottom: 5px;
-  font-size: 14px;
-  word-wrap: break-word;
-  white-space: normal;
+.form-group input {
+  width: 350px;
 }

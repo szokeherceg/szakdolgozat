@@ -17,16 +17,12 @@
   transform: scale(1.05);
 }
 
-.lang {
-  margin-top: 20px;
-  margin-bottom: 60px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
-
-.lang img {
-  height: 20px;
+.lang select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
 }
 
 .draganddrop {
@@ -49,6 +45,19 @@
 li {
   list-style: none;
   text-align: left;
+}
+
+label {
+  width: 100%;
+  text-align: left;
+}
+
+input {
+  width: 350px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
 }
 
 .settings {
