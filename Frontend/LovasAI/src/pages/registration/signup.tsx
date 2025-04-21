@@ -41,13 +41,13 @@ export const SignUp: React.FC = () => {
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
       await axios.post("http://127.0.0.1:8080/user/register/", data);
-      toast(t("registration_successful"));
+      toast.success(t("registration_successful"));
       navigate("/");
     } catch (error: any) {
-      if (error.response && error.response.data) {
-        toast(error.response.data.error || t("email_already_exists"));
+      if (error.response && error.response.data === 400) {
+        toast.error(error.response.data.error);
       } else {
-        toast(t("registration_failed"));
+        toast.error(t("registration_failed"));
       }
     }
   };

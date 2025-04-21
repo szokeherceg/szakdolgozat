@@ -38,6 +38,7 @@ export const FormSetUp: React.FC<FormSetUpProps> = ({
 
   return (
     <>
+      <div className="list">{hasModal && <Modal />}</div>
       <form
         onSubmit={onSubmit}
         data-has-modal={hasModal}
@@ -45,7 +46,6 @@ export const FormSetUp: React.FC<FormSetUpProps> = ({
       >
         {children}
       </form>
-      {hasModal && <Modal />}
     </>
   );
 };

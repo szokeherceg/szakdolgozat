@@ -92,10 +92,7 @@ input {
 
 @media (max-width: 768px) {
   .list-button {
-    top: 10px;
-    left: 10px;
-    width: 40px;
-    height: 40px;
+    position: unset;
   }
   .lang {
     margin-top: 10px;

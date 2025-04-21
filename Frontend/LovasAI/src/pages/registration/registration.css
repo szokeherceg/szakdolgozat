@@ -7,10 +7,9 @@
 
 .container {
   height: auto;
-  padding: 20px;
   display: flex;
   position: relative;
-  top: 40%;
+  top: 30%;
   width: auto;
   flex-direction: column;
   justify-content: center;
@@ -26,4 +25,15 @@
 
 .form-group input {
   width: 350px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    height: auto;
+    top: 20%;
+  }
+  .form-group input {
+    width: 100%;
+  }
 }

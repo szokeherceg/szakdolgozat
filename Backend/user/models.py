@@ -27,3 +27,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+    
+class HorseData(models.Model):
+    name = models.CharField(max_length=255)
+    weight = models.FloatField(null=True, blank=True)
+    age = models.IntegerField(null=True, blank=True)
+    image = models.ImageField(upload_to='horse_images/')
+    desc = models.TextField(null=True, blank=True)

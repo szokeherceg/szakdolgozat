@@ -11,6 +11,7 @@ type HorseDataType = {
   name: string;
   weight?: number;
   age?: number;
+  desc?: string;
   image: FileList;
 };
 
@@ -38,20 +39,47 @@ export const AI = () => {
         }
         return value[0].size <= 5 * 1024 * 1024;
       }),
+    desc: yup.string().optional(),
   });
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<HorseDataType>({
     resolver: yupResolver(horseSchema),
   });
 
   const onSubmit = (data: HorseDataType) => {
-    console.log("Beküldött ló adatok:", data);
-    reset();
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    if (data.weight) formData.append("weight", data.weight.toString());
+    if (data.age) formData.append("age", data.age.toString());
+    if (data.image && data.image.length > 0) {
+      formData.append("image", data.image[0]);
+    }
+    formData.append("desc", data.desc?.trim() || "Ez egy ló");
+
+    fetch("http://127.0.0.1:8080/user/horse-data/", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            console.error("Server responded with error:", error);
+            throw new Error("Failed to save horse data");
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Horse data saved successfully:", data);
+      })
+      .catch((error) => {
+        console.error("Hiba a mentés során:", error);
+      });
   };
 
   return (
@@ -67,23 +95,26 @@ export const AI = () => {
           />
           {errors.name && <p className="errors">{errors.name.message}</p>}
         </div>
-
         <label>{t("weight")}:</label>
         <Input
           type="number"
           placeholder={t("weight")}
           {...register("weight")}
         />
-
         <div className="mb-4">
           <label>{t("age")}:</label>
           <Input type="number" placeholder={t("age")} {...register("age")} />
         </div>
+        <label>{t("enter_description")}:</label>
+        <Input
+          type="string"
+          placeholder={t("enter_description")}
+          {...register("desc")}
+        />
       </div>
-
       <div>
         <Input
-          isFileInput
+          type="file"
           {...register("image")}
           className="draganddrop"
           placeholder={t("upload_hint")}

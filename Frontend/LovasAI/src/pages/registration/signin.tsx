@@ -34,7 +34,7 @@ export const SignIn: React.FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const [error, setError] = useState("");
+  const [] = useState("");
 
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
@@ -43,16 +43,16 @@ export const SignIn: React.FC = () => {
         data
       );
       const token = response.data.token;
-
       localStorage.setItem("authToken", token);
+      axios.defaults.headers.common["Authorization"] = `Token ${token}`;
 
-      toast(t("login_successful"));
+      toast.success(t("login_successful"));
       navigate("/MainPage");
     } catch (error: any) {
-      if (error.response && error.response.data) {
-        setError(error.response.data.error || t("login_failed"));
+      if (error.response && error.response.data === 401) {
+        toast.error(t("login_failed"));
       } else {
-        setError(t("login_failed"));
+        toast.error(t("login_failed"));
       }
     }
   };
@@ -79,11 +79,7 @@ export const SignIn: React.FC = () => {
           srcShow={Show}
           srcHide={Hide}
         />
-        {errors.password && <p className="errors">{errors.password.message}</p>}
       </div>
-
-      {error && <p className="errors">{error}</p>}
-
       <Button type="submit" className="button">
         {t("login")}
       </Button>

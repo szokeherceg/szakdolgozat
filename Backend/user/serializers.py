@@ -1,5 +1,5 @@
-from rest_framework import serializers # type: ignore
-from .models import User
+from rest_framework import serializers
+from .models import User, HorseData
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -29,3 +29,11 @@ class LoginSerializer(serializers.Serializer):
         if not user.is_active:
             raise serializers.ValidationError("User account is disabled")
         return {"user": user}
+    
+from rest_framework import serializers
+from .models import HorseData
+
+class HorseDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HorseData
+        fields = ["name", "weight", "age", "image", "desc"]

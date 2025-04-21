@@ -12,6 +12,7 @@
   align-items: flex-start;
   padding: 20px;
   color: white;
+  z-index: 1000;
 }
 
 .side-bar ul {
