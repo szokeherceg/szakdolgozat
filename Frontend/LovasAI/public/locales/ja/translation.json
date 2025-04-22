@@ -61,5 +61,7 @@
   "login_successful": "ログイン成功",
   "logout_successful": "ログアウト成功",
   "registration_failed": "登録失敗",
-  "login_failed": "ログイン失敗"
+  "login_failed": "ログイン失敗",
+  "data_saved_successfully": "データが正常に保存されました",
+  "description": "説明"
 }

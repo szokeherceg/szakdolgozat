@@ -45,7 +45,7 @@ form {
 
 @media (max-width: 1024px) {
   form {
-    width: 90%;
+    width: 80%;
     max-width: 100%;
     position: relative;
     top: 0;
@@ -76,7 +76,7 @@ form {
     max-width: 100%;
     position: relative;
     top: 0;
-    left: 45%;
+    left: 50%;
     transform: translateX(-50%);
     height: auto;
     margin-top: 10px;

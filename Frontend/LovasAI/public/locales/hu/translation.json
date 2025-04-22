@@ -60,5 +60,7 @@
   "registration_successful": "Sikeres regisztráció",
   "registration_failed": "A regisztráció sikertelen",
   "login_successful": "Sikeres bejelentkezés",
-  "login_failed": "A bejelentkezés sikertelen"
+  "login_failed": "A bejelentkezés sikertelen",
+  "data_saved_successfully": "Adatok sikeresen mentve",
+  "description": "Leírás"
 }

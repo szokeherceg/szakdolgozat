@@ -59,5 +59,7 @@
   "AI": "Künstliche Intelligenz",
   "registration_successful": "Registrierung erfolgreich",
   "login_successful": "Erfolgreich angemeldet",
-  "login_failed": "Anmeldung fehlgeschlagen"
+  "login_failed": "Anmeldung fehlgeschlagen",
+  "data_saved_successfully": "Daten erfolgreich gespeichert",
+  "description": "Beschreibung"
 }

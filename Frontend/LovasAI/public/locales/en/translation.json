@@ -60,5 +60,7 @@
   "registration_successful": "Registration successful",
   "registration_failed": "Registration failed",
   "login_successful": "Login successful",
-  "login_failed": "Login failed"
+  "login_failed": "Login failed",
+  "data_saved_successfully": "Data saved successfully",
+  "description": "Description"
 }

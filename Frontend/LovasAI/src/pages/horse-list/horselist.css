@@ -1,0 +1,49 @@
+.card {
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  width: 90%;
+  max-width: 400px;
+  height: 363px;
+}
+
+.card p {
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.chess {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 1300px) {
+  .chess {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 1000px) {
+  .card {
+    width: 90%;
+    height: auto;
+  }
+  .chess {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .chess {
+    grid-template-columns: 1fr;
+  }
+}

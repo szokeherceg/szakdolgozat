@@ -4,8 +4,10 @@ import * as yup from "yup";
 import { FormSetUp, Input, Button } from "../components";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./pages.css";
+import { toast } from "react-toastify";
 
 type HorseDataType = {
   name: string;
@@ -17,6 +19,7 @@ type HorseDataType = {
 
 export const AI = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {}, [i18n.language]);
 
@@ -76,6 +79,8 @@ export const AI = () => {
       })
       .then((data) => {
         console.log("Horse data saved successfully:", data);
+        toast.success(t("data_saved_successfully"));
+        navigate("/HorsesList");
       })
       .catch((error) => {
         console.error("Hiba a mentés során:", error);
