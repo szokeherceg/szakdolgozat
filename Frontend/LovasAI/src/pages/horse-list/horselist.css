@@ -23,6 +23,8 @@
 
 .chess {
   display: grid;
+  position: relative;
+  left: -4%;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
@@ -45,5 +47,6 @@
 @media (max-width: 600px) {
   .chess {
     grid-template-columns: 1fr;
+    left: -10%;
   }
 }

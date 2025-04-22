@@ -66,12 +66,12 @@ export const SignIn: React.FC = () => {
       className="container"
     >
       <Image src={SZE} />
+      <div className="page-name">LovasAI</div>
+      <div className="registration-type">{t("login")}</div>
       <div className="form-group">
         <Input type="email" placeholder={t("email")} {...register("email")} />
         {errors.email && <p className="errors">{errors.email.message}</p>}
-      </div>
 
-      <div className="form-group">
         <Input
           type="password"
           placeholder={t("password")}
@@ -83,9 +83,12 @@ export const SignIn: React.FC = () => {
       <Button type="submit" className="button">
         {t("login")}
       </Button>
-      <Link to="/signup" className="nav">
-        {t("noprofile")}
-      </Link>
+      <div className="nav">
+        <div>{t("noprofile")}</div>
+        <div>
+          <Link to="/signup">{t("signup")}</Link>
+        </div>
+      </div>
     </FormSetUp>
   );
 };

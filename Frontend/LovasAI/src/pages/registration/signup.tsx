@@ -61,7 +61,8 @@ export const SignUp: React.FC = () => {
       className="container"
     >
       <Image src={SZE} />
-
+      <div className="page-name">LovasAI</div>
+      <div className="registration-type">{t("signup")}</div>
       <div className="form-group">
         <Input type="email" placeholder={t("email")} {...register("email")} />
         {errors.email && <p className="errors">{errors.email.message}</p>}
@@ -82,9 +83,12 @@ export const SignUp: React.FC = () => {
         {t("signup")}
       </Button>
 
-      <Link to="/" className="nav">
-        {t("hasprofile")}
-      </Link>
+      <div className="nav">
+        <div>{t("hasprofile")}</div>
+        <div>
+          <Link to="/">{t("login")}</Link>
+        </div>
+      </div>
     </FormSetUp>
   );
 };

@@ -1,7 +1,7 @@
+form {
+  border-radius: 0.5rem;
+}
 .list-button {
-  position: absolute;
-  top: 15px;
-  left: 15px;
   background: none;
   border: none;
   padding: 10px;
@@ -14,7 +14,7 @@
   transition: all 0.3s ease-in-out;
 }
 .list-button:hover {
-  transform: scale(1.05);
+  transform: scale(1.2);
 }
 
 .lang select {
@@ -25,21 +25,8 @@
   margin-bottom: 20px;
 }
 
-.draganddrop {
-  display: flex;
-  justify-items: center;
-  text-align: center;
-  background-color: rgba(128, 128, 128, 0.1);
-  border: 2px dashed #4a90e2;
-  border-radius: 10px;
-  color: #4a4a4a;
-  height: 100px;
-  margin-bottom: 20px;
-}
-
-.draganddrop:hover {
-  background-color: rgba(128, 128, 128, 0.2);
-  border-color: #2a6ebf;
+.lang select option {
+  width: 50%;
 }
 
 li {
@@ -53,7 +40,8 @@ label {
 }
 
 input {
-  width: 350px;
+  width: 100vh;
+  height: 60px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -91,19 +79,31 @@ input {
 }
 
 @media (max-width: 768px) {
+  .input-container {
+    border: 0px;
+    position: relative;
+    justify-self: center;
+    width: 140%;
+  }
+  .input-container input {
+    width: 100%;
+  }
   .list-button {
     position: unset;
   }
+
   .lang {
-    margin-top: 10px;
-    margin-bottom: 40px;
+    width: 100%;
   }
-  .draganddrop {
-    height: 80px;
+
+  .lang select option {
+    width: 100% !important;
   }
-  .settings {
-    top: 10%;
+
+  .settings .input-container {
+    width: 100%;
   }
+
   .settings-buttons {
     flex-direction: column;
     gap: 10px;

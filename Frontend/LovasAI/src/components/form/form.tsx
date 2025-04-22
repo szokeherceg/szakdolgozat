@@ -24,7 +24,7 @@ export const FormSetUp: React.FC<FormSetUpProps> = ({
   };
 
   const Modal = () => (
-    <div>
+    <div className="list">
       <div className="list-button" onClick={SideBarFunction}>
         <img src={list} height="40px" width="40px" alt="Toggle Sidebar" />
       </div>
@@ -38,7 +38,7 @@ export const FormSetUp: React.FC<FormSetUpProps> = ({
 
   return (
     <>
-      <div className="list">{hasModal && <Modal />}</div>
+      {hasModal && <Modal />}
       <form
         onSubmit={onSubmit}
         data-has-modal={hasModal}

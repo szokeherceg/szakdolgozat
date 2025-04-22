@@ -1,10 +1,16 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
 form {
   position: relative;
-  width: 800px;
-  max-width: 900px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70vw;
   min-height: 100%;
   height: auto;
-  margin-top: 20px;
+  margin-top: 10px !important;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -16,85 +22,32 @@ form {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
-  form {
-    width: 90%;
-    max-width: 100%;
-    position: relative;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    height: auto;
-    margin-top: 10px;
-  }
-  .list {
-    position: absolute;
-    width: 100%;
-    top: 10px;
-    left: 10px;
-  }
-  form label {
-    width: 90%;
-  }
-  form input,
-  form textarea,
-  form select {
-    font-size: 0.8rem;
-  }
+.list {
+  position: relative;
+  display: flex;
+  align-items: center;
+  display: flex;
+  width: 99vw;
+  background-color: #41465c;
+  height: 50px;
+  border-radius: 0 !important;
+}
+.profile {
+  position: fixed;
+  top: 0;
+  right: 2%;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   form {
-    width: 80%;
-    max-width: 100%;
-    position: relative;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 90vw;
     height: auto;
-    margin-top: 10px;
-  }
-  .list {
-    position: absolute;
-    width: 100%;
-    top: 10px;
-    left: 10px;
-  }
-  form label {
-    width: 90%;
-  }
-  form input,
-  form textarea,
-  form select {
-    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   form {
-    width: 90%;
-    max-width: 100%;
-    position: relative;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 90vw;
     height: auto;
-    margin-top: 10px;
-  }
-  .list {
-    z-index: 1000;
-    position: relative;
-    width: 100%;
-    margin: 0 auto;
-    top: 0;
-    text-align: center;
-  }
-  form label {
-    width: 90%;
-  }
-  form input,
-  form textarea,
-  form select {
-    font-size: 0.8rem;
   }
 }

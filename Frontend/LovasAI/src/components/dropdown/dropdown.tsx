@@ -12,7 +12,7 @@ export const Dropdown = ({ buttonLabel, items, className }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
+    <div className="dropdown">
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={classnames("dropdown-button", className)}

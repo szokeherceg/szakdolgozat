@@ -1,16 +1,30 @@
+.page-name {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.registration-type {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
 .nav {
   margin-top: 20px;
-  text-decoration: none !important;
-  color: black;
-  font-weight: bold;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
   height: auto;
   display: flex;
   position: relative;
-  top: 30%;
-  width: auto;
+  top: 10%;
+  right: 25%;
+  width: 150%;
   flex-direction: column;
   justify-content: center;
   align-items: center;

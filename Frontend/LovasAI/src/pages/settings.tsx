@@ -44,38 +44,36 @@ export const Settings = ({ onClose }: SettingsProps) => {
         {t("settings")}
       </h2>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-600">
-          {t("email")}
-        </label>
-        <Input type="email" {...register("email")} placeholder={t("email")} />
+      <label className="block text-sm font-medium text-gray-600">
+        {t("email")}
+      </label>
+      <Input type="email" {...register("email")} placeholder={t("email")} />
 
-        <label className="block text-sm font-medium text-gray-600">
-          {t("password")}
-        </label>
-        <Input
-          type="password"
-          placeholder={t("password")}
-          {...register("password")}
-          srcShow={Show}
-          srcHide={Hide}
-        />
+      <label className="block text-sm font-medium text-gray-600">
+        {t("password")}
+      </label>
+      <Input
+        type="password"
+        placeholder={t("password")}
+        {...register("password")}
+        srcShow={Show}
+        srcHide={Hide}
+      />
 
-        <div className="lang">
-          <label className="block text-sm font-medium text-gray-600 mb-2">
-            {t("language")}
-          </label>
-          <select
-            value={lang}
-            onChange={(e) => handleLanguageChange(e.target.value)}
-            className="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-          >
-            <option value="hu">{t("hungarian")}</option>
-            <option value="en">{t("english")}</option>
-            <option value="de">{t("german")}</option>
-            <option value="ja">{t("japanese")}</option>
-          </select>
-        </div>
+      <div className="lang">
+        <label className="block text-sm font-medium text-gray-600 mb-2">
+          {t("language")}
+        </label>
+        <select
+          value={lang}
+          onChange={(e) => handleLanguageChange(e.target.value)}
+          className="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+        >
+          <option value="hu">{t("hungarian")}</option>
+          <option value="en">{t("english")}</option>
+          <option value="de">{t("german")}</option>
+          <option value="ja">{t("japanese")}</option>
+        </select>
       </div>
 
       <div className="settings-buttons">
