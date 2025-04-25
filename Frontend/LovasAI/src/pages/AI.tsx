@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import "./pages.css";
+import "./registration/registration.css";
 import { toast } from "react-toastify";
 
 type HorseDataType = {
@@ -88,7 +88,7 @@ export const AI = () => {
   };
 
   return (
-    <FormSetUp onSubmit={handleSubmit(onSubmit)} hasModal>
+    <FormSetUp onSubmit={handleSubmit(onSubmit)} hasModal className="ai-form">
       <h2>{t("enter_data")}</h2>
       <div>
         <div>
@@ -117,7 +117,7 @@ export const AI = () => {
           {...register("desc")}
         />
       </div>
-      <div>
+      <div className="draganddrop-container">
         <Input
           type="file"
           {...register("image")}
