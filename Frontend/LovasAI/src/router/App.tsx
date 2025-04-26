@@ -1,15 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import { AI, SignIn, SignUp, MainPage, HorsesList, Settings } from "../pages";
 import { ProtectedRoute } from "./protected-route";
-import { Header } from "../components";
 
 import "./App.css";
 
 function App() {
   return (
     <>
-      {" "}
-      <Header />
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />

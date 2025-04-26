@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { FormSetUp, Input, Button } from "../components";
+import { FormSetUp, Input, Button, Header } from "../components";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -88,46 +88,49 @@ export const AI = () => {
   };
 
   return (
-    <FormSetUp onSubmit={handleSubmit(onSubmit)} hasModal className="ai-form">
-      <h2>{t("enter_data")}</h2>
-      <div>
+    <>
+      <Header />
+      <FormSetUp onSubmit={handleSubmit(onSubmit)} hasModal className="ai-form">
+        <h2>{t("enter_data")}</h2>
         <div>
-          <label>{t("horse_name")}:</label>
+          <div>
+            <label>{t("horse_name")}:</label>
+            <Input
+              type="text"
+              placeholder={t("horse_name")}
+              {...register("name")}
+            />
+            {errors.name && <p className="errors">{errors.name.message}</p>}
+          </div>
+          <label>{t("weight")}:</label>
           <Input
-            type="text"
-            placeholder={t("horse_name")}
-            {...register("name")}
+            type="number"
+            placeholder={t("weight")}
+            {...register("weight")}
           />
-          {errors.name && <p className="errors">{errors.name.message}</p>}
+          <div className="mb-4">
+            <label>{t("age")}:</label>
+            <Input type="number" placeholder={t("age")} {...register("age")} />
+          </div>
+          <label>{t("enter_description")}:</label>
+          <Input
+            type="string"
+            placeholder={t("enter_description")}
+            {...register("desc")}
+          />
         </div>
-        <label>{t("weight")}:</label>
-        <Input
-          type="number"
-          placeholder={t("weight")}
-          {...register("weight")}
-        />
-        <div className="mb-4">
-          <label>{t("age")}:</label>
-          <Input type="number" placeholder={t("age")} {...register("age")} />
+        <div className="draganddrop-container">
+          <Input
+            type="file"
+            {...register("image")}
+            className="draganddrop"
+            placeholder={t("upload_hint")}
+          />
+          {errors.image && <p className="errors">{errors.image.message}</p>}
         </div>
-        <label>{t("enter_description")}:</label>
-        <Input
-          type="string"
-          placeholder={t("enter_description")}
-          {...register("desc")}
-        />
-      </div>
-      <div className="draganddrop-container">
-        <Input
-          type="file"
-          {...register("image")}
-          className="draganddrop"
-          placeholder={t("upload_hint")}
-        />
-        {errors.image && <p className="errors">{errors.image.message}</p>}
-      </div>
 
-      <Button type="submit">{t("save")}</Button>
-    </FormSetUp>
+        <Button type="submit">{t("save")}</Button>
+      </FormSetUp>
+    </>
   );
 };

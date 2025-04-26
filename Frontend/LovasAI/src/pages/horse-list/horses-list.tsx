@@ -1,4 +1,4 @@
-import { FormSetUp } from "../../components";
+import { FormSetUp, Header } from "../../components";
 import { useTranslation } from "react-i18next";
 
 import "./horselist.css";
@@ -15,7 +15,7 @@ export const HorsesList = () => {
   }
 
   const [horses, setHorses] = useState<Horse[]>([]);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchHorses = async () => {
@@ -39,25 +39,28 @@ export const HorsesList = () => {
   }, []);
 
   return (
-    <FormSetUp hasModal>
-      <h1>{t("myhorses")}</h1>
-      <ul className="chess">
-        {horses.map((horse, index) => (
-          <li key={index} className="card">
-            <h2>{horse.name}</h2>
-            <p>
-              {t("weight")}: {horse.weight}
-            </p>
-            <p>
-              {t("age")}: {horse.age}
-            </p>
-            <p>
-              {t("description")}:
-              <br /> {horse.desc}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </FormSetUp>
+    <>
+      <Header />
+      <FormSetUp hasModal>
+        <h1>{t("myhorses")}</h1>
+        <ul className="chess">
+          {horses.map((horse, index) => (
+            <li key={index} className="card">
+              <h2>{horse.name}</h2>
+              <p>
+                {t("weight")}: {horse.weight}
+              </p>
+              <p>
+                {t("age")}: {horse.age}
+              </p>
+              <p>
+                {t("description")}:
+                <br /> {horse.desc}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </FormSetUp>
+    </>
   );
 };

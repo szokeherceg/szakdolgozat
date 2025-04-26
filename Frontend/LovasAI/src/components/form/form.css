@@ -5,7 +5,7 @@
 
 form {
   position: relative;
-  top: 8%;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
   width: 70vw;
