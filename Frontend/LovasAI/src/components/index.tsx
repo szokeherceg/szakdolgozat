@@ -4,3 +4,4 @@ export * from "./input/input";
 export * from "./form/form";
 export * from "./sidebar/sidebar";
 export * from "./dropdown/dropdown";
+export * from "./header/header";

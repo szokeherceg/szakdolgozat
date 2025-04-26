@@ -1,8 +1,6 @@
-import { ReactEventHandler, ReactNode, useState } from "react";
+import { ReactEventHandler, ReactNode } from "react";
 import classNames from "classnames";
 import "./form.css";
-import { SideBar } from "../sidebar/sidebar";
-import list from "./../../assets/list.svg";
 
 interface FormSetUpProps {
   children: ReactNode;
@@ -17,28 +15,8 @@ export const FormSetUp: React.FC<FormSetUpProps> = ({
   hasModal,
   className = "",
 }) => {
-  const [showSideBar, setShowSideBar] = useState(true);
-
-  const SideBarFunction = () => {
-    setShowSideBar((prev) => !prev);
-  };
-
-  const Modal = () => (
-    <div className="list">
-      <div className="list-button" onClick={SideBarFunction}>
-        <img src={list} height="40px" width="40px" alt="Toggle Sidebar" />
-      </div>
-      {showSideBar && (
-        <div className="side-bar">
-          <SideBar setIsOpen={SideBarFunction} />
-        </div>
-      )}
-    </div>
-  );
-
   return (
     <>
-      {hasModal && <Modal />}
       <form
         onSubmit={onSubmit}
         data-has-modal={hasModal}

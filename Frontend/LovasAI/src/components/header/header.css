@@ -1,0 +1,45 @@
+.list {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  display: flex;
+  width: 99%;
+  background-color: #41465c;
+  height: 50px;
+  border-radius: 0 !important;
+  z-index: 1000;
+}
+.profile {
+  position: fixed;
+  top: 0;
+  right: 2%;
+  z-index: 1000;
+}
+
+.profile .dropdown-button .sidebar-link {
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+.dropdown-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.dropdown-li {
+  display: inline-block;
+}
+@media (max-width: 768px) {
+  .list {
+    width: 100%;
+    height: 50px;
+  }
+  .profile {
+    right: 2%;
+  }
+}

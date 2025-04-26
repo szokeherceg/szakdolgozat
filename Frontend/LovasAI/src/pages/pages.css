@@ -75,6 +75,8 @@ input {
 
 .settings {
   height: 100%;
+  width: 75%;
+  position: relative;
   color: black;
   display: flex;
   flex-direction: column;
@@ -127,7 +129,9 @@ input {
   .list-button {
     position: unset;
   }
-
+  .settings h2 {
+    margin-bottom: 40px;
+  }
   .settings .input-container {
     width: 100%;
   }
@@ -145,7 +149,8 @@ input {
   }
   .settings {
     position: relative;
-    left: 48%;
+    width: 100%;
+    left: 50%;
     transform: translateX(-50%);
   }
 
@@ -160,8 +165,12 @@ input {
 @media (max-height: 600px) {
   .settings {
     height: 90vh;
+    width: 180%;
     overflow-y: scroll;
     padding-top: 120px;
+  }
+  .settings h2 {
+    margin-top: 80px;
   }
   .modal-overlay {
     position: fixed;
