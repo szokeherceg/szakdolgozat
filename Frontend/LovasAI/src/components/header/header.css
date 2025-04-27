@@ -1,18 +1,24 @@
-.list {
+.header {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 60px;
   display: flex;
   align-items: center;
-  display: flex;
-  width: 99%;
-  background-color: #41465c;
-  height: 50px;
-  border-radius: 0 !important;
+  justify-content: space-between;
+  padding: 0 2rem;
+  background: linear-gradient(135deg, rgb(81, 98, 136), #43476a);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 1000;
 }
+
 .profile {
+  margin-top: 5px;
   position: fixed;
+  font-weight: bolder;
   top: 0;
   right: 2%;
   z-index: 1000;
@@ -30,10 +36,10 @@
   margin: 0;
   text-align: center;
 }
-
 .dropdown-li {
   display: inline-block;
 }
+
 @media (max-width: 768px) {
   .list {
     width: 100%;

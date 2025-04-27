@@ -63,5 +63,9 @@
   "registration_failed": "登録失敗",
   "login_failed": "ログイン失敗",
   "data_saved_successfully": "データが正常に保存されました",
-  "description": "説明"
+  "description": "説明",
+  "password2": "パスワードの確認",
+  "passwords_do_not_match": "パスワードが一致しません！",
+  "name_required": "名前は必須です！",
+  "name": "名前"
 }

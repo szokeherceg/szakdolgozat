@@ -61,5 +61,9 @@
   "login_successful": "Erfolgreich angemeldet",
   "login_failed": "Anmeldung fehlgeschlagen",
   "data_saved_successfully": "Daten erfolgreich gespeichert",
-  "description": "Beschreibung"
+  "description": "Beschreibung",
+  "password2": "Passwort wiederholen",
+  "password_do_not_match": "Die Passwörter stimmen nicht überein.",
+  "name_required": "Der Name ist erforderlich!",
+  "name": "Name"
 }

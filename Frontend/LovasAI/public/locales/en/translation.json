@@ -62,5 +62,9 @@
   "login_successful": "Login successful",
   "login_failed": "Login failed",
   "data_saved_successfully": "Data saved successfully",
-  "description": "Description"
+  "description": "Description",
+  "password2": "Confirm Password",
+  "password_do_not_match": "Passwords do not match",
+  "name_required": "Name is required!",
+  "name": "Name"
 }

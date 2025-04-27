@@ -77,10 +77,10 @@ export const Settings = ({ onClose }: SettingsProps) => {
       </div>
 
       <div className="settings-buttons">
-        <Button type="submit">{t("save")}</Button>
         <Button type="button" onClick={onClose}>
           {t("back")}
         </Button>
+        <Button type="submit">{t("save")}</Button>
       </div>
     </FormSetUp>
   );

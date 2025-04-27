@@ -26,6 +26,10 @@ export const SignUp: React.FC = () => {
       .string()
       .min(6, t("password_too_short"))
       .required(t("required_field")),
+    password2: yup
+      .string()
+      .oneOf([yup.ref("password")], t("passwords_do_not_match"))
+      .required(t("required_field")),
   });
 
   const navigate = useNavigate();
@@ -66,9 +70,6 @@ export const SignUp: React.FC = () => {
       <div className="form-group">
         <Input type="email" placeholder={t("email")} {...register("email")} />
         {errors.email && <p className="errors">{errors.email.message}</p>}
-      </div>
-
-      <div className="form-group">
         <Input
           type="password"
           placeholder={t("password")}
@@ -77,6 +78,16 @@ export const SignUp: React.FC = () => {
           srcHide={Hide}
         />
         {errors.password && <p className="errors">{errors.password.message}</p>}
+        <Input
+          type="password"
+          placeholder={t("password")}
+          {...register("password2")}
+          srcShow={Show}
+          srcHide={Hide}
+        />
+        {errors.password2 && (
+          <p className="errors">{errors.password2.message}</p>
+        )}
       </div>
 
       <Button type="submit" className="button">

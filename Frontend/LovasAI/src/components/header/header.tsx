@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { SideBar } from "../sidebar/sidebar";
@@ -26,13 +26,13 @@ export const Header = () => {
 
   return (
     <>
-      <div className="list">
+      <div className="header">
         <div className="list-button" onClick={toggleSideBar}>
           <img src={list} height="40px" width="40px" alt="Toggle Sidebar" />
         </div>
         <div className="profile">
           <Dropdown
-            buttonLabel={<span className="sidebar-link">Felhasználó</span>}
+            buttonLabel={<span className="sidebar-link">{t("profile")}</span>}
             items={[
               {
                 label: t("settings"),
@@ -53,7 +53,6 @@ export const Header = () => {
         )}
       </div>
 
-      {/* Modal megnyitása a Settings-hez */}
       <Modal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)}>
         <Settings onClose={() => setIsSettingsOpen(false)} />
       </Modal>

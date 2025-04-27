@@ -43,7 +43,7 @@
   "fast_accurate": "Gyors és pontos elemzés",
   "user_friendly": "Felhasználóbarát",
   "ai_processing": "AI alapú adatfeldolgozás",
-  "back": "Mégse",
+  "back": "Mégsem",
   "enter_description": "Leírás megadása",
   "required_field": "Ez a mező kötelező.",
   "invalid_email": "Érvénytelen e-mail cím.",
@@ -62,5 +62,9 @@
   "login_successful": "Sikeres bejelentkezés",
   "login_failed": "A bejelentkezés sikertelen",
   "data_saved_successfully": "Adatok sikeresen mentve",
-  "description": "Leírás"
+  "description": "Leírás",
+  "password2": "Jelszó megerősítése",
+  "passwords_do_not_match": "A jelszavak nem egyeznek!",
+  "name_required": "A név megadása kötelező!",
+  "name": "Név"
 }
