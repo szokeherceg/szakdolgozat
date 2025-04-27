@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { Image } from "../image/image";
-
-import Profilesvg from "./../../assets/profile.svg";
 import HomePagesvg from "./../../assets/homepage.svg";
 import WhiteHorse from "./../../assets/whitehorse.svg";
 import X from "./../../assets/whitex.svg";
@@ -25,12 +23,6 @@ export const SideBar = ({ setIsOpen }: SideBarProps) => {
 
   useEffect(() => {}, [i18n.language]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    sessionStorage.removeItem("authToken");
-    navigate("/");
-  };
-
   return (
     <div className="side-bar">
       <div className="menu-container">
@@ -49,27 +41,7 @@ export const SideBar = ({ setIsOpen }: SideBarProps) => {
           <Image height="24px" width="24px" src={HomePagesvg} />
           <span>{t("mainpage")}</span>
         </li>
-        <li>
-          <Dropdown
-            buttonLabel={
-              <span className="sidebar-link">
-                <Image height="24px" width="24px" src={Profilesvg} />
-                {t("profile")}
-              </span>
-            }
-            items={[
-              {
-                label: t("settings"),
-                onClick: () => setIsSettingsOpen(true),
-              },
-              {
-                label: t("logout"),
-                className: "logout",
-                onClick: handleLogout,
-              },
-            ]}
-          />
-        </li>{" "}
+
         <li>
           <Dropdown
             buttonLabel={
