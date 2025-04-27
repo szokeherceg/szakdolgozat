@@ -65,5 +65,6 @@
   "password2": "Passwort wiederholen",
   "password_do_not_match": "Die Passwörter stimmen nicht überein.",
   "name_required": "Der Name ist erforderlich!",
-  "name": "Name"
+  "name": "Name",
+  "addhorse": "Pferd hinzufügen"
 }

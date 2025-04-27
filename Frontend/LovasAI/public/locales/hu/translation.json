@@ -66,5 +66,6 @@
   "password2": "Jelszó megerősítése",
   "passwords_do_not_match": "A jelszavak nem egyeznek!",
   "name_required": "A név megadása kötelező!",
-  "name": "Név"
+  "name": "Név",
+  "addhorse": "Ló hozzáadása"
 }

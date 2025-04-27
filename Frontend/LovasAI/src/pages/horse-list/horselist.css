@@ -51,15 +51,19 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 100%;
-  height: 100vh;
+  width: 500px;
+  min-width: 60vw;
   background-color: #ffffff;
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 800px;
-  margin: auto;
+  margin: 20px auto;
+  height: 500px;
+  min-height: 300px;
   overflow-y: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 
 .horse-details h2 {
@@ -79,15 +83,14 @@
 }
 
 .horse-details img {
-  height: 250px;
+  width: 30vw;
   max-width: 100%;
   max-height: 200px;
-  object-fit: cover;
   border-radius: 10px;
   margin-top: 20px;
 }
 
-@media (max-width: 456px) {
+@media (max-width: 768px) {
   .card {
     width: 90%;
     padding: 10px;
@@ -98,5 +101,19 @@
   .card-image {
     width: 60%;
     margin: 0 auto;
+  }
+
+  .horse-details {
+    width: 80%;
+    padding: 15px;
+    max-width: none;
+    max-height: 90vh; /* <<< EZ A FONTOS */
+    margin: 20px auto;
+    overflow-y: auto; /* <<< FONTOS, hogy megmaradjon */
+  }
+
+  .horse-details img {
+    width: 80vw;
+    max-height: none;
   }
 }

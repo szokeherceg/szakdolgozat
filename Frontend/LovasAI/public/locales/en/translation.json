@@ -66,5 +66,6 @@
   "password2": "Confirm Password",
   "password_do_not_match": "Passwords do not match",
   "name_required": "Name is required!",
-  "name": "Name"
+  "name": "Name",
+  "addhorse": "Add Horse"
 }

@@ -81,28 +81,28 @@ export const HorsesList = () => {
             </li>
           ))}
         </ul>
-        {selectedHorse && (
-          <Modal isOpen={isHorseDetails} onClose={() => setHorseDetails(false)}>
-            <div className="horse-details">
-              <h2>{selectedHorse.name}</h2>
-              <p>
-                {t("weight")}: {selectedHorse.weight}
-              </p>
-              <p>
-                {t("age")}: {selectedHorse.age}
-              </p>
-              <p>
-                {t("description")}: {selectedHorse.desc}
-              </p>
-              <img
-                src={`http://127.0.0.1:8080/user${selectedHorse.image}`}
-                alt={selectedHorse.name}
-                className="card-image"
-              />
-            </div>
-          </Modal>
-        )}
       </FormSetUp>
+      {selectedHorse && (
+        <Modal isOpen={isHorseDetails} onClose={() => setHorseDetails(false)}>
+          <div className="horse-details">
+            <h2>{selectedHorse.name}</h2>
+            <p>
+              {t("weight")}: {selectedHorse.weight}
+            </p>
+            <p>
+              {t("age")}: {selectedHorse.age}
+            </p>
+            <p>
+              {t("description")}: {selectedHorse.desc}
+            </p>
+            <img
+              src={`http://127.0.0.1:8080/user${selectedHorse.image}`}
+              alt={selectedHorse.name}
+              className="card-image"
+            />
+          </div>
+        </Modal>
+      )}
     </>
   );
 };
