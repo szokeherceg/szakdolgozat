@@ -114,7 +114,7 @@ export const HorsesList = () => {
             <img
               src={`http://127.0.0.1:8080/user${selectedHorse.image}`}
               alt={selectedHorse.name}
-              className="card-image"
+              className="modal-image"
             />
           </div>
         </Modal>
