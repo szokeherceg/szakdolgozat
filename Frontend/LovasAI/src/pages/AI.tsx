@@ -5,6 +5,7 @@ import { FormSetUp, Input, Button, Header } from "../components";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import "./registration/registration.css";
 import { toast } from "react-toastify";
@@ -54,8 +55,16 @@ export const AI = () => {
   });
 
   const onSubmit = (data: HorseDataType) => {
-    const formData = new FormData();
+    const token =
+      localStorage.getItem("accessToken") ||
+      localStorage.getItem("refreshToken");
 
+    if (!token) {
+      toast.error("Nincs érvényes bejelentkezés! Kérlek, jelentkezz be.");
+      return;
+    }
+
+    const formData = new FormData();
     formData.append("name", data.name);
     if (data.weight) formData.append("weight", data.weight.toString());
     if (data.age) formData.append("age", data.age.toString());
@@ -63,27 +72,24 @@ export const AI = () => {
       formData.append("image", data.image[0]);
     }
     formData.append("desc", data.desc?.trim() || "Ez egy ló");
-
-    fetch("http://127.0.0.1:8080/user/horse-data/", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => {
-            console.error("Server responded with error:", error);
-            throw new Error("Failed to save horse data");
-          });
-        }
-        return response.json();
+    console.log("FormData:", formData);
+    console.log("Token:", token);
+    axios
+      .post("http://127.0.0.1:8080/user/horse-data/", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((data) => {
-        console.log("Horse data saved successfully:", data);
+      .then((response) => {
+        console.log("Horse data saved successfully:", response.data);
         toast.success(t("data_saved_successfully"));
         navigate("/HorsesList");
       })
       .catch((error) => {
         console.error("Hiba a mentés során:", error);
+        if (error.response && error.response.status === 401) {
+          toast.error("Nem megfelelő hitelesítés. Kérlek, jelentkezz be újra.");
+        }
       });
   };
 

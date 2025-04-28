@@ -34,27 +34,24 @@ export const SignIn: React.FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const [] = useState("");
-
-  const onSubmit = async (data: { email: string; password: string }) => {
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8080/user/login/",
-        data
-      );
-      const token = response.data.token;
-      localStorage.setItem("authToken", token);
-      axios.defaults.headers.common["Authorization"] = `Token ${token}`;
-
-      toast.success(t("login_successful"));
-      navigate("/MainPage");
-    } catch (error: any) {
-      if (error.response && error.response.data === 401) {
-        toast.error(t("login_failed"));
-      } else {
-        toast.error(t("login_failed"));
-      }
-    }
+  const onSubmit = (data: { email: string; password: string }) => {
+    axios
+      .post("http://127.0.0.1:8080/user/login/", data)
+      .then((response) => {
+        const { access, refresh } = response.data;
+        localStorage.setItem("accessToken", access);
+        localStorage.setItem("refreshToken", refresh);
+        toast.success(t("login_successful"));
+        navigate("/MainPage");
+        axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+      })
+      .catch((error) => {
+        if (error.response && error.response.data === 401) {
+          toast.error(t("login_failed"));
+        } else {
+          toast.error(t("login_failed"));
+        }
+      });
   };
 
   useEffect(() => {}, [i18n.language]);
@@ -86,7 +83,7 @@ export const SignIn: React.FC = () => {
       <div className="nav">
         <div>{t("noprofile")}</div>
         <div>
-          <Link to="/signup">{t("signup")}</Link>
+          <Link to="/">{t("signup")}</Link>
         </div>
       </div>
     </FormSetUp>

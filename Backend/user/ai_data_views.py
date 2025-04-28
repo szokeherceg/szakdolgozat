@@ -6,10 +6,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import HorseDataSerializer
 from .models import HorseData
+from rest_framework.permissions import IsAuthenticated
+
 
 class HorseDataView(APIView):
     parser_classes = [MultiPartParser, FormParser]
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         try:

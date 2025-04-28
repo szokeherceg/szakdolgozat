@@ -97,7 +97,7 @@ export const SignUp: React.FC = () => {
       <div className="nav">
         <div>{t("hasprofile")}</div>
         <div>
-          <Link to="/">{t("login")}</Link>
+          <Link to="/SignIn">{t("login")}</Link>
         </div>
       </div>
     </FormSetUp>

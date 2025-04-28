@@ -26,9 +26,10 @@ body {
   height: auto;
   display: flex;
   position: relative;
-  top: 10%;
+  top: 0%;
   right: 25%;
   width: 150%;
+  height: 650px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -43,6 +44,7 @@ body {
 
 .form-group input {
   width: 350px;
+  margin-bottom: 0;
 }
 
 .form-group {

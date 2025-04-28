@@ -1,10 +1,10 @@
-import { FormSetUp, Header } from "../../components";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { FormSetUp, Header } from "../../components";
 import { Modal } from "../modal/modal";
 
 import "./horselist.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
 
 export const HorsesList = () => {
   interface Horse {
@@ -23,8 +23,19 @@ export const HorsesList = () => {
   useEffect(() => {
     const fetchHorses = async () => {
       try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          console.error("No token found");
+          return;
+        }
+
         const response = await axios.get(
-          "http://127.0.0.1:8080/user/horse-data/"
+          "http://127.0.0.1:8080/user/horse-data/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (Array.isArray(response.data)) {
           setHorses(response.data);
@@ -36,9 +47,7 @@ export const HorsesList = () => {
       }
     };
 
-    fetchHorses().then(() => {
-      console.log("Horses fetched:", horses);
-    });
+    fetchHorses();
   }, []);
 
   const handleHorseClick = (horse: Horse) => {
@@ -66,12 +75,12 @@ export const HorsesList = () => {
                 {t("age")}: {horse.age}
               </p>
               <p>
-                {t("description")}:
-                <p>
+                {t("description")}:{" "}
+                <span>
                   {horse.desc.length > 100
                     ? horse.desc.substring(0, 100) + "..."
                     : horse.desc}
-                </p>
+                </span>
               </p>
               <img
                 src={`http://127.0.0.1:8080/user${horse.image}`}

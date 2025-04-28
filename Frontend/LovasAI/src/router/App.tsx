@@ -16,8 +16,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<SignIn />} />
-        <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/SignIn" element={<SignIn />} />
+        <Route path="/" element={<SignUp />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/MainPage" element={<MainPage />} />
           <Route path="/HorsesList" element={<HorsesList />} />

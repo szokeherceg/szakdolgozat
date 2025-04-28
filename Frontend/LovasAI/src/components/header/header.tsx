@@ -19,8 +19,10 @@ export const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    sessionStorage.removeItem("authToken");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
     navigate("/");
   };
 

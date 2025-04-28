@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,9 +18,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'corsheaders',
     'user',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -73,6 +85,14 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # A hozzáférési token érvényességi ideje 15 perc
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # A frissítési token érvényességi ideje 1 nap
+    'ROTATE_REFRESH_TOKENS': False,  # Ne forogjanak a frissítési tokenek
+    'BLACKLIST_AFTER_ROTATION': False,  # Ne tiltsuk le az előző frissítési tokeneket
+}
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173"
