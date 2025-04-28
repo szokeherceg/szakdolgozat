@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -39,8 +39,10 @@ export const SignIn: React.FC = () => {
       .post("http://127.0.0.1:8080/user/login/", data)
       .then((response) => {
         const { access, refresh } = response.data;
+
         localStorage.setItem("accessToken", access);
         localStorage.setItem("refreshToken", refresh);
+
         toast.success(t("login_successful"));
         navigate("/MainPage");
         axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;

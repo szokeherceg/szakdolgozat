@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 import "./registration/registration.css";
 import { toast } from "react-toastify";
@@ -17,6 +18,14 @@ type HorseDataType = {
   desc?: string;
   image: FileList;
 };
+
+interface CustomJwtPayload {
+  user_id: number;
+  exp: number;
+  iat: number;
+  jti: string;
+  token_type: string;
+}
 
 export const AI = () => {
   const { t, i18n } = useTranslation();
@@ -58,7 +67,11 @@ export const AI = () => {
     const token =
       localStorage.getItem("accessToken") ||
       localStorage.getItem("refreshToken");
-
+    const decoded = jwtDecode<CustomJwtPayload>(
+      token || ""
+    ) as CustomJwtPayload;
+    console.log("Decoded JWT:", decoded);
+    console.log("Decoded user ID:", decoded.user_id);
     if (!token) {
       toast.error("Nincs érvényes bejelentkezés! Kérlek, jelentkezz be.");
       return;

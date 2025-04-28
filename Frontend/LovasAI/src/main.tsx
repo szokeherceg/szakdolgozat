@@ -41,6 +41,7 @@ axios.interceptors.response.use(
       } catch {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+
         navigate("/");
         return Promise.reject(error);
       }

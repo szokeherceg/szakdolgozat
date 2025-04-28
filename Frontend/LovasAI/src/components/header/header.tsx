@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { SideBar } from "../sidebar/sidebar";
@@ -23,7 +23,7 @@ export const Header = () => {
     localStorage.removeItem("refreshToken");
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
-    navigate("/");
+    navigate("/SignIn");
   };
 
   return (
