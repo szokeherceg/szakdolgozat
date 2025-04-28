@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 
 import "./registration/registration.css";
 import { toast } from "react-toastify";
@@ -18,14 +17,6 @@ type HorseDataType = {
   desc?: string;
   image: FileList;
 };
-
-interface CustomJwtPayload {
-  user_id: number;
-  exp: number;
-  iat: number;
-  jti: string;
-  token_type: string;
-}
 
 export const AI = () => {
   const { t, i18n } = useTranslation();
@@ -63,47 +54,74 @@ export const AI = () => {
     resolver: yupResolver(horseSchema),
   });
 
-  const onSubmit = (data: HorseDataType) => {
+  const onSubmit = async (data: HorseDataType) => {
     const token =
       localStorage.getItem("accessToken") ||
       localStorage.getItem("refreshToken");
-    const decoded = jwtDecode<CustomJwtPayload>(
-      token || ""
-    ) as CustomJwtPayload;
-    console.log("Decoded JWT:", decoded);
-    console.log("Decoded user ID:", decoded.user_id);
+
     if (!token) {
       toast.error("Nincs érvényes bejelentkezés! Kérlek, jelentkezz be.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("name", data.name);
-    if (data.weight) formData.append("weight", data.weight.toString());
-    if (data.age) formData.append("age", data.age.toString());
-    if (data.image && data.image.length > 0) {
-      formData.append("image", data.image[0]);
-    }
-    formData.append("desc", data.desc?.trim() || "Ez egy ló");
-    console.log("FormData:", formData);
-    console.log("Token:", token);
-    axios
-      .post("http://127.0.0.1:8080/user/horse-data/", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log("Horse data saved successfully:", response.data);
-        toast.success(t("data_saved_successfully"));
-        navigate("/HorsesList");
-      })
-      .catch((error) => {
-        console.error("Hiba a mentés során:", error);
+    const postHorseData = async () => {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      if (data.weight) formData.append("weight", data.weight.toString());
+      if (data.age) formData.append("age", data.age.toString());
+      if (data.image && data.image.length > 0) {
+        formData.append("image", data.image[0]);
+      }
+      formData.append("desc", data.desc?.trim() || "Ez egy ló");
+
+      try {
+        const response = await axios.post(
+          "http://127.0.0.1:8080/user/horse-data/",
+          formData,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        const horseId = response.data.id;
+        console.log("Horse data uploaded successfully, horseId:", horseId);
+
+        if (horseId) {
+          await createUserHorseConnection(horseId);
+        }
+      } catch (error: any) {
+        console.error("Hiba a ló adatainak feltöltésekor:", error);
         if (error.response && error.response.status === 401) {
           toast.error("Nem megfelelő hitelesítés. Kérlek, jelentkezz be újra.");
+        } else {
+          toast.error("Hiba a ló adatainak feltöltésekor.");
         }
-      });
+      }
+    };
+
+    const createUserHorseConnection = async (horseId: number) => {
+      try {
+        const payload = { horse_id: horseId };
+        console.log("Kapcsolat payload:", payload);
+
+        await axios.post("http://127.0.0.1:8080/user/user-horses/", payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("Horse-user kapcsolat létrejött");
+        toast.success("Kapcsolat sikeresen létrejött!");
+        navigate("/HorsesList");
+      } catch (error: any) {
+        console.error("Hiba a kapcsolat létrehozásakor:", error);
+        if (error.response && error.response.status === 401) {
+          toast.error("Nem megfelelő hitelesítés. Kérlek, jelentkezz be újra.");
+        } else {
+          toast.error("Hiba a kapcsolat létrehozásakor.");
+        }
+      }
+    };
+
+    await postHorseData();
   };
 
   return (

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, HorseData
+from .models import User, HorseData, UserHorse
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -37,3 +37,11 @@ class HorseDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = HorseData
         fields = ["name", "weight", "age", "image", "desc"]
+        
+class UserHorseSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    horse = HorseDataSerializer(read_only=True)
+
+    class Meta:
+        model = UserHorse
+        fields = ['user', 'horse', 'created_at']

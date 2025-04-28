@@ -46,7 +46,7 @@ export const SignUp: React.FC = () => {
     try {
       await axios.post("http://127.0.0.1:8080/user/register/", data);
       toast.success(t("registration_successful"));
-      navigate("/MainPage");
+      navigate("/SignIn");
     } catch (error: any) {
       if (error.response && error.response.data === 400) {
         toast.error(error.response.data.error);

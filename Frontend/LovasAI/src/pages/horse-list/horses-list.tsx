@@ -23,7 +23,9 @@ export const HorsesList = () => {
   useEffect(() => {
     const fetchHorses = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
+        const token =
+          localStorage.getItem("accessToken") ||
+          localStorage.getItem("refreshToken");
         if (!token) {
           console.error("No token found");
           return;
@@ -37,6 +39,7 @@ export const HorsesList = () => {
             },
           }
         );
+
         if (Array.isArray(response.data)) {
           setHorses(response.data);
         } else {
@@ -67,26 +70,30 @@ export const HorsesList = () => {
               className="card"
               onClick={() => handleHorseClick(horse)}
             >
-              <h2>{horse.name}</h2>
-              <p>
-                {t("weight")}: {horse.weight}
-              </p>
-              <p>
-                {t("age")}: {horse.age}
-              </p>
-              <p>
-                {t("description")}:{" "}
-                <span>
-                  {horse.desc.length > 100
-                    ? horse.desc.substring(0, 100) + "..."
-                    : horse.desc}
-                </span>
-              </p>
               <img
                 src={`http://127.0.0.1:8080/user${horse.image}`}
                 alt={horse.name}
                 className="card-image"
               />
+              <div className="card-content">
+                <div className="card-text">
+                  <h2>{horse.name}</h2>
+                  <p>
+                    {t("weight")}: {horse.weight}
+                  </p>
+                  <p>
+                    {t("age")}: {horse.age}
+                  </p>
+                  <p>
+                    {t("description")}:{" "}
+                    <span>
+                      {horse.desc.length > 100
+                        ? horse.desc.substring(0, 100) + "..."
+                        : horse.desc}
+                    </span>
+                  </p>
+                </div>
+              </div>
             </li>
           ))}
         </ul>
@@ -102,7 +109,7 @@ export const HorsesList = () => {
               {t("age")}: {selectedHorse.age}
             </p>
             <p>
-              {t("description")}: {selectedHorse.desc}
+              {t("description")}:{selectedHorse.desc}
             </p>
             <img
               src={`http://127.0.0.1:8080/user${selectedHorse.image}`}

@@ -34,3 +34,15 @@ class HorseData(models.Model):
     age = models.IntegerField(null=True, blank=True)
     image = models.ImageField(upload_to='horse_images/')
     desc = models.TextField(null=True, blank=True)
+    users = models.ManyToManyField(User, related_name='horses')
+
+    def __str__(self):
+        return self.name
+    
+class UserHorse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    horse = models.ForeignKey(HorseData, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.horse.name}"
