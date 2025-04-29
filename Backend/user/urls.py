@@ -11,6 +11,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', TokenObtainPairView.as_view(), name='login'),
     path('horse-data/', HorseDataView.as_view(), name='horse-data'),
+    path('horse-data/<int:horse_id>/', HorseDataView.as_view(), name='horse-data-detail'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('user-horses/', UserHorseView.as_view(), name='user_horses'),
 ]

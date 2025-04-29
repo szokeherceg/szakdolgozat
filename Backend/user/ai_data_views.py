@@ -34,3 +34,16 @@ class HorseDataView(APIView):
         except Exception as e:
             print("Unexpected error:", str(e))
             return JsonResponse({"error": "Internal Server Error", "details": str(e)}, status=500)
+
+    def delete(self, request, horse_id):
+        user = request.user
+        try:
+            user_horse = UserHorse.objects.filter(user=user, horse_id=horse_id).first()
+            if user_horse:
+                user_horse.delete()
+                return Response({"message": "Horse data deleted successfully!"}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            print("Unexpected error:", str(e))
+            return JsonResponse({"error": "Internal Server Error", "details": str(e)}, status=500)

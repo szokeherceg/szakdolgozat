@@ -40,9 +40,7 @@ export const Settings = ({ onClose }: SettingsProps) => {
       className="settings"
       hasModal={false}
     >
-      <h2 className="text-2xl font-semibold text-center text-gray-700">
-        {t("settings")}
-      </h2>
+      <h2 className="settings-header">{t("settings")}</h2>
 
       <label className="block text-sm font-medium text-gray-600">
         {t("email")}

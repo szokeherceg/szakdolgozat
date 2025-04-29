@@ -12,8 +12,8 @@ import { toast } from "react-toastify";
 
 type HorseDataType = {
   name: string;
-  weight?: number;
-  age?: number;
+  weight?: number | null;
+  age?: number | null;
   desc?: string;
   image: FileList;
 };
@@ -26,8 +26,30 @@ export const AI = () => {
 
   const horseSchema = yup.object().shape({
     name: yup.string().required(t("required_name")),
-    weight: yup.number().min(0, t("invalid_weight")).optional(),
-    age: yup.number().min(0, t("invalid_age")).optional(),
+    weight: yup
+      .number()
+      .nullable()
+      .transform((value, originalValue) =>
+        originalValue === "" ? null : value
+      )
+      .notRequired()
+      .test("is-positive", t("invalid_weight"), (value) => {
+        if (value === null || value === undefined) return true;
+        return value >= 0;
+      }),
+
+    age: yup
+      .number()
+      .nullable()
+      .transform((value, originalValue) =>
+        originalValue === "" ? null : value
+      )
+      .notRequired()
+      .test("is-positive", t("invalid_age"), (value) => {
+        if (value === null || value === undefined) return true;
+        return value >= 0;
+      }),
+
     image: yup
       .mixed<FileList>()
       .required(t("file_required"))
@@ -52,6 +74,11 @@ export const AI = () => {
     formState: { errors },
   } = useForm<HorseDataType>({
     resolver: yupResolver(horseSchema),
+    defaultValues: {
+      weight: null,
+      age: null,
+      desc: "",
+    },
   });
 
   const onSubmit = async (data: HorseDataType) => {
@@ -72,7 +99,7 @@ export const AI = () => {
       if (data.image && data.image.length > 0) {
         formData.append("image", data.image[0]);
       }
-      formData.append("desc", data.desc?.trim() || "Ez egy ló");
+      formData.append("desc", data.desc?.trim() || "");
 
       try {
         const response = await axios.post(

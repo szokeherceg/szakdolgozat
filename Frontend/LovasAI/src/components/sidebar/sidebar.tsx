@@ -60,10 +60,6 @@ export const SideBar = ({ setIsOpen }: SideBarProps) => {
 
                 onClick: () => navigate("/AddHorse"),
               },
-              {
-                label: t("AI"),
-                onClick: () => navigate("/AI"),
-              },
             ]}
           />
         </li>

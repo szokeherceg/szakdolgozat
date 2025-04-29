@@ -12,8 +12,8 @@ import { toast } from "react-toastify";
 
 type HorseDataType = {
   name: string;
-  weight?: number;
-  age?: number;
+  weight?: number | null;
+  age?: number | null;
   desc?: string;
   image: FileList;
 };
@@ -26,8 +26,30 @@ export const AddHorse = () => {
 
   const horseSchema = yup.object().shape({
     name: yup.string().required(t("required_name")),
-    weight: yup.number().min(0, t("invalid_weight")).optional(),
-    age: yup.number().min(0, t("invalid_age")).optional(),
+    weight: yup
+      .number()
+      .nullable()
+      .transform((value, originalValue) =>
+        originalValue === "" ? null : value
+      )
+      .notRequired()
+      .test("is-positive", t("invalid_weight"), (value) => {
+        if (value === null || value === undefined) return true;
+        return value >= 0;
+      }),
+
+    age: yup
+      .number()
+      .nullable()
+      .transform((value, originalValue) =>
+        originalValue === "" ? null : value
+      )
+      .notRequired()
+      .test("is-positive", t("invalid_age"), (value) => {
+        if (value === null || value === undefined) return true;
+        return value >= 0;
+      }),
+
     image: yup
       .mixed<FileList>()
       .required(t("file_required"))
@@ -52,6 +74,11 @@ export const AddHorse = () => {
     formState: { errors },
   } = useForm<HorseDataType>({
     resolver: yupResolver(horseSchema),
+    defaultValues: {
+      weight: null,
+      age: null,
+      desc: "",
+    },
   });
 
   const onSubmit = async (data: HorseDataType) => {
@@ -72,7 +99,7 @@ export const AddHorse = () => {
       if (data.image && data.image.length > 0) {
         formData.append("image", data.image[0]);
       }
-      formData.append("desc", data.desc?.trim() || "Ez egy ló");
+      formData.append("desc", data.desc?.trim() || "");
 
       try {
         const response = await axios.post(
@@ -129,41 +156,62 @@ export const AddHorse = () => {
       <Header />
       <FormSetUp onSubmit={handleSubmit(onSubmit)} hasModal className="ai-form">
         <h2>{t("enter_data")}</h2>
-        <div>
-          <div>
-            <label>{t("horse_name")}:</label>
-            <Input
-              type="text"
-              placeholder={t("horse_name")}
-              {...register("name")}
-            />
-            {errors.name && <p className="errors">{errors.name.message}</p>}
-          </div>
-          <label>{t("weight")}:</label>
+
+        <div className="input-group">
+          <label htmlFor="name">{t("horse_name")}:</label>
           <Input
+            id="name"
+            type="text"
+            placeholder={t("horse_name")}
+            {...register("name")}
+          />
+          {errors.name && <p className="errors">{errors.name.message}</p>}
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="image">{t("upload_hint")}:</label>
+          <Input
+            id="image"
+            type="file"
+            {...register("image")}
+            className="draganddrop"
+          />
+          {errors.image && <p className="errors">{errors.image.message}</p>}
+        </div>
+        <Button type="submit" className="save">
+          {t("save")}
+        </Button>
+        <div className="input-group">
+          <label htmlFor="weight">{t("weight")}:</label>
+          <Input
+            id="weight"
             type="number"
             placeholder={t("weight")}
             {...register("weight")}
           />
-          <div className="mb-4">
-            <label>{t("age")}:</label>
-            <Input type="number" placeholder={t("age")} {...register("age")} />
-          </div>
-          <label>{t("enter_description")}:</label>
+          {errors.weight && <p className="errors">{errors.weight.message}</p>}
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="age">{t("age")}:</label>
           <Input
-            type="string"
+            id="age"
+            type="number"
+            placeholder={t("age")}
+            {...register("age")}
+          />
+          {errors.age && <p className="errors">{errors.age.message}</p>}
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="desc">{t("enter_description")}:</label>
+          <Input
+            id="desc"
+            type="text"
             placeholder={t("enter_description")}
             {...register("desc")}
           />
-        </div>
-        <div className="draganddrop-container">
-          <Input
-            type="file"
-            {...register("image")}
-            className="draganddrop"
-            placeholder={t("upload_hint")}
-          />
-          {errors.image && <p className="errors">{errors.image.message}</p>}
+          {errors.desc && <p className="errors">{errors.desc.message}</p>}
         </div>
 
         <Button type="submit">{t("save")}</Button>

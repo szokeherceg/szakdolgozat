@@ -66,5 +66,6 @@
   "password_do_not_match": "Die Passwörter stimmen nicht überein.",
   "name_required": "Der Name ist erforderlich!",
   "name": "Name",
-  "addhorse": "Pferd hinzufügen"
+  "addhorse": "Pferd hinzufügen",
+  "no_data": "Keine Daten verfügbar"
 }

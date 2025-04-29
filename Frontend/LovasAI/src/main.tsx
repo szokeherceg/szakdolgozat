@@ -8,13 +8,15 @@ import i18n from "./i18n";
 import { I18nextProvider } from "react-i18next";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+
+const navigateToSignIn = () => {
+  window.location.href = "/SignIn";
+};
 
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const navigate = useNavigate();
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -23,7 +25,7 @@ axios.interceptors.response.use(
       if (!refreshToken) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        navigate("/");
+        navigateToSignIn();
         return Promise.reject(error);
       }
 
@@ -42,7 +44,7 @@ axios.interceptors.response.use(
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
 
-        navigate("/");
+        navigateToSignIn();
         return Promise.reject(error);
       }
     }

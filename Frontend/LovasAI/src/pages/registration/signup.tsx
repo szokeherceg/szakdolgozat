@@ -80,7 +80,7 @@ export const SignUp: React.FC = () => {
         {errors.password && <p className="errors">{errors.password.message}</p>}
         <Input
           type="password"
-          placeholder={t("password")}
+          placeholder={t("password2")}
           {...register("password2")}
           srcShow={Show}
           srcHide={Hide}

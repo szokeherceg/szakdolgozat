@@ -68,5 +68,6 @@
   "passwords_do_not_match": "パスワードが一致しません！",
   "name_required": "名前は必須です！",
   "name": "名前",
-  "addhorse": "馬を追加"
+  "addhorse": "馬を追加",
+  "no_data": "データがありません"
 }
