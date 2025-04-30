@@ -22,6 +22,7 @@ export const SignUp: React.FC = () => {
 
   const schema = yup.object().shape({
     email: yup.string().email(t("invalid_email")).required(t("required_field")),
+    name: yup.string().required(t("required_name")),
     password: yup
       .string()
       .min(6, t("password_too_short"))
@@ -64,12 +65,15 @@ export const SignUp: React.FC = () => {
       hasModal={false}
       className="container"
     >
-      <Image src={SZE} />
+      <div className="logo">
+        <Image src={SZE} />
+      </div>
       <div className="page-name">LovasAI</div>
       <div className="registration-type">{t("signup")}</div>
       <div className="form-group">
         <Input type="email" placeholder={t("email")} {...register("email")} />
         {errors.email && <p className="errors">{errors.email.message}</p>}
+        <Input type="text" placeholder={t("name")} {...register("name")} />
         <Input
           type="password"
           placeholder={t("password")}

@@ -34,7 +34,7 @@ form {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 70vw;
 }
 
 .ai-form input {
@@ -110,6 +110,7 @@ input {
   width: 30%;
   position: relative;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .settings-buttons button {
@@ -191,6 +192,9 @@ label {
   .settings h2 {
     margin-bottom: 30px;
   }
+  .settings-header {
+    margin-top: 20px;
+  }
 }
 
 @media (max-height: 600px) {
@@ -213,5 +217,6 @@ label {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    margin-bottom: 0;
   }
 }

@@ -58,7 +58,7 @@ export const HorsesList = () => {
     };
 
     fetchHorses();
-  }, [horses]);
+  }, []);
 
   const handleDeleteHorse = async (horse: Horse) => {
     const confirmDelete = window.confirm(
@@ -81,9 +81,7 @@ export const HorsesList = () => {
         },
       });
 
-      setHorses((prevHorses) =>
-        prevHorses.filter((h) => h.name !== horse.name)
-      );
+      setHorses((prevHorses) => prevHorses.filter((h) => h.id !== horse.id));
     } catch (error) {
       console.error("Failed to delete horse:", error);
     }

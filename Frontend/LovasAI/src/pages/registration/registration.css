@@ -28,8 +28,8 @@ body {
   position: relative;
   top: 0%;
   right: 25%;
-  width: 150%;
-  height: 650px;
+  width: 120%;
+  height: 700px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -42,8 +42,14 @@ body {
   scrollbar-width: none;
 }
 
+.logo img {
+  height: auto;
+  width: 400px !important;
+  margin-bottom: 20px;
+}
+
 .form-group input {
-  width: 350px;
+  width: 450px;
   margin-bottom: 0;
 }
 
@@ -83,16 +89,34 @@ body {
 
 @media (max-width: 480px) {
   .container {
-    top: 15%;
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+    top: 50px;
+    left: 45% !important;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     width: 100%;
+    align-items: center;
   }
 
   .form-group input {
     width: 100%;
+    max-width: 350px;
   }
 
   .form-group .input-container {
     width: 100%;
+    max-width: 350px;
     justify-self: center;
+  }
+
+  .logo img {
+    width: 100% !important;
+    height: auto;
   }
 }

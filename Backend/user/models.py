@@ -19,6 +19,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
+    name= models.CharField(max_length=30, null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -27,6 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
     
 class HorseData(models.Model):
     name = models.CharField(max_length=255)

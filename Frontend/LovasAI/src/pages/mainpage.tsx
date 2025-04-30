@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { FormSetUp } from "../components";
+import { FormSetUp, Header } from "../components";
 import "./pages.css";
 import { useEffect } from "react";
-import { Header } from "../components/header/header";
 
 export const MainPage = () => {
   const { t, i18n } = useTranslation();

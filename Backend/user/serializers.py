@@ -6,12 +6,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'date_joined', 'is_active']
+        fields = ['id', 'email','name', 'password', 'date_joined', 'is_active']
 
     def create(self, validated_data):
         user = User.objects.create_user(
             email=validated_data['email'],
-            password=validated_data['password']
+            password=validated_data['password'],
+            name=validated_data['name']
         )
         return user
 
@@ -29,6 +30,15 @@ class LoginSerializer(serializers.Serializer):
         if not user.is_active:
             raise serializers.ValidationError("User account is disabled")
         return {"user": user}
+    
+from rest_framework import serializers
+from .models import User
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'name', 'date_joined', 'is_active', 'is_staff']
+
     
 from rest_framework import serializers
 from .models import HorseData

@@ -1,6 +1,8 @@
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.urls import path
 from django.conf.urls.static import static
+
+from .user_views import UserDetailView
 from .user_horse_view import UserHorseView
 from animal_main import settings
 from .registration_views import RegisterView
@@ -12,6 +14,7 @@ urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='login'),
     path('horse-data/', HorseDataView.as_view(), name='horse-data'),
     path('horse-data/<int:horse_id>/', HorseDataView.as_view(), name='horse-data-detail'),
+    path('user_details/', UserDetailView.as_view(), name='user_detail'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('user-horses/', UserHorseView.as_view(), name='user_horses'),
 ]

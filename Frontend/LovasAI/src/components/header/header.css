@@ -23,6 +23,9 @@
   right: 2%;
   z-index: 1000;
 }
+.profile img {
+  margin-right: 10px;
+}
 
 .profile .dropdown-button .sidebar-link {
   width: 100%;

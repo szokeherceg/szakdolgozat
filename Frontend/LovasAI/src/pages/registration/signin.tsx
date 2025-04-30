@@ -64,7 +64,10 @@ export const SignIn: React.FC = () => {
       hasModal={false}
       className="container"
     >
-      <Image src={SZE} />
+      <div className="logo">
+        {" "}
+        <Image src={SZE} />
+      </div>
       <div className="page-name">LovasAI</div>
       <div className="registration-type">{t("login")}</div>
       <div className="form-group">
