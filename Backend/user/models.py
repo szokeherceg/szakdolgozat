@@ -19,17 +19,21 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
-    name= models.CharField(max_length=30, null=True, blank=True)
+    name = models.CharField(max_length=30, null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    
+    lang = models.CharField(max_length=2, default='hu')
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    
+    def __str__(self):
+        return self.email
+
 class HorseData(models.Model):
     name = models.CharField(max_length=255)
     weight = models.FloatField(null=True, blank=True)

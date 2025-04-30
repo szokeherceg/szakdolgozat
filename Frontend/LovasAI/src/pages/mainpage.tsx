@@ -1,14 +1,37 @@
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { FormSetUp, Header } from "../components";
 import "./pages.css";
-import { useEffect } from "react";
 
 export const MainPage = () => {
   const { t, i18n } = useTranslation();
+  const [userLanguage, setUserLanguage] = useState<string>("");
 
   useEffect(() => {
-    console.log("Nyelv változott:", i18n.language);
-  }, [i18n.language]);
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return;
+
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8080/user/user_details/",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        const userLang = response.data.lang;
+        console.log(userLang);
+        await i18n.changeLanguage(userLang);
+        setUserLanguage(userLang);
+      } catch (error) {
+        console.error("Felhasználói adatok lekérése sikertelen", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <>

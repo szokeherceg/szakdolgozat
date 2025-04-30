@@ -56,7 +56,9 @@ export const SignIn: React.FC = () => {
       });
   };
 
-  useEffect(() => {}, [i18n.language]);
+  useEffect(() => {
+    i18n.changeLanguage("en");
+  }, [i18n.language]);
 
   return (
     <FormSetUp

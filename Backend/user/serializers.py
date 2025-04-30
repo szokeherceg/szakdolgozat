@@ -6,13 +6,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email','name', 'password', 'date_joined', 'is_active']
+        fields = ['id', 'email', 'name', 'password', 'lang', 'date_joined', 'is_active']
 
     def create(self, validated_data):
+        lang = validated_data.get('lang', 'hu')
         user = User.objects.create_user(
             email=validated_data['email'],
             password=validated_data['password'],
-            name=validated_data['name']
+            name=validated_data['name'],
+            lang=lang
         )
         return user
 
@@ -37,7 +39,8 @@ from .models import User
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'name', 'date_joined', 'is_active', 'is_staff']
+        fields = ['id', 'email', 'name', 'password', 'lang', 'date_joined', 'is_active']
+
 
     
 from rest_framework import serializers

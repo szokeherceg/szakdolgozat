@@ -21,25 +21,24 @@ export const Header = () => {
     setShowSideBar((prev) => !prev);
   };
 
+  const fetchUser = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) return;
+
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8080/user/user_details/",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setUserData(response.data.name);
+    } catch (error) {
+      console.error("User fetch failed", error);
+    }
+  };
   useEffect(() => {
-    useMemo;
-    const fetchUser = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) return;
-
-      try {
-        const response = await axios.get(
-          "http://127.0.0.1:8080/user/user_details/",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        setUserData(response.data.name);
-      } catch (error) {
-        console.error("User fetch failed", error);
-      }
-    };
     fetchUser();
   }, []);
 
@@ -86,7 +85,10 @@ export const Header = () => {
       </div>
 
       <Modal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)}>
-        <Settings onClose={() => setIsSettingsOpen(false)} />
+        <Settings
+          onClose={() => setIsSettingsOpen(false)}
+          onUpdated={fetchUser} // ez frissíti a nevet
+        />
       </Modal>
     </>
   );

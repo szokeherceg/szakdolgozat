@@ -7,31 +7,60 @@ import Show from "./../assets/show-password.svg";
 import Hide from "./../assets/hide-password.svg";
 
 import "./pages.css";
+import axios from "axios";
 
 interface SettingsProps {
   onClose: () => void;
+  onUpdated?: () => void;
 }
 
-export const Settings = ({ onClose }: SettingsProps) => {
+export const Settings = ({ onClose, onUpdated }: SettingsProps) => {
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language);
 
   const { register, handleSubmit } = useForm({
-    defaultValues: { email: "", password: "", language: i18n.language },
+    defaultValues: {
+      email: "",
+      password: "",
+      name: "",
+      language: i18n.language,
+    },
   });
 
   const handleLanguageChange = (language: string) => {
     setLang(language);
   };
 
-  const onSubmit = (data: {
-    email?: string;
-    password?: string;
-    language: string;
+  const onSubmit = async (data: {
+    email?: string | null;
+    password?: string | null;
+    language: string | null;
+    name?: string;
   }) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    onClose();
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return;
+
+      const payload = {
+        ...(data.email && { email: data.email }),
+        ...(data.password && { password: data.password }),
+        ...(lang && { lang: lang }),
+        ...(data.name && { name: data.name }),
+      };
+
+      await axios.patch("http://127.0.0.1:8080/user/user_details/", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      i18n.changeLanguage(lang);
+
+      console.log(data);
+
+      onClose();
+      onUpdated?.();
+    } catch (error) {
+      console.error("Error while updating user details:", error);
+    }
   };
 
   return (
@@ -46,6 +75,11 @@ export const Settings = ({ onClose }: SettingsProps) => {
         {t("email")}
       </label>
       <Input type="email" {...register("email")} placeholder={t("email")} />
+
+      <label className="block text-sm font-medium text-gray-600">
+        {t("name")}
+      </label>
+      <Input type="string" {...register("name")} placeholder={t("name")} />
 
       <label className="block text-sm font-medium text-gray-600">
         {t("password")}
