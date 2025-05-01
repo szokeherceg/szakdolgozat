@@ -5,3 +5,4 @@ export * from "./horse-list/horses-list";
 export * from "./AI";
 export * from "./settings";
 export * from "./addhorse";
+export * from "./edit-horse";

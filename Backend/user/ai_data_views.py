@@ -47,3 +47,21 @@ class HorseDataView(APIView):
         except Exception as e:
             print("Unexpected error:", str(e))
             return JsonResponse({"error": "Internal Server Error", "details": str(e)}, status=500)
+        
+    def patch(self, request, horse_id):
+        user = request.user
+        try:
+            user_horse = UserHorse.objects.filter(user=user, horse_id=horse_id).first()
+            if not user_horse:
+                return Response({"error": "Horse not found or not associated with user"}, status=status.HTTP_404_NOT_FOUND)
+
+            horse = user_horse.horse
+            serializer = HorseDataSerializer(horse, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print("Unexpected error:", str(e))
+            return JsonResponse({"error": "Internal Server Error", "details": str(e)}, status=500)

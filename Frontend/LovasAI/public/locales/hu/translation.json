@@ -68,5 +68,7 @@
   "name_required": "A név megadása kötelező!",
   "name": "Név",
   "addhorse": "Ló hozzáadása",
-  "no_data": "Nincs adat"
+  "no_data": "Nincs adat",
+  "edit_data": "Adatok szerkesztése",
+  "update_failed": "Hiba a feltöltés során"
 }

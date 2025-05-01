@@ -53,9 +53,6 @@ export const Settings = ({ onClose, onUpdated }: SettingsProps) => {
       });
 
       i18n.changeLanguage(lang);
-
-      console.log(data);
-
       onClose();
       onUpdated?.();
     } catch (error) {

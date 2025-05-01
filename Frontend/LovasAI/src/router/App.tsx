@@ -7,6 +7,7 @@ import {
   MainPage,
   HorsesList,
   Settings,
+  EditHorse,
 } from "../pages";
 import { ProtectedRoute } from "./protected-route";
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/AI" element={<AI />} />
           <Route path="/Settings" element={<Settings onClose={() => {}} />} />
           <Route path="/AddHorse" element={<AddHorse />} />
+          <Route path="/EditHorse/:id" element={<EditHorse />} />
         </Route>
       </Routes>
     </>

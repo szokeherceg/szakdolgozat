@@ -67,5 +67,6 @@
   "name_required": "Der Name ist erforderlich!",
   "name": "Name",
   "addhorse": "Pferd hinzufügen",
-  "no_data": "Keine Daten verfügbar"
+  "no_data": "Keine Daten verfügbar",
+  "edit_data": "Daten bearbeiten"
 }

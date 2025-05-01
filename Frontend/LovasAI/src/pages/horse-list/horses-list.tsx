@@ -124,7 +124,7 @@ export const HorsesList = () => {
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate("/AddHorse");
+                          navigate(`/EditHorse/${horse.id}`);
                         }}
                       >
                         <Image height="50px" width="50px" src={Edit} />

@@ -68,5 +68,6 @@
   "name_required": "Name is required!",
   "name": "Name",
   "addhorse": "Add Horse",
-  "no_data": "No data available"
+  "no_data": "No data available",
+  "edit_data": "Edit data"
 }
