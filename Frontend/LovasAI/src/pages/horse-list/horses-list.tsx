@@ -6,7 +6,7 @@ import { Modal } from "../modal/modal";
 import { useNavigate } from "react-router-dom";
 
 import Trash from "./../../assets/trash.svg";
-import AI from "./../../assets/ai.png";
+import AI from "./../../assets/ai.svg";
 import Edit from "./../../assets/edit-246.png";
 
 import "./horselist.css";
