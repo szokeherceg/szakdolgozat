@@ -63,10 +63,10 @@ export const EditHorse = () => {
         );
         const horse = response.data;
 
-        setValue("name", horse.name);
-        setValue("weight", horse.weight);
-        setValue("age", horse.age);
-        setValue("desc", horse.desc);
+        setValue("name", horse.name || "");
+        setValue("weight", horse.weight !== null ? horse.weight : null);
+        setValue("age", horse.age !== null ? horse.age : null);
+        setValue("desc", horse.desc || "");
       } catch (error) {
         console.error("Failed to fetch horse data", error);
       }
@@ -89,6 +89,7 @@ export const EditHorse = () => {
       if (data.age !== undefined && data.age !== null) {
         formData.append("age", data.age.toString());
       }
+      if (data.desc) formData.append("desc", data.desc);
 
       await axios.patch(
         `http://127.0.0.1:8080/user/horse-data/${id}/`,

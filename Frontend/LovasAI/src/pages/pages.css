@@ -164,6 +164,33 @@ label {
   cursor: pointer;
 }
 
+@media (max-width: 1024px) {
+  .horse-details {
+    padding: 0 15px;
+  }
+
+  .ai-form {
+    width: 90vw;
+  }
+
+  .settings {
+    width: 90%;
+    padding: 0 10px;
+    top: 10%;
+  }
+
+  .input-group {
+    width: 100%;
+    max-width: 90%;
+  }
+
+  .settings-buttons {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
 @media (max-width: 768px) {
   .settings,
   .lang,
