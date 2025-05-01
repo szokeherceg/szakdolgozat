@@ -45,11 +45,35 @@ export const EditHorse = () => {
   const {
     register,
     handleSubmit,
-    setValue, // Add this to set form values
+    setValue,
     formState: { errors },
   } = useForm<HorseDataType>({
     resolver: yupResolver(horseSchema),
   });
+
+  useEffect(() => {
+    const fetchHorse = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const response = await axios.get(
+          `http://127.0.0.1:8080/user/horse-data/${id}/`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const horse = response.data;
+
+        setValue("name", horse.name);
+        setValue("weight", horse.weight);
+        setValue("age", horse.age);
+        setValue("desc", horse.desc);
+      } catch (error) {
+        console.error("Failed to fetch horse data", error);
+      }
+    };
+
+    fetchHorse();
+  }, [id, setValue]);
 
   const onSubmit = async (data: HorseDataType) => {
     try {
@@ -64,10 +88,6 @@ export const EditHorse = () => {
       }
       if (data.age !== undefined && data.age !== null) {
         formData.append("age", data.age.toString());
-      }
-      if (data.desc) formData.append("desc", data.desc);
-      if (data.image && data.image.length > 0) {
-        formData.append("image", data.image[0]);
       }
 
       await axios.patch(

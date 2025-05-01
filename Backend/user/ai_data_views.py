@@ -6,6 +6,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import HorseDataSerializer
 from .models import  UserHorse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import HorseData
+from .serializers import HorseDataSerializer
 
 class HorseDataView(APIView):
     parser_classes = [MultiPartParser, FormParser]
@@ -34,34 +39,33 @@ class HorseDataView(APIView):
         except Exception as e:
             print("Unexpected error:", str(e))
             return JsonResponse({"error": "Internal Server Error", "details": str(e)}, status=500)
-
-    def delete(self, request, horse_id):
-        user = request.user
-        try:
-            user_horse = UserHorse.objects.filter(user=user, horse_id=horse_id).first()
-            if user_horse:
-                user_horse.delete()
-                return Response({"message": "Horse data deleted successfully!"}, status=status.HTTP_204_NO_CONTENT)
-            else:
-                return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            print("Unexpected error:", str(e))
-            return JsonResponse({"error": "Internal Server Error", "details": str(e)}, status=500)
         
-    def patch(self, request, horse_id):
-        user = request.user
-        try:
-            user_horse = UserHorse.objects.filter(user=user, horse_id=horse_id).first()
-            if not user_horse:
-                return Response({"error": "Horse not found or not associated with user"}, status=status.HTTP_404_NOT_FOUND)
+class HorseDetailView(APIView):
+    permission_classes = [IsAuthenticated]
 
-            horse = user_horse.horse
+    def get(self, request, id):
+        try:
+            horse = HorseData.objects.get(id=id)
+            serializer = HorseDataSerializer(horse)
+            return Response(serializer.data)
+        except HorseData.DoesNotExist:
+            return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def patch(self, request, id):
+        try:
+            horse = HorseData.objects.get(id=id)
             serializer = HorseDataSerializer(horse, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            print("Unexpected error:", str(e))
-            return JsonResponse({"error": "Internal Server Error", "details": str(e)}, status=500)
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except HorseData.DoesNotExist:
+            return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, id):
+        try:
+            horse = HorseData.objects.get(id=id)
+            horse.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except HorseData.DoesNotExist:
+            return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
