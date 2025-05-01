@@ -90,6 +90,9 @@ export const EditHorse = () => {
         formData.append("age", data.age.toString());
       }
       if (data.desc) formData.append("desc", data.desc);
+      if (data.image && data.image.length > 0) {
+        formData.append("image", data.image[0]);
+      }
 
       await axios.patch(
         `http://127.0.0.1:8080/user/horse-data/${id}/`,
