@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Input, Button, FormSetUp } from "../components";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsProps) => {
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language);
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
       email: "",
       password: "",
@@ -26,6 +26,32 @@ export const Settings = ({ onClose, onUpdated }: SettingsProps) => {
       language: i18n.language,
     },
   });
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) return;
+
+        const response = await axios.get(
+          "http://127.0.0.1:8080/user/user_details/",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        const userData = response.data;
+
+        setValue("email", userData.email);
+        setValue("name", userData.name);
+        setValue("language", userData.language);
+      } catch (error) {
+        console.error("Error while fetching user details:", error);
+      }
+    };
+
+    loadUserData();
+  }, [i18n.language, setValue]);
 
   const handleLanguageChange = (language: string) => {
     setLang(language);
@@ -41,16 +67,18 @@ export const Settings = ({ onClose, onUpdated }: SettingsProps) => {
       const token = localStorage.getItem("accessToken");
       if (!token) return;
 
-      const payload = {
-        ...(data.email && { email: data.email }),
-        ...(data.password && { password: data.password }),
-        ...(lang && { lang: lang }),
-        ...(data.name && { name: data.name }),
-      };
-
-      await axios.patch("http://127.0.0.1:8080/user/user_details/", payload, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.patch(
+        "http://127.0.0.1:8080/user/user_details/",
+        {
+          ...(data.email && { email: data.email }),
+          ...(data.password && { password: data.password }),
+          ...(lang && { lang: lang }),
+          ...(data.name && { name: data.name }),
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       i18n.changeLanguage(lang);
       onClose();

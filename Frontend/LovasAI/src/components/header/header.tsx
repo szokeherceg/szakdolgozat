@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { SideBar } from "../sidebar/sidebar";
@@ -87,7 +87,7 @@ export const Header = () => {
       <Modal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)}>
         <Settings
           onClose={() => setIsSettingsOpen(false)}
-          onUpdated={fetchUser} // ez frissíti a nevet
+          onUpdated={fetchUser}
         />
       </Modal>
     </>
