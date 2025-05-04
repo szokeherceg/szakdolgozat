@@ -50,7 +50,7 @@ export const EditHorse = () => {
     const fetchHorse = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const response = await axios.get(`${apiUrl}/user/horse-data/${id}/`, {
+        const response = await axios.get(`${apiUrl}/horse-data/${id}/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const horse = response.data;
@@ -86,7 +86,7 @@ export const EditHorse = () => {
         formData.append("image", data.image[0]);
       }
 
-      await axios.patch(`${apiUrl}/user/horse-data/${id}/`, formData, {
+      await axios.patch(`${apiUrl}/horse-data/${id}/`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

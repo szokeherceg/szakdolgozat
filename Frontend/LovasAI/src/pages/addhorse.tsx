@@ -97,13 +97,9 @@ export const AddHorse = () => {
       formData.append("desc", data.desc?.trim() || "");
 
       try {
-        const response = await axios.post(
-          `${apiUrl}/user/horse-data/`,
-          formData,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.post(`${apiUrl}/horse-data/`, formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         const horseId = response.data.id;
         console.log("Horse data uploaded successfully, horseId:", horseId);
@@ -126,7 +122,7 @@ export const AddHorse = () => {
         const payload = { horse_id: horseId };
         console.log("Kapcsolat payload:", payload);
 
-        await axios.post(`${apiUrl}/user/user-horses/`, payload, {
+        await axios.post(`${apiUrl}/user-horses/`, payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

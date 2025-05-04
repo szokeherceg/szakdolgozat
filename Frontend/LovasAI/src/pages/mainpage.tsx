@@ -17,7 +17,7 @@ export const MainPage = () => {
       if (!token) return;
 
       try {
-        const response = await axios.get(`${apiUrl}/user/user_details/`, {
+        const response = await axios.get(`${apiUrl}/user_details/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

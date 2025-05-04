@@ -31,7 +31,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
         const token = localStorage.getItem("accessToken");
         if (!token) return;
 
-        const response = await axios.get(`${apiUrl}/user/user_details/`, {
+        const response = await axios.get(`${apiUrl}/user_details/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -63,7 +63,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
       if (!token) return;
 
       await axios.patch(
-        `${apiUrl}/user/user_details/`,
+        `${apiUrl}/user_details/`,
         {
           ...(data.email && { email: data.email }),
           ...(data.password && { password: data.password }),
