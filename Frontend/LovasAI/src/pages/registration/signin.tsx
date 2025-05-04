@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -14,9 +15,10 @@ import Show from "./../../assets/show-password.svg";
 import Hide from "./../../assets/hide-password.svg";
 
 import "./registration.css";
-import { useTranslation } from "react-i18next";
 
-export const SignIn: React.FC = () => {
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+export const SignIn = () => {
   const { t, i18n } = useTranslation();
 
   const schema = yup.object().shape({
@@ -36,7 +38,7 @@ export const SignIn: React.FC = () => {
 
   const onSubmit = (data: { email: string; password: string }) => {
     axios
-      .post("http://127.0.0.1:8080/user/login/", data)
+      .post(`${apiUrl}/user/login/`, data)
       .then((response) => {
         const { access, refresh } = response.data;
 

@@ -1,13 +1,8 @@
-import React from "react";
+import { ModalModel } from "../../models";
+
 import "./../pages.css";
 
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-}
-
-export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, children }: ModalModel) => {
   if (!isOpen) return null;
 
   return (

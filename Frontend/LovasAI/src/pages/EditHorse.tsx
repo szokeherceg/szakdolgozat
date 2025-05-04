@@ -8,16 +8,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { HorseDataModel } from "../models";
 
 import "./registration/registration.css";
 
-type HorseDataType = {
-  name?: string;
-  weight?: number | null;
-  age?: number | null;
-  desc?: string;
-  image?: FileList;
-};
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const EditHorse = () => {
   const { id } = useParams();
@@ -47,7 +42,7 @@ export const EditHorse = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<HorseDataType>({
+  } = useForm<HorseDataModel>({
     resolver: yupResolver(horseSchema),
   });
 
@@ -55,12 +50,9 @@ export const EditHorse = () => {
     const fetchHorse = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const response = await axios.get(
-          `http://127.0.0.1:8080/user/horse-data/${id}/`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.get(`${apiUrl}/user/horse-data/${id}/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const horse = response.data;
 
         setValue("name", horse.name || "");
@@ -75,7 +67,7 @@ export const EditHorse = () => {
     fetchHorse();
   }, [id, setValue]);
 
-  const onSubmit = async (data: HorseDataType) => {
+  const onSubmit = async (data: HorseDataModel) => {
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) return;
@@ -94,16 +86,12 @@ export const EditHorse = () => {
         formData.append("image", data.image[0]);
       }
 
-      await axios.patch(
-        `http://127.0.0.1:8080/user/horse-data/${id}/`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.patch(`${apiUrl}/user/horse-data/${id}/`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       toast.success(t("data_saved_successfully"));
       navigate("/HorsesList");

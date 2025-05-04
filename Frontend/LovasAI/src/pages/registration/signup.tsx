@@ -1,21 +1,20 @@
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
-
 import { toast } from "react-toastify";
-
-import { FormSetUp } from "../../components";
-import { Image, Input, Button } from "../../components";
+import { Button, FormSetUp, Input, Image } from "../../components";
 
 import SZE from "./../../assets/SZE.png";
 import Show from "./../../assets/show-password.svg";
 import Hide from "./../../assets/hide-password.svg";
 
 import "./registration.css";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const SignUp: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -45,7 +44,7 @@ export const SignUp: React.FC = () => {
 
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
-      await axios.post("http://127.0.0.1:8080/user/register/", data);
+      await axios.post(`${apiUrl}/user/register/`, data);
       toast.success(t("registration_successful"));
       navigate("/SignIn");
     } catch (error: any) {
