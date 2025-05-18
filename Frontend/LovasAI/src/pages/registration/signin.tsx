@@ -57,7 +57,7 @@ export const SignIn = () => {
         axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
       })
       .catch((error) => {
-        if (error.response && error.response.data === 401) {
+        if (error.response && error.response.status === 401) {
           toast.error(t("login_failed"));
         } else {
           toast.error(t("login_failed"));
