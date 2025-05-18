@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 import classnames from "classnames";
 
 import "./dropdown.css";
 
 interface DropdownProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonLabel: React.ReactNode;
-  items: { label: string; onClick: () => void; className?: string }[];
+  items: {
+    label: string | JSX.Element;
+    onClick: () => void;
+    className?: string;
+  }[];
 }
 
 export const Dropdown = ({ buttonLabel, items, className }: DropdownProps) => {

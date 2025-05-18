@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { setI18n, useTranslation } from "react-i18next";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,7 +18,12 @@ const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const SignUp: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const [lang, setLang] = useState(i18n.language);
+  const getInitialLang = () => {
+    const lng = i18n.language || navigator.language.split("-")[0];
+    return ["hu", "en", "de", "ja"].includes(lng) ? lng : "hu";
+  };
+
+  const [lang, setLang] = useState(getInitialLang());
 
   const schema = yup.object().shape({
     email: yup.string().email(t("invalid_email")).required(t("required_field")),
@@ -76,7 +81,7 @@ export const SignUp: React.FC = () => {
 
   return (
     <>
-      <div className="registration-lang">
+      <div className="language">
         <select
           {...register("lang")}
           value={lang}
@@ -102,7 +107,7 @@ export const SignUp: React.FC = () => {
         <div className="page-name">LovasAI</div>
         <div className="registration-type">{t("signup")}</div>
 
-        <div className="form-group">
+        <div className="login-input">
           <Input type="email" placeholder={t("email")} {...register("email")} />
           {errors.email && <p className="errors">{errors.email.message}</p>}
 

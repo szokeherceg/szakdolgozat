@@ -26,9 +26,9 @@ body {
   height: auto;
   display: flex;
   position: relative;
-  top: 0%;
+  top: 8%;
   right: 25%;
-  width: 120%;
+  width: 35vw;
   height: 800px;
   flex-direction: column;
   justify-content: center;
@@ -42,36 +42,58 @@ body {
   scrollbar-width: none;
 }
 
-.logo img {
-  height: auto;
-  width: 400px !important;
+.logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 20px;
 }
 
-.form-group input {
-  width: 450px;
-  margin-bottom: 0;
+.logo img {
+  width: 100% !important;
+  max-width: 550px;
+  height: auto;
 }
 
-.form-group {
+.login-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.login-input {
   display: flex;
   flex-direction: column;
 }
-.form-group label {
+.login-input label {
   margin-bottom: 5px;
   font-weight: bold;
   color: #333;
 }
-.form-group .input-container {
+
+.login-input .input-container {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  padding: 0;
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-  box-sizing: border-box;
+}
+
+.login-input input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.login-input .password-toggle {
+  position: absolute;
+  top: 40%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 
 .registration-lang {
@@ -81,6 +103,41 @@ body {
   top: 0;
   right: 0;
 }
+.language {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 100vw;
+  height: 50px;
+  font-size: large !important;
+  font-weight: bold;
+  display: flex;
+  text-align: center;
+}
+
+.language select {
+  position: absolute;
+  right: 20px;
+  width: 120px;
+  height: 50px;
+  font-size: large !important;
+  font-weight: bold;
+  display: flex;
+  text-align: center;
+  background: linear-gradient(135deg, #2c3e75, #3f5ca3);
+  color: white;
+  font-size: 16px;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  appearance: none;
+}
+
+.language option {
+  background-color: #2a529869;
+  color: white;
+  margin: 50px;
+}
 
 @media (max-width: 768px) {
   .container {
@@ -88,10 +145,42 @@ body {
     left: 50%;
   }
 
-  .form-group .input-container {
+  .login-input .input-container {
     width: 100%;
     padding-left: 20px;
     padding-right: 20px;
+  }
+  .login-input input {
+    max-width: 100%;
+  }
+  .login-input .password-toggle {
+    top: 30px;
+    right: 25px;
+  }
+  .language {
+    position: absolute !important;
+    top: 20px;
+    left: 25%;
+    width: 100vw;
+    height: 50px;
+    font-size: large !important;
+    font-weight: bold;
+    display: flex;
+    text-align: center;
+    transform: translateX(-50%);
+  }
+
+  .language select {
+    position: absolute !important;
+    top: 0 !important;
+    right: -20px;
+    width: 50vw;
+  }
+  .logo img {
+    width: 100% !important;
+    height: auto;
+    position: relative;
+    left: 0;
   }
 }
 
@@ -104,7 +193,7 @@ body {
     left: 45% !important;
   }
 
-  .form-group {
+  .login-input {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -112,12 +201,12 @@ body {
     align-items: center;
   }
 
-  .form-group input {
+  .login-input input {
     width: 100%;
     max-width: 350px;
   }
 
-  .form-group .input-container {
+  .login-input .input-container {
     width: 100%;
     max-width: 350px;
     justify-self: center;
@@ -126,5 +215,22 @@ body {
   .logo img {
     width: 100% !important;
     height: auto;
+  }
+
+  .language {
+    position: absolute;
+    width: 100%;
+    display: flex !important;
+    padding: 0 20px !important;
+
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+  }
+
+  .language select {
+    position: static !important;
+    width: 100% !important;
   }
 }

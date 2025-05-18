@@ -71,7 +71,7 @@ export const SignIn = () => {
 
   return (
     <>
-      <div className="registration-lang">
+      <div className="language">
         <select
           value={lang}
           onChange={(e) => handleLanguageChange(e.target.value)}
@@ -94,7 +94,7 @@ export const SignIn = () => {
         </div>
         <div className="page-name">LovasAI</div>
         <div className="registration-type">{t("login")}</div>
-        <div className="form-group">
+        <div className="login-input">
           <Input type="email" placeholder={t("email")} {...register("email")} />
           {errors.email && <p className="errors">{errors.email.message}</p>}
 
