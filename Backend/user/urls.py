@@ -6,7 +6,7 @@ from .user_views import UserDetailView
 from .user_horse_view import UserHorseView
 from animal_main import settings
 from .registration_views import RegisterView
-from .ai_data_views import HorseDataView, HorseDetailView
+from .horse_data_views import HorseDataView, HorseDetailView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [

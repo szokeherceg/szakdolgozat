@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Button, FormSetUp, Header, Image } from "../../components";
-import { Modal } from "../modal/modal";
+import { Modal } from "../modal/Modal";
 import { useNavigate } from "react-router-dom";
+import { DataNameModel, HorseModel } from "../../models";
 
 import Trash from "./../../assets/trash.svg";
 import AI from "./../../assets/ai.svg";
@@ -11,41 +12,31 @@ import Edit from "./../../assets/edit-246.png";
 
 import "./horselist.css";
 
-export const HorsesList = () => {
-  interface Horse {
-    id: number;
-    name: string;
-    weight: number;
-    age: number;
-    image: string;
-    desc: string;
-  }
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
-  const [horses, setHorses] = useState<Horse[]>([]);
+export const HorsesList = () => {
+  const [horses, setHorses] = useState<HorseModel[]>([]);
   const { t } = useTranslation();
   const [isHorseDetails, setHorseDetails] = useState(false);
-  const [selectedHorse, setSelectedHorse] = useState<Horse | null>(null);
+  const [selectedHorse, setSelectedHorse] = useState<HorseModel | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchHorses = async () => {
       try {
         const token =
-          localStorage.getItem("accessToken") ||
-          localStorage.getItem("refreshToken");
+          localStorage.getItem(DataNameModel.ACCESS_TOKEN) ||
+          localStorage.getItem(DataNameModel.REFRESH_TOKEN);
         if (!token) {
           console.error("No token found");
           return;
         }
 
-        const response = await axios.get(
-          "http://127.0.0.1:8080/user/horse-data/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${apiUrl}/horse-data/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (Array.isArray(response.data)) {
           setHorses(response.data);
@@ -60,22 +51,17 @@ export const HorsesList = () => {
     fetchHorses();
   }, []);
 
-  const handleDeleteHorse = async (horse: Horse) => {
-    const confirmDelete = window.confirm(
-      `${t("areyousuredelete")} ${horse.name}?`
-    );
-    if (!confirmDelete) return;
-
+  const handleDeleteHorse = async (horse: HorseModel) => {
     try {
       const token =
-        localStorage.getItem("accessToken") ||
-        localStorage.getItem("refreshToken");
+        localStorage.getItem(DataNameModel.ACCESS_TOKEN) ||
+        localStorage.getItem(DataNameModel.REFRESH_TOKEN);
       if (!token) {
         console.error("No token found");
         return;
       }
 
-      await axios.delete(`http://127.0.0.1:8080/user/horse-data/${horse.id}/`, {
+      await axios.delete(`${apiUrl}/horse-data/${horse.id}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -87,7 +73,7 @@ export const HorsesList = () => {
     }
   };
 
-  const handleHorseClick = (horse: Horse) => {
+  const handleHorseClick = (horse: HorseModel) => {
     setSelectedHorse(horse);
     setHorseDetails(true);
   };
@@ -112,7 +98,7 @@ export const HorsesList = () => {
               onClick={() => handleHorseClick(horse)}
             >
               <img
-                src={`http://127.0.0.1:8080/user${horse.image}`}
+                src={`${apiUrl}${horse.image}`}
                 alt={horse.name}
                 className="card-image"
               />
@@ -192,7 +178,7 @@ export const HorsesList = () => {
             {selectedHorse.weight !== null ? (
               <>
                 <p>
-                  {t("weight")}: {selectedHorse.weight}
+                  {t(DataNameModel.HORSE_WEIGHT)}: {selectedHorse.weight}
                 </p>
               </>
             ) : (
@@ -201,7 +187,7 @@ export const HorsesList = () => {
             {selectedHorse.age !== null ? (
               <>
                 <p>
-                  {t("age")}: {selectedHorse.age}
+                  {t(DataNameModel.HORSE_AGE)}: {selectedHorse.age}
                 </p>
               </>
             ) : (
@@ -210,7 +196,7 @@ export const HorsesList = () => {
             {selectedHorse.desc !== "" ? (
               <>
                 <p>
-                  {t("description")}:{" "}
+                  {t(DataNameModel.HORSE_DESC)}:{" "}
                   <span>
                     {selectedHorse.desc.length > 100
                       ? selectedHorse.desc.substring(0, 100) + "..."
@@ -222,7 +208,7 @@ export const HorsesList = () => {
               ""
             )}
             <img
-              src={`http://127.0.0.1:8080/user${selectedHorse.image}`}
+              src={`${apiUrl}${selectedHorse.image}`}
               alt={selectedHorse.name}
               className="modal-image"
             />

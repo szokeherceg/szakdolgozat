@@ -7,7 +7,7 @@ import X from "./../../assets/whitex.svg";
 import { Dropdown } from "../dropdown/dropdown";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { Modal } from "../../pages/modal/modal";
+import { Modal } from "../../pages/modal/Modal";
 import { Settings } from "../../pages";
 
 import "./side-bar.css";

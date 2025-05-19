@@ -6,17 +6,12 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { HorseDataTypeModel } from "../models";
 
 import "./registration/registration.css";
-import { toast } from "react-toastify";
 
-type HorseDataType = {
-  name: string;
-  weight?: number | null;
-  age?: number | null;
-  desc?: string;
-  image: FileList;
-};
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const AddHorse = () => {
   const { t, i18n } = useTranslation();
@@ -72,7 +67,7 @@ export const AddHorse = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<HorseDataType>({
+  } = useForm<HorseDataTypeModel>({
     resolver: yupResolver(horseSchema),
     defaultValues: {
       weight: null,
@@ -81,7 +76,7 @@ export const AddHorse = () => {
     },
   });
 
-  const onSubmit = async (data: HorseDataType) => {
+  const onSubmit = async (data: HorseDataTypeModel) => {
     const token =
       localStorage.getItem("accessToken") ||
       localStorage.getItem("refreshToken");
@@ -102,13 +97,9 @@ export const AddHorse = () => {
       formData.append("desc", data.desc?.trim() || "");
 
       try {
-        const response = await axios.post(
-          "http://127.0.0.1:8080/user/horse-data/",
-          formData,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.post(`${apiUrl}/horse-data/`, formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         const horseId = response.data.id;
         console.log("Horse data uploaded successfully, horseId:", horseId);
@@ -131,7 +122,7 @@ export const AddHorse = () => {
         const payload = { horse_id: horseId };
         console.log("Kapcsolat payload:", payload);
 
-        await axios.post("http://127.0.0.1:8080/user/user-horses/", payload, {
+        await axios.post(`${apiUrl}/user-horses/`, payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

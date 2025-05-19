@@ -1,20 +1,18 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Input, Button, FormSetUp } from "../components";
 import { useTranslation } from "react-i18next";
+import { SettingsModel } from "../models";
 
 import Show from "./../assets/show-password.svg";
 import Hide from "./../assets/hide-password.svg";
 
 import "./pages.css";
-import axios from "axios";
 
-interface SettingsProps {
-  onClose: () => void;
-  onUpdated?: () => void;
-}
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
-export const Settings = ({ onClose, onUpdated }: SettingsProps) => {
+export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language);
 
@@ -33,12 +31,9 @@ export const Settings = ({ onClose, onUpdated }: SettingsProps) => {
         const token = localStorage.getItem("accessToken");
         if (!token) return;
 
-        const response = await axios.get(
-          "http://127.0.0.1:8080/user/user_details/",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.get(`${apiUrl}/user_details/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         const userData = response.data;
 
@@ -68,7 +63,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsProps) => {
       if (!token) return;
 
       await axios.patch(
-        "http://127.0.0.1:8080/user/user_details/",
+        `${apiUrl}/user_details/`,
         {
           ...(data.email && { email: data.email }),
           ...(data.password && { password: data.password }),
