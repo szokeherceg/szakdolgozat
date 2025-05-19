@@ -28,7 +28,7 @@ export const SignUp = () => {
       DataNameModel.GERMAN,
       DataNameModel.JAPANESE,
     ].includes(lng as DataNameModel)
-      ? lng.split("-")[1]
+      ? lng.split("-")[0]
       : DataNameModel.HUNGARIAN;
   };
 
