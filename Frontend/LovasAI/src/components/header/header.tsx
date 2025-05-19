@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { SideBar } from "../sidebar/sidebar";
 import list from "./../../assets/list.svg";
 import { Dropdown } from "../dropdown/dropdown";
-import { Modal } from "../../pages/modal/modal";
+import { Modal } from "../../pages/modal/modlfile";
 import { Settings } from "../../pages";
 import Profilesvg from "./../../assets/profile.svg";
 import Settingssvg from "./../../assets/settings.svg";
