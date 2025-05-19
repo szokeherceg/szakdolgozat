@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Button, FormSetUp, Header, Image } from "../../components";
-import { Modal } from "../modal/modal";
+import { Modal } from "../modal/Modal";
 import { useNavigate } from "react-router-dom";
 import { DataNameModel, HorseModel } from "../../models";
 
