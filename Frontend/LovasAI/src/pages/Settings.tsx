@@ -3,7 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Input, Button, FormSetUp } from "../components";
 import { useTranslation } from "react-i18next";
-import { SettingsModel } from "../models/";
+import { SettingsModel } from "../models";
 
 import Show from "./../assets/show-password.svg";
 import Hide from "./../assets/hide-password.svg";
