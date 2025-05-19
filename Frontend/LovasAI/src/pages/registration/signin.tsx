@@ -9,7 +9,7 @@ import { DataNameModel } from "../../models";
 
 import { toast } from "react-toastify";
 
-import { FormSetUp, Image, Input, Button } from "../../components";
+import { FormSetUp, Image, Input, Button, Dropdown } from "../../components";
 
 import SZE from "./../../assets/SZE.png";
 import Show from "./../../assets/show-password.svg";
@@ -67,55 +67,71 @@ export const SignIn = () => {
 
   useEffect(() => {
     i18n.changeLanguage(lang);
-  }, [i18n.language]);
+  }, [lang, i18n]);
 
   return (
     <>
-      <div className="language">
-        <select
-          value={lang}
-          onChange={(e) => handleLanguageChange(e.target.value)}
-          className="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-        >
-          <option value="hu">{t("hungarian")}</option>
-          <option value="en">{t("english")}</option>
-          <option value="de">{t("german")}</option>
-          <option value="ja">{t("japanese")}</option>
-        </select>
-      </div>
-      <FormSetUp
-        onSubmit={handleSubmit(onSubmit)}
-        hasModal={false}
-        className="container"
-      >
-        <div className="logo">
-          {" "}
-          <Image src={SZE} />
-        </div>
-        <div className="page-name">LovasAI</div>
-        <div className="registration-type">{t("login")}</div>
-        <div className="login-input">
-          <Input type="email" placeholder={t("email")} {...register("email")} />
-          {errors.email && <p className="errors">{errors.email.message}</p>}
-
-          <Input
-            type="password"
-            placeholder={t("password")}
-            {...register("password")}
-            srcShow={Show}
-            srcHide={Hide}
+      <div className="signin-container">
+        <div className="language">
+          <Dropdown
+            buttonLabel={lang}
+            items={[
+              {
+                label: t("hungarian"),
+                onClick: () => handleLanguageChange("hu"),
+              },
+              {
+                label: t("english"),
+                onClick: () => handleLanguageChange("en"),
+              },
+              {
+                label: t("german"),
+                onClick: () => handleLanguageChange("de"),
+              },
+              {
+                label: t("japanese"),
+                onClick: () => handleLanguageChange("ja"),
+              },
+            ]}
           />
         </div>
-        <Button type="submit" className="button">
-          {t("login")}
-        </Button>
-        <div className="nav">
-          <div>{t("noprofile")}</div>
-          <div>
-            <Link to="/">{t("signup")}</Link>
+        <FormSetUp
+          onSubmit={handleSubmit(onSubmit)}
+          hasModal={false}
+          className="container"
+        >
+          <div className="logo">
+            <Image src={SZE} />
           </div>
-        </div>
-      </FormSetUp>
+          <div className="page-name">LovasAI</div>
+          <div className="registration-type">{t("login")}</div>
+          <div className="login-input">
+            <Input
+              type="email"
+              placeholder={t("email")}
+              {...register("email")}
+            />
+            {errors.email && <p className="errors">{errors.email.message}</p>}
+
+            <Input
+              type="password"
+              placeholder={t("password")}
+              {...register("password")}
+              srcShow={Show}
+              srcHide={Hide}
+            />
+          </div>
+          <Button type="submit" className="button">
+            {t("login")}
+          </Button>
+          <div className="nav">
+            <div>{t("noprofile")}</div>
+            <div>
+              <Link to="/">{t("signup")}</Link>
+            </div>
+          </div>
+        </FormSetUp>
+      </div>
     </>
   );
 };

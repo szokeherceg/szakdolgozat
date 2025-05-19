@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Button, FormSetUp, Input, Image } from "../../components";
+import { Button, Dropdown, FormSetUp, Input, Image } from "../../components";
 
 import SZE from "./../../assets/SZE.png";
 import Show from "./../../assets/show-password.svg";
@@ -18,12 +18,17 @@ const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const SignUp: React.FC = () => {
   const { t, i18n } = useTranslation();
+
   const getInitialLang = () => {
     const lng = i18n.language || navigator.language.split("-")[0];
     return ["hu", "en", "de", "ja"].includes(lng) ? lng : "hu";
   };
 
   const [lang, setLang] = useState(getInitialLang());
+
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang, i18n]);
 
   const schema = yup.object().shape({
     email: yup.string().email(t("invalid_email")).required(t("required_field")),
@@ -53,6 +58,11 @@ export const SignUp: React.FC = () => {
     },
   });
 
+  const handleLanguageChange = (language: string) => {
+    setLang(language);
+    setValue("lang", language);
+  };
+
   const onSubmit = async (data: {
     email: string;
     name: string;
@@ -73,27 +83,21 @@ export const SignUp: React.FC = () => {
     }
   };
 
-  const handleLanguageChange = (language: string) => {
-    setLang(language);
-    i18n.changeLanguage(language);
-    setValue("lang", language);
-  };
-
   return (
-    <>
+    <div className="signin-container">
       <div className="language">
-        <select
-          {...register("lang")}
-          value={lang}
-          onChange={(e) => handleLanguageChange(e.target.value)}
-          className="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-        >
-          <option value="hu">{t("hungarian")}</option>
-          <option value="en">{t("english")}</option>
-          <option value="de">{t("german")}</option>
-          <option value="ja">{t("japanese")}</option>
-        </select>
-        {errors.lang && <p className="errors">{errors.lang.message}</p>}
+        <Dropdown
+          buttonLabel={lang}
+          items={[
+            {
+              label: t("hungarian"),
+              onClick: () => handleLanguageChange("hu"),
+            },
+            { label: t("english"), onClick: () => handleLanguageChange("en") },
+            { label: t("german"), onClick: () => handleLanguageChange("de") },
+            { label: t("japanese"), onClick: () => handleLanguageChange("ja") },
+          ]}
+        />
       </div>
 
       <FormSetUp
@@ -148,6 +152,6 @@ export const SignUp: React.FC = () => {
           </div>
         </div>
       </FormSetUp>
-    </>
+    </div>
   );
 };
