@@ -78,19 +78,19 @@ export const SignIn = () => {
             items={[
               {
                 label: t("hungarian"),
-                onClick: () => handleLanguageChange("hu"),
+                onClick: () => handleLanguageChange(DataNameModel.HUNGARIAN),
               },
               {
                 label: t("english"),
-                onClick: () => handleLanguageChange("en"),
+                onClick: () => handleLanguageChange(DataNameModel.ENGLISH),
               },
               {
                 label: t("german"),
-                onClick: () => handleLanguageChange("de"),
+                onClick: () => handleLanguageChange(DataNameModel.GERMAN),
               },
               {
                 label: t("japanese"),
-                onClick: () => handleLanguageChange("ja"),
+                onClick: () => handleLanguageChange(DataNameModel.JAPANESE),
               },
             ]}
           />

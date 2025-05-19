@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { DataNameModel } from "../../models";
 import { Button, Dropdown, FormSetUp, Input, Image } from "../../components";
 
 import SZE from "./../../assets/SZE.png";
@@ -16,12 +17,19 @@ import "./registration.css";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
-export const SignUp: React.FC = () => {
+export const SignUp = () => {
   const { t, i18n } = useTranslation();
 
   const getInitialLang = () => {
     const lng = i18n.language || navigator.language.split("-")[0];
-    return ["hu", "en", "de", "ja"].includes(lng) ? lng : "hu";
+    return [
+      DataNameModel.HUNGARIAN,
+      DataNameModel.ENGLISH,
+      DataNameModel.GERMAN,
+      DataNameModel.JAPANESE,
+    ].includes(lng as DataNameModel)
+      ? lng.split("-")[1]
+      : DataNameModel.HUNGARIAN;
   };
 
   const [lang, setLang] = useState(getInitialLang());
@@ -91,11 +99,20 @@ export const SignUp: React.FC = () => {
           items={[
             {
               label: t("hungarian"),
-              onClick: () => handleLanguageChange("hu"),
+              onClick: () => handleLanguageChange(DataNameModel.HUNGARIAN),
             },
-            { label: t("english"), onClick: () => handleLanguageChange("en") },
-            { label: t("german"), onClick: () => handleLanguageChange("de") },
-            { label: t("japanese"), onClick: () => handleLanguageChange("ja") },
+            {
+              label: t("english"),
+              onClick: () => handleLanguageChange(DataNameModel.ENGLISH),
+            },
+            {
+              label: t("german"),
+              onClick: () => handleLanguageChange(DataNameModel.GERMAN),
+            },
+            {
+              label: t("japanese"),
+              onClick: () => handleLanguageChange(DataNameModel.JAPANESE),
+            },
           ]}
         />
       </div>

@@ -9,7 +9,7 @@ export enum DataNameModel {
   ENGLISH = "en",
   HUNGARIAN = "hu",
   GERMAN = "de",
-  JAPANESE = "jp",
+  JAPANESE = "ja",
   ACCESS_TOKEN = "accessToken",
   REFRESH_TOKEN = "refreshToken",
 }
