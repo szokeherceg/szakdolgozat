@@ -70,5 +70,9 @@
   "addhorse": "Ló hozzáadása",
   "no_data": "Nincs adat",
   "edit_data": "Adatok szerkesztése",
-  "update_failed": "Hiba a feltöltés során"
+  "update_failed": "Hiba a feltöltés során",
+  "search": "Keresés",
+  "minchar": "Minimum 3 karakter szükséges a kereséshez.",
+  "startdate": "Kezdő dátum",
+  "enddate": "Befejező dátum"
 }

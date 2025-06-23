@@ -5,4 +5,5 @@ export interface HorseModel {
   age: number;
   image: string;
   desc: string;
+  created_at: string;
 }

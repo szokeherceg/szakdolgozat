@@ -70,5 +70,9 @@
   "name": "名前",
   "addhorse": "馬を追加",
   "no_data": "データがありません",
-  "edit_data": "データを編集する"
+  "edit_data": "データを編集する",
+  "search": "検索",
+  "minchar": "検索には最低3文字が必要です。",
+  "startdate": "開始日",
+  "enddate": "終了日"
 }

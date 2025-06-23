@@ -69,5 +69,9 @@
   "name": "Name",
   "addhorse": "Add Horse",
   "no_data": "No data available",
-  "edit_data": "Edit data"
+  "edit_data": "Edit data",
+  "search": "Search",
+  "minchar": "Minimum 3 characters required",
+  "startdate": "Start Date",
+  "enddate": "End Date"
 }

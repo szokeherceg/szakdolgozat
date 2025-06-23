@@ -41,6 +41,8 @@ class HorseData(models.Model):
     image = models.ImageField(upload_to='horse_images/')
     desc = models.TextField(null=True, blank=True)
     users = models.ManyToManyField(User, related_name='horses')
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return self.name

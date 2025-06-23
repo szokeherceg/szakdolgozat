@@ -26,6 +26,7 @@
   right: 25%;
   width: 40vw;
   height: 900px;
+  margin-top: 0 !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;

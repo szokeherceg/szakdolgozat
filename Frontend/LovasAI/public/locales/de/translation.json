@@ -68,5 +68,9 @@
   "name": "Name",
   "addhorse": "Pferd hinzufügen",
   "no_data": "Keine Daten verfügbar",
-  "edit_data": "Daten bearbeiten"
+  "edit_data": "Daten bearbeiten",
+  "search": "Suche",
+  "minchar": "Mindestens 3 Zeichen erforderlich",
+  "startdate": "Startdatum",
+  "enddate": "Enddatum"
 }

@@ -49,7 +49,7 @@ from .models import HorseData
 class HorseDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = HorseData
-        fields = ["id","name", "weight", "age", "image", "desc"]
+        fields = ["id","name", "weight", "age", "image", "desc","created_at", "updated_at"]
         
 class UserHorseSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
