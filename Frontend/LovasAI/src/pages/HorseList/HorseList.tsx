@@ -109,12 +109,16 @@ export const HorsesList = () => {
       ? new Date(
           startDate.getFullYear(),
           startDate.getMonth(),
-          startDate.getDate()
+          startDate.getDate() + 1
         )
       : null;
 
     const endDateEndOfDay = endDate
-      ? new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate())
+      ? new Date(
+          endDate.getFullYear(),
+          endDate.getMonth(),
+          endDate.getDate() + 1
+        )
       : null;
 
     if (startYMD && createdDate < startYMD) {
