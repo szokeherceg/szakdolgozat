@@ -8,8 +8,12 @@ import { Modal } from "../../pages/modal/Modal";
 import { Settings } from "../../pages";
 import Profilesvg from "./../../assets/profile.svg";
 import Settingssvg from "./../../assets/settings.svg";
-import "./header.css";
 import axios from "axios";
+import { DataNameModel } from "../../models";
+
+import "./header.css";
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const Header = () => {
   const [showSideBar, setShowSideBar] = useState(true);
@@ -27,12 +31,9 @@ export const Header = () => {
     if (!token) return;
 
     try {
-      const response = await axios.get(
-        "http://127.0.0.1:8080/user/user_details/",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`${apiUrl}/user_details/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setUserData(response.data.name);
     } catch (error) {
@@ -44,10 +45,10 @@ export const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("refreshToken");
+    localStorage.removeItem(DataNameModel.ACCESS_TOKEN);
+    localStorage.removeItem(DataNameModel.REFRESH_TOKEN);
+    sessionStorage.removeItem(DataNameModel.ACCESS_TOKEN);
+    sessionStorage.removeItem(DataNameModel.REFRESH_TOKEN);
     navigate("/SignIn");
   };
 

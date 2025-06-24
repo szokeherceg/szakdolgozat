@@ -2,7 +2,7 @@ export enum DataNameModel {
   HORSE_NAME = "name",
   HORSE_AGE = "age",
   HORSE_WEIGHT = "weight",
-  HORSE_DESC = "description",
+  HORSE_DESC = "desc",
   HORSE_IMAGE = "image",
   USER_NAME = "name",
   USER_PASSWORD = "password",

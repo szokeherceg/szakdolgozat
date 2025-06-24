@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { HorseDataModel } from "../models";
+import { DataNameModel } from "../models";
 
 import "./registration/registration.css";
 
@@ -20,21 +21,7 @@ export const EditHorse = () => {
   const navigate = useNavigate();
 
   const horseSchema = yup.object().shape({
-    image: yup
-      .mixed<FileList>()
-      .optional()
-      .test("fileType", t("invalid_file_type"), (value) => {
-        if (!value || !(value instanceof FileList) || value.length === 0) {
-          return true;
-        }
-        return ["image/jpeg", "image/png"].includes(value[0].type);
-      })
-      .test("fileSize", t("file_too_large"), (value) => {
-        if (!value || !(value instanceof FileList) || value.length === 0) {
-          return true;
-        }
-        return value[0].size <= 5 * 1024 * 1024;
-      }),
+    image: yup.mixed<FileList>().optional(),
   });
 
   const {
@@ -49,16 +36,22 @@ export const EditHorse = () => {
   useEffect(() => {
     const fetchHorse = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
         const response = await axios.get(`${apiUrl}/horse-data/${id}/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const horse = response.data;
 
-        setValue("name", horse.name || "");
-        setValue("weight", horse.weight !== null ? horse.weight : null);
-        setValue("age", horse.age !== null ? horse.age : null);
-        setValue("desc", horse.desc || "");
+        setValue(DataNameModel.HORSE_NAME, horse.name || "");
+        setValue(
+          DataNameModel.HORSE_WEIGHT,
+          horse.weight !== null ? horse.weight : null
+        );
+        setValue(
+          DataNameModel.HORSE_AGE,
+          horse.age !== null ? horse.age : null
+        );
+        setValue(DataNameModel.HORSE_DESC, horse.desc || "");
       } catch (error) {
         console.error("Failed to fetch horse data", error);
       }
@@ -69,21 +62,21 @@ export const EditHorse = () => {
 
   const onSubmit = async (data: HorseDataModel) => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
       if (!token) return;
 
       const formData = new FormData();
 
-      if (data.name) formData.append("name", data.name);
+      if (data.name) formData.append(DataNameModel.HORSE_NAME, data.name);
       if (data.weight !== undefined && data.weight !== null) {
-        formData.append("weight", data.weight.toString());
+        formData.append(DataNameModel.HORSE_WEIGHT, data.weight.toString());
       }
       if (data.age !== undefined && data.age !== null) {
-        formData.append("age", data.age.toString());
+        formData.append(DataNameModel.HORSE_AGE, data.age.toString());
       }
-      if (data.desc) formData.append("desc", data.desc);
+      if (data.desc) formData.append(DataNameModel.HORSE_DESC, data.desc);
       if (data.image && data.image.length > 0) {
-        formData.append("image", data.image[0]);
+        formData.append(DataNameModel.HORSE_IMAGE, data.image[0]);
       }
 
       await axios.patch(`${apiUrl}/horse-data/${id}/`, formData, {

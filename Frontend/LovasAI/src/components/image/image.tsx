@@ -12,7 +12,7 @@ export const Image: React.FC<ImageProps> = ({
   src,
   height = "auto",
   width = "40vh",
-  className = "",
+  className,
   onClick,
 }) => {
   if (!src) return null;
@@ -22,7 +22,7 @@ export const Image: React.FC<ImageProps> = ({
       src={src}
       alt="image"
       className={`image-component ${className}`}
-      style={{ height, width, cursor: onClick ? "pointer" : "default" }}
+      style={{ height, width }}
       onClick={onClick}
     />
   );

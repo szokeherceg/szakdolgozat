@@ -8,10 +8,13 @@ import i18n from "./i18n";
 import { I18nextProvider } from "react-i18next";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
+import { DataNameModel } from "./models/data-name.model.ts";
 
 const navigateToSignIn = () => {
   window.location.href = "/SignIn";
 };
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
 
 axios.interceptors.response.use(
   (response) => response,
@@ -21,28 +24,27 @@ axios.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      const refreshToken = localStorage.getItem("refreshToken");
+      const refreshToken = localStorage.getItem(DataNameModel.REFRESH_TOKEN);
       if (!refreshToken) {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        localStorage.removeItem(DataNameModel.ACCESS_TOKEN);
+        localStorage.removeItem(DataNameModel.REFRESH_TOKEN);
         navigateToSignIn();
         return Promise.reject(error);
       }
 
       try {
-        const { data } = await axios.post(
-          "http://127.0.0.1:8080/user/api/token/refresh/",
-          { refresh: refreshToken }
-        );
-        localStorage.setItem("accessToken", data.access);
+        const { data } = await axios.post(`${apiUrl}/api/token/refresh/`, {
+          refresh: refreshToken,
+        });
+        localStorage.setItem(DataNameModel.ACCESS_TOKEN, data.access);
         axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${data.access}`;
         originalRequest.headers["Authorization"] = `Bearer ${data.access}`;
         return axios(originalRequest);
       } catch {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        localStorage.removeItem(DataNameModel.ACCESS_TOKEN);
+        localStorage.removeItem(DataNameModel.REFRESH_TOKEN);
 
         navigateToSignIn();
         return Promise.reject(error);

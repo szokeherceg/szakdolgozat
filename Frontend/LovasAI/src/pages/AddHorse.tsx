@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { HorseDataTypeModel } from "../models";
+import { DataNameModel, HorseDataTypeModel } from "../models";
 
 import "./registration/registration.css";
 
@@ -78,23 +78,20 @@ export const AddHorse = () => {
 
   const onSubmit = async (data: HorseDataTypeModel) => {
     const token =
-      localStorage.getItem("accessToken") ||
-      localStorage.getItem("refreshToken");
-
-    if (!token) {
-      toast.error("Nincs érvényes bejelentkezés! Kérlek, jelentkezz be.");
-      return;
-    }
+      localStorage.getItem(DataNameModel.ACCESS_TOKEN) ||
+      localStorage.getItem(DataNameModel.REFRESH_TOKEN);
 
     const postHorseData = async () => {
       const formData = new FormData();
-      formData.append("name", data.name);
-      if (data.weight) formData.append("weight", data.weight.toString());
-      if (data.age) formData.append("age", data.age.toString());
+      formData.append(DataNameModel.HORSE_NAME, data.name);
+      if (data.weight)
+        formData.append(DataNameModel.HORSE_WEIGHT, data.weight.toString());
+      if (data.age)
+        formData.append(DataNameModel.HORSE_AGE, data.age.toString());
       if (data.image && data.image.length > 0) {
-        formData.append("image", data.image[0]);
+        formData.append(DataNameModel.HORSE_IMAGE, data.image[0]);
       }
-      formData.append("desc", data.desc?.trim() || "");
+      formData.append(DataNameModel.HORSE_DESC, data.desc?.trim() || "");
 
       try {
         const response = await axios.post(`${apiUrl}/horse-data/`, formData, {
@@ -109,33 +106,20 @@ export const AddHorse = () => {
         }
       } catch (error: any) {
         console.error("Hiba a ló adatainak feltöltésekor:", error);
-        if (error.response && error.response.status === 401) {
-          toast.error("Nem megfelelő hitelesítés. Kérlek, jelentkezz be újra.");
-        } else {
-          toast.error("Hiba a ló adatainak feltöltésekor.");
-        }
       }
     };
 
     const createUserHorseConnection = async (horseId: number) => {
       try {
         const payload = { horse_id: horseId };
-        console.log("Kapcsolat payload:", payload);
 
         await axios.post(`${apiUrl}/user-horses/`, payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log("Horse-user kapcsolat létrejött");
-        toast.success("Kapcsolat sikeresen létrejött!");
         navigate("/HorsesList");
       } catch (error: any) {
         console.error("Hiba a kapcsolat létrehozásakor:", error);
-        if (error.response && error.response.status === 401) {
-          toast.error("Nem megfelelő hitelesítés. Kérlek, jelentkezz be újra.");
-        } else {
-          toast.error("Hiba a kapcsolat létrehozásakor.");
-        }
       }
     };
 

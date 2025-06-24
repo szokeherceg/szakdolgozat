@@ -36,16 +36,9 @@ export const Input: React.FC<InputProps> = ({
 
   if (isFileInput) {
     return (
-      <div
-        {...getRootProps()}
-        className={`border-2 border-dashed border-gray-300 p-4 rounded-lg text-center cursor-pointer hover:border-gray-500 transition ${className}`}
-      >
+      <div {...getRootProps()}>
         <input {...getInputProps()} />
-        {selectedFile ? (
-          <p className="text-green-600 font-semibold">{selectedFile.name}</p>
-        ) : (
-          <p className="text-gray-500">{props.placeholder}</p>
-        )}
+        {selectedFile ? <p>{selectedFile.name}</p> : <p>{props.placeholder}</p>}
       </div>
     );
   }
