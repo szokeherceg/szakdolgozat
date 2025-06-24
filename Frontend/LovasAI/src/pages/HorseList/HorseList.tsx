@@ -109,7 +109,7 @@ export const HorsesList = () => {
       ? new Date(
           startDate.getFullYear(),
           startDate.getMonth(),
-          startDate.getDate() + 1
+          startDate.getDate()
         )
       : null;
 
@@ -117,7 +117,11 @@ export const HorsesList = () => {
       ? new Date(
           endDate.getFullYear(),
           endDate.getMonth(),
-          endDate.getDate() + 1
+          endDate.getDate(),
+          23,
+          59,
+          59,
+          999
         )
       : null;
 
