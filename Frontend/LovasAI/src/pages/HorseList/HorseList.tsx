@@ -151,6 +151,7 @@ export const HorsesList = () => {
 
           <div className="search-container">
             <div className="search-input">
+              <label htmlFor="search">{t("search")}</label>
               <Input
                 type="search"
                 placeholder={t("search")}
@@ -159,6 +160,7 @@ export const HorsesList = () => {
               />
             </div>
             <div className="search-input">
+              <label htmlFor="startDate">{t("startdate")}</label>
               <DatePicker
                 selected={startDate}
                 onChange={(date) => setStartDate(date || undefined)}
@@ -166,10 +168,11 @@ export const HorsesList = () => {
                 startDate={startDate}
                 endDate={endDate}
                 dateFormat="yyyy-MM-dd"
-                placeholderText={t("startdate")}
+                placeholderText={"éééé.hh.nn."}
               />
             </div>
             <div className="search-input">
+              <label htmlFor="endDate">{t("enddate")}</label>
               <DatePicker
                 selected={endDate}
                 onChange={(date) => setEndDate(date || undefined)}
@@ -178,7 +181,7 @@ export const HorsesList = () => {
                 endDate={endDate}
                 minDate={startDate}
                 dateFormat="yyyy-MM-dd"
-                placeholderText={t("enddate")}
+                placeholderText={"éééé.hh.nn."}
               />
             </div>
           </div>

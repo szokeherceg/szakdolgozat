@@ -95,8 +95,8 @@
 }
 
 .card-buttons img {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -137,24 +137,33 @@
 
 .search-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  width: 100%;
+  gap: 35px;
+  width: 65%;
   align-items: center;
 }
 
 .search-container .search-input {
   flex-grow: 1;
   flex-basis: 0;
-  min-width: 200px;
+  min-width: 150px;
   box-sizing: border-box;
+}
+.search-container .search-input input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+.search-container .search-input label {
+  text-align: left;
+  padding-left: 0;
 }
 
 .search-container .search-input input,
 .search-container .search-input .react-datepicker-wrapper {
   width: 100% !important;
   box-sizing: border-box;
-  padding: 10px;
   font-size: 1rem;
 }
 
@@ -301,5 +310,9 @@
     justify-content: center;
     width: 100%;
     font-size: small;
+  }
+  .search-container {
+    width: 100%;
+    justify-content: center;
   }
 }
