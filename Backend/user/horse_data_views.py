@@ -1,16 +1,12 @@
 from django.http import JsonResponse
-from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
 from .serializers import HorseDataSerializer
 from .models import  UserHorse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import HorseData
-from .serializers import HorseDataSerializer
 
 class HorseDataView(APIView):
     parser_classes = [MultiPartParser, FormParser]
@@ -43,7 +39,7 @@ class HorseDataView(APIView):
 class HorseDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, id):
+    def get(self, id):
         try:
             horse = HorseData.objects.get(id=id)
             serializer = HorseDataSerializer(horse)
@@ -62,7 +58,7 @@ class HorseDetailView(APIView):
         except HorseData.DoesNotExist:
             return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    def delete(self, request, id):
+    def delete(self, id):
         try:
             horse = HorseData.objects.get(id=id)
             horse.delete()

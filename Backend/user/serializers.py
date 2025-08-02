@@ -33,18 +33,10 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("User account is disabled")
         return {"user": user}
     
-from rest_framework import serializers
-from .models import User
-
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'name', 'password', 'lang', 'date_joined', 'is_active']
-
-
-    
-from rest_framework import serializers
-from .models import HorseData
 
 class HorseDataSerializer(serializers.ModelSerializer):
     class Meta:

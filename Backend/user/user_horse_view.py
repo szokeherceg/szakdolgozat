@@ -14,14 +14,8 @@ class UserHorseView(APIView):
         user = request.user
         horse_id = request.data.get('horse_id')
 
-        if not horse_id:
-            return Response({"error": "Horse ID is required!"}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            horse = HorseData.objects.get(id=horse_id)
-        except HorseData.DoesNotExist:
-            return Response({"error": "Horse not found!"}, status=status.HTTP_404_NOT_FOUND)
-
+       
+        horse = HorseData.objects.get(id=horse_id)
         user_horse = UserHorse.objects.create(user=user, horse=horse)
 
         serializer = UserHorseSerializer(user_horse)
@@ -30,12 +24,8 @@ class UserHorseView(APIView):
     def delete(self, request, horse_id):
         user = request.user
 
-        try:
-            user_horse = UserHorse.objects.get(user=user, horse_id=horse_id)
-            user_horse.delete()
-            return Response({"message": "Horse removed from user successfully!"}, status=status.HTTP_204_NO_CONTENT)
-        except UserHorse.DoesNotExist:
-            return Response({"error": "Horse not found in user's list!"}, status=status.HTTP_404_NOT_FOUND)
+        user_horse = UserHorse.objects.get(user=user, horse_id=horse_id)
+        user_horse.delete()
         
     def get(self, request):
         user = request.user

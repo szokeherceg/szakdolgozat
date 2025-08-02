@@ -1,9 +1,10 @@
 from datetime import timedelta
 from pathlib import Path
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-b9o8err*)3nf_*6gxo9l0)q_=n=9nww$5iqys1ik0z+6w9@1)3'
+SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = True
 
@@ -87,10 +88,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # A hozzáférési token érvényességi ideje 15 perc
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # A frissítési token érvényességi ideje 1 nap
-    'ROTATE_REFRESH_TOKENS': False,  # Ne forogjanak a frissítési tokenek
-    'BLACKLIST_AFTER_ROTATION': False,  # Ne tiltsuk le az előző frissítési tokeneket
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
 }
 
 
