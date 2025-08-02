@@ -192,14 +192,12 @@
   margin-bottom: 20px;
   line-height: 1.6;
 }
-.list-header {
+
+.list-header .search-container {
   display: flex;
-  flex-direction: column;
-  justify-items: center;
-  width: 110%;
-  padding-left: 50px !important;
-  padding-right: 50px !important;
-  padding: 10px 50px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 .search-warning {
   width: 90%;
