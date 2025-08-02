@@ -84,11 +84,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
   };
 
   return (
-    <FormSetUp
-      onSubmit={handleSubmit(onSubmit)}
-      className="settings"
-      hasModal={false}
-    >
+    <FormSetUp onSubmit={handleSubmit(onSubmit)} className="settings">
       <h2 className="settings-header">{t("settings")}</h2>
 
       <label className="block text-sm font-medium text-gray-600">

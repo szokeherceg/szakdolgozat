@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { FormSetUp, Input, Button, Header } from "../components";
+
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { HorseDataModel } from "../models";
-import { DataNameModel } from "../models";
 import classNames from "classnames";
+
+import { FormSetUp, Input, Button, Header } from "../components";
+import { HorseDataModel, DataNameModel } from "../models";
 
 import "./registration/registration.css";
 

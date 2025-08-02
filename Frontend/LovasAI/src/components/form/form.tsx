@@ -5,7 +5,7 @@ import "./form.css";
 interface FormSetUpProps {
   children: ReactNode;
   onSubmit?: ReactEventHandler<HTMLElement>;
-  hasModal?: boolean;
+
   className?: string;
 }
 

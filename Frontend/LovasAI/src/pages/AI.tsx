@@ -3,19 +3,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FormSetUp, Input, Button, Header } from "../components";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { HorseDataTypeModel } from "../models";
 
 import "./registration/registration.css";
+import classNames from "classnames";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const AI = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {}, [i18n.language]);
 
@@ -144,8 +146,17 @@ export const AI = () => {
 
   return (
     <>
-      <Header />
-      <FormSetUp onSubmit={handleSubmit(onSubmit)} hasModal className="ai-form">
+      <Header
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+      <FormSetUp
+        onSubmit={handleSubmit(onSubmit)}
+        className={classNames("ai-form", {
+          "form-shifted": isSidebarOpen,
+          "form-centered": !isSidebarOpen,
+        })}
+      >
         <h2>{t("enter_data")}</h2>
 
         <div className="input-group">
