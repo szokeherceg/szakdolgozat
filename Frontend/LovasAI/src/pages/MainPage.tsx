@@ -9,7 +9,8 @@ const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const MainPage = () => {
   const { t, i18n } = useTranslation();
-  const [userLanguage, setUserLanguage] = useState<string>("");
+  const [, setUserLanguage] = useState<string>("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -22,7 +23,6 @@ export const MainPage = () => {
         });
 
         const userLang = response.data.lang;
-        console.log(userLang);
         await i18n.changeLanguage(userLang);
         setUserLanguage(userLang);
       } catch (error) {
@@ -35,8 +35,11 @@ export const MainPage = () => {
 
   return (
     <>
-      <Header />
-      <FormSetUp hasModal>
+      <Header
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+      <FormSetUp className={isSidebarOpen ? "form-shifted" : "form-centered"}>
         <div className="main-content">
           <h2>{t("what_is_this")}</h2>
           <p>{t("what_is_this_desc")}</p>

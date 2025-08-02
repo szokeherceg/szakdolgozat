@@ -1,6 +1,17 @@
 form {
   border-radius: 0.5rem;
 }
+.form-centered {
+  margin: 0 auto;
+  width: 70vw;
+  transition: margin-left 0.3s ease;
+}
+
+.form-shifted {
+  margin-left: 90px;
+  width: calc(70vw - 0px);
+  transition: margin-left 0.3s ease;
+}
 
 .horse-details {
   display: flex;
@@ -186,6 +197,10 @@ label {
     flex-direction: column;
     gap: 10px;
   }
+
+  .form-shifted {
+    width: 70% !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -219,6 +234,12 @@ label {
   .settings-header {
     margin-top: 20px;
   }
+  .form-centered {
+    width: 80vw;
+  }
+  .form-shifted {
+    width: 50% !important;
+  }
 }
 
 @media (max-height: 600px) {
@@ -242,5 +263,11 @@ label {
     flex-direction: row;
     gap: 10px;
     margin-bottom: 0;
+  }
+  .form-centered {
+    width: 80vw;
+  }
+  .form-shifted {
+    width: 50% !important;
   }
 }

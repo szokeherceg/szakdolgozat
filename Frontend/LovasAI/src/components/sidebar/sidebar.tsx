@@ -13,7 +13,8 @@ import { Settings } from "../../pages";
 import "./side-bar.css";
 
 interface SideBarProps {
-  setIsOpen: (isOpen: boolean) => void;
+  setIsOpen: (open: boolean) => void;
+  isOpen: boolean;
 }
 
 export const SideBar = ({ setIsOpen }: SideBarProps) => {

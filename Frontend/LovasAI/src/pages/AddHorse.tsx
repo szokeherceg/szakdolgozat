@@ -6,8 +6,9 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { DataNameModel, HorseDataTypeModel } from "../models";
+import classNames from "classnames";
+import { useState } from "react";
 
 import "./registration/registration.css";
 
@@ -16,6 +17,7 @@ const apiUrl = import.meta.env.VITE_BASE_URL;
 export const AddHorse = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {}, [i18n.language]);
 
@@ -128,8 +130,17 @@ export const AddHorse = () => {
 
   return (
     <>
-      <Header />
-      <FormSetUp onSubmit={handleSubmit(onSubmit)} hasModal className="ai-form">
+      <Header
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+      <FormSetUp
+        onSubmit={handleSubmit(onSubmit)}
+        className={classNames("ai-form", {
+          "form-shifted": isSidebarOpen,
+          "form-centered": !isSidebarOpen,
+        })}
+      >
         <h2>{t("enter_data")}</h2>
 
         <div className="input-group">

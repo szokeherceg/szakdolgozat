@@ -117,11 +117,7 @@ export const SignUp = () => {
         />
       </div>
 
-      <FormSetUp
-        onSubmit={handleSubmit(onSubmit)}
-        hasModal={false}
-        className="container"
-      >
+      <FormSetUp onSubmit={handleSubmit(onSubmit)} className="container">
         <div className="logo">
           <Image src={SZE} />
         </div>

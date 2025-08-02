@@ -15,15 +15,19 @@ import "./header.css";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
-export const Header = () => {
-  const [showSideBar, setShowSideBar] = useState(true);
+interface HeaderProps {
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (open: boolean) => void;
+}
+
+export const Header = ({ isSidebarOpen, setIsSidebarOpen }: HeaderProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [userData, setUserData] = useState<string>("");
 
   const toggleSideBar = () => {
-    setShowSideBar((prev) => !prev);
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   const fetchUser = async () => {
@@ -40,6 +44,7 @@ export const Header = () => {
       console.error("User fetch failed", error);
     }
   };
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -84,9 +89,9 @@ export const Header = () => {
             ]}
           />
         </div>
-        {showSideBar && (
+        {isSidebarOpen && (
           <div className="side-bar">
-            <SideBar setIsOpen={toggleSideBar} />
+            <SideBar setIsOpen={toggleSideBar} isOpen={isSidebarOpen} />
           </div>
         )}
       </div>

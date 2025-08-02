@@ -12,16 +12,11 @@ interface FormSetUpProps {
 export const FormSetUp: React.FC<FormSetUpProps> = ({
   children,
   onSubmit,
-  hasModal,
   className = "",
 }) => {
   return (
     <>
-      <form
-        onSubmit={onSubmit}
-        data-has-modal={hasModal}
-        className={classNames(className)}
-      >
+      <form onSubmit={onSubmit} className={classNames(className)}>
         {children}
       </form>
     </>

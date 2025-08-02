@@ -22,6 +22,7 @@ export const HorsesList = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const { t } = useTranslation();
   const [isHorseDetails, setHorseDetails] = useState(false);
@@ -137,8 +138,11 @@ export const HorsesList = () => {
 
   return (
     <>
-      <Header />
-      <FormSetUp hasModal>
+      <Header
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+      <FormSetUp className={isSidebarOpen ? "form-shifted" : "form-centered"}>
         <div className="list-header">
           <div className="horse-list-header">
             <h1>{t("myhorses")}</h1>
