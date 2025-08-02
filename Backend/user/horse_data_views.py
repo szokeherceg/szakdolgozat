@@ -39,7 +39,7 @@ class HorseDataView(APIView):
 class HorseDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, id):
+    def get(self, request, id):
         try:
             horse = HorseData.objects.get(id=id)
             serializer = HorseDataSerializer(horse)
@@ -58,7 +58,7 @@ class HorseDetailView(APIView):
         except HorseData.DoesNotExist:
             return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    def delete(self, id):
+    def delete(self, request, id):
         try:
             horse = HorseData.objects.get(id=id)
             horse.delete()
