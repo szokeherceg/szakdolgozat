@@ -277,6 +277,10 @@
   .list-header {
     width: 110% !important;
   }
+  .form-shifted li div .card-buttons img {
+    width: 25px !important;
+    height: 25px !important;
+  }
 }
 
 @media (max-width: 480px) {
