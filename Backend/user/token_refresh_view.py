@@ -17,17 +17,15 @@ class CustomTokenRefreshView(TokenRefreshView):
                     token = RefreshToken(old_refresh)
                     user_id = token.payload.get("user_id")
                     if not user_id:
-                        raise ValueError("Hiányzó user_id a tokenből")
+                        raise ValueError()
 
                     user = User.objects.get(id=user_id)
-                    new_refresh = str(RefreshToken.for_user(user))
-                    response.data["refresh"] = new_refresh
+                    response.data["refresh"] = str(RefreshToken.for_user(user))
 
-                except Exception as e:
-                    print("Refresh token generálás hiba:", e)
+                except Exception:
                     return Response(
-                        {"detail": "Nem sikerült új refresh tokent generálni."},
-                        status=status.HTTP_400_BAD_REQUEST
+                        {"detail": "The authentication went wrong."},
+                        status=status.HTTP_401_UNAUTHORIZED
                     )
 
         return response
