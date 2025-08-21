@@ -74,5 +74,6 @@
   "search": "Keresés",
   "minchar": "Minimum 3 karakter szükséges a kereséshez.",
   "startdate": "Kezdő dátum",
-  "enddate": "Befejező dátum"
+  "enddate": "Befejező dátum",
+  "datetimeformat": "éééé-hh-nn"
 }

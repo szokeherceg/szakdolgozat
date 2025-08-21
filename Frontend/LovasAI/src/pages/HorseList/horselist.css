@@ -170,7 +170,7 @@
 @media (max-width: 600px) {
   .search-container {
     flex-direction: column;
-    gap: 10px;
+    gap: 0;
   }
 
   .search-container .search-input {
@@ -192,12 +192,14 @@
   margin-bottom: 20px;
   line-height: 1.6;
 }
-
-.list-header .search-container {
+.list-header {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  flex-direction: column;
+  justify-items: center;
+  width: 110%;
+  padding-left: 50px !important;
+  padding-right: 50px !important;
+  padding: 10px 50px;
 }
 .search-warning {
   width: 90%;
@@ -208,12 +210,19 @@
   margin-bottom: 10px;
 }
 
+@media (max-width: 450px) {
+  .card-buttons .image-component {
+    height: 25px !important;
+    width: 25px !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .card {
     flex-direction: column;
     width: 90%;
     padding: 15px;
-    gap: 15px;
+    gap: 0;
   }
 
   .card-top {
@@ -276,10 +285,6 @@
   }
   .list-header {
     width: 110% !important;
-  }
-  .form-shifted li div .card-buttons img {
-    width: 25px !important;
-    height: 25px !important;
   }
 }
 

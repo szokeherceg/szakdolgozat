@@ -72,5 +72,6 @@
   "search": "Suche",
   "minchar": "Mindestens 3 Zeichen erforderlich",
   "startdate": "Startdatum",
-  "enddate": "Enddatum"
+  "enddate": "Enddatum",
+  "datetimeformat": "yyyy-mm-dd"
 }

@@ -74,5 +74,6 @@
   "search": "検索",
   "minchar": "検索には最低3文字が必要です。",
   "startdate": "開始日",
-  "enddate": "終了日"
+  "enddate": "終了日",
+  "datetimeformat": "yyyy-mm-dd"
 }

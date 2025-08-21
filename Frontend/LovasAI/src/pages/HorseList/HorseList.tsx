@@ -172,7 +172,7 @@ export const HorsesList = () => {
                 startDate={startDate}
                 endDate={endDate}
                 dateFormat="yyyy-MM-dd"
-                placeholderText={"éééé.hh.nn."}
+                placeholderText={t("datetimeformat")}
               />
             </div>
             <div className="search-input">
@@ -185,7 +185,7 @@ export const HorsesList = () => {
                 endDate={endDate}
                 minDate={startDate}
                 dateFormat="yyyy-MM-dd"
-                placeholderText={"éééé.hh.nn."}
+                placeholderText={t("datetimeformat")}
               />
             </div>
           </div>

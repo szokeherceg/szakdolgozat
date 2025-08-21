@@ -12,6 +12,8 @@ import { DataNameModel } from "./models/data-name.model.ts";
 
 const navigateToSignIn = () => {
   window.location.href = "/SignIn";
+  localStorage.removeItem(DataNameModel.ACCESS_TOKEN);
+  localStorage.removeItem(DataNameModel.REFRESH_TOKEN);
 };
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
@@ -21,13 +23,16 @@ axios.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    if (error.config?.url?.includes("/api/token/refresh/")) {
+      navigateToSignIn();
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       const refreshToken = localStorage.getItem(DataNameModel.REFRESH_TOKEN);
       if (!refreshToken) {
-        localStorage.removeItem(DataNameModel.ACCESS_TOKEN);
-        localStorage.removeItem(DataNameModel.REFRESH_TOKEN);
         navigateToSignIn();
         return Promise.reject(error);
       }
@@ -43,9 +48,6 @@ axios.interceptors.response.use(
         originalRequest.headers["Authorization"] = `Bearer ${data.access}`;
         return axios(originalRequest);
       } catch {
-        localStorage.removeItem(DataNameModel.ACCESS_TOKEN);
-        localStorage.removeItem(DataNameModel.REFRESH_TOKEN);
-
         navigateToSignIn();
         return Promise.reject(error);
       }
