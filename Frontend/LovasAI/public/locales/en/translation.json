@@ -62,7 +62,7 @@
   "login_successful": "Login successful",
   "login_failed": "Login failed",
   "data_saved_successfully": "Data saved successfully",
-  "description": "Description",
+  "desc": "Description",
   "password2": "Confirm Password",
   "password_do_not_match": "Passwords do not match",
   "name_required": "Name is required!",
@@ -74,5 +74,6 @@
   "minchar": "Minimum 3 characters required",
   "startdate": "Start Date",
   "enddate": "End Date",
-  "datetimeformat": "yyyy-mm-dd"
+  "datetimeformat": "yyyy-mm-dd",
+  "view_more": "View More"
 }

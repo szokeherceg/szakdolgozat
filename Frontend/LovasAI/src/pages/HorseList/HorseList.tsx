@@ -249,7 +249,7 @@ export const HorsesList = () => {
                   )}
                   {horse.desc !== "" && (
                     <p>
-                      {t("description")}:{" "}
+                      {t(DataNameModel.HORSE_DESC)}:{" "}
                       <span>
                         {horse.desc.length > 100
                           ? horse.desc.substring(0, 100) + "..."
@@ -291,6 +291,13 @@ export const HorsesList = () => {
                 </span>
               </p>
             )}
+            <Button
+              className="modal_button"
+              onClick={() => navigate(`/HorseDetail/${selectedHorse.id}`)}
+            >
+              {t("view_more")}
+            </Button>
+
             <img
               src={`${apiUrl}${selectedHorse.image}`}
               alt={selectedHorse.name}

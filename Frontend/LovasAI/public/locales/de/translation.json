@@ -61,7 +61,7 @@
   "login_successful": "Erfolgreich angemeldet",
   "login_failed": "Anmeldung fehlgeschlagen",
   "data_saved_successfully": "Daten erfolgreich gespeichert",
-  "description": "Beschreibung",
+  "desc": "Beschreibung",
   "password2": "Passwort wiederholen",
   "password_do_not_match": "Die Passwörter stimmen nicht überein.",
   "name_required": "Der Name ist erforderlich!",
@@ -73,5 +73,6 @@
   "minchar": "Mindestens 3 Zeichen erforderlich",
   "startdate": "Startdatum",
   "enddate": "Enddatum",
-  "datetimeformat": "yyyy-mm-dd"
+  "datetimeformat": "yyyy-mm-dd",
+  "view_more": "Mehr anzeigen"
 }

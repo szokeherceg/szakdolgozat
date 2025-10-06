@@ -61,7 +61,7 @@
   width: 200px;
   height: 150px;
   border-radius: 10px;
-  object-fit: cover;
+  object-fit: fill;
   background-color: #ddd;
 }
 
@@ -114,7 +114,7 @@
 .modal-image {
   width: 100%;
   max-height: 400px;
-  object-fit: contain;
+  object-fit: fill;
   border-radius: 12px;
   background-color: #f5f5f5;
 }
@@ -133,6 +133,11 @@
   overflow-y: auto;
   scrollbar-width: none;
   scroll-behavior: smooth;
+}
+
+.horse-details button {
+  height: 50px;
+  margin-bottom: 10px;
 }
 
 .search-container {
@@ -210,13 +215,6 @@
   margin-bottom: 10px;
 }
 
-@media (max-width: 450px) {
-  .card-buttons .image-component {
-    height: 25px !important;
-    width: 25px !important;
-  }
-}
-
 @media (max-width: 1024px) {
   .card {
     flex-direction: column;
@@ -243,7 +241,6 @@
   .horse-details img {
     width: 100%;
     height: auto;
-    object-fit: contain;
     aspect-ratio: 16 / 9;
   }
   .list-header {
@@ -289,6 +286,11 @@
 }
 
 @media (max-width: 480px) {
+  .card-buttons .image-component {
+    height: 25px !important;
+    width: 25px !important;
+  }
+
   .card h2 {
     font-size: 1.2rem;
   }
@@ -297,13 +299,6 @@
     font-size: 0.9rem;
   }
 
-  .horse-details h2 {
-    font-size: 1.3rem;
-  }
-
-  .horse-details p {
-    font-size: 0.9rem;
-  }
   .horse-list-header {
     flex-direction: column;
     align-items: center;
@@ -321,5 +316,21 @@
   .search-container {
     width: 100%;
     justify-content: center;
+  }
+}
+@media (max-height: 480px) {
+  .horse-details {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 80vh;
+  }
+  .horse-details p {
+    font-size: 0.9rem;
+    width: 30%;
+    margin: 5px auto;
+  }
+  .horse-details .modal-image {
+    max-width: 100vh;
+    object-fit: fill;
   }
 }

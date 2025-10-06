@@ -6,3 +6,4 @@ export * from "./AI";
 export * from "./Settings";
 export * from "./AddHorse";
 export * from "./EditHorse";
+export * from "./HorseDetail";

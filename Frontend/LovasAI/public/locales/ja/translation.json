@@ -63,7 +63,7 @@
   "registration_failed": "登録失敗",
   "login_failed": "ログイン失敗",
   "data_saved_successfully": "データが正常に保存されました",
-  "description": "説明",
+  "desc": "説明",
   "password2": "パスワードの確認",
   "passwords_do_not_match": "パスワードが一致しません！",
   "name_required": "名前は必須です！",
@@ -75,5 +75,6 @@
   "minchar": "検索には最低3文字が必要です。",
   "startdate": "開始日",
   "enddate": "終了日",
-  "datetimeformat": "yyyy-mm-dd"
+  "datetimeformat": "yyyy-mm-dd",
+  "view_more": "続きを読む"
 }

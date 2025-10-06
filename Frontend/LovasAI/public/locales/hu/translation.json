@@ -62,7 +62,7 @@
   "login_successful": "Sikeres bejelentkezés",
   "login_failed": "A bejelentkezés sikertelen",
   "data_saved_successfully": "Adatok sikeresen mentve",
-  "description": "Leírás",
+  "desc": "Leírás",
   "password2": "Jelszó megerősítése",
   "passwords_do_not_match": "A jelszavak nem egyeznek!",
   "name_required": "A név megadása kötelező!",
@@ -75,5 +75,6 @@
   "minchar": "Minimum 3 karakter szükséges a kereséshez.",
   "startdate": "Kezdő dátum",
   "enddate": "Befejező dátum",
-  "datetimeformat": "éééé-hh-nn"
+  "datetimeformat": "éééé-hh-nn",
+  "view_more": "Továbbiak megtekintése"
 }
