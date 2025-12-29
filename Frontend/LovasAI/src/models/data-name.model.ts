@@ -1,5 +1,7 @@
 export enum DataNameModel {
   HORSE_NAME = "name",
+  HORSE_GENDER = "gender",
+  HORSE_BREED = "breed",
   HORSE_AGE = "age",
   HORSE_WEIGHT = "weight",
   HORSE_DESC = "desc",

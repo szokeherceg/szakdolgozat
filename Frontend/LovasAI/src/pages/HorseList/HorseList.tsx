@@ -217,7 +217,7 @@ export const HorsesList = () => {
                           navigate(`/EditHorse/${horse.id}`);
                         }}
                       >
-                        <Image height="50px" width="50px" src={Edit} />
+                        <Image height="55px" width="55px" src={Edit} />
                       </div>
                       <div
                         onClick={(e) => {
@@ -225,7 +225,7 @@ export const HorsesList = () => {
                           handleDeleteHorse(horse);
                         }}
                       >
-                        <Image height="50px" width="50px" src={Trash} />
+                        <Image height="45px" width="45px" src={Trash} />
                       </div>
                       <div
                         onClick={(e) => {
@@ -237,26 +237,6 @@ export const HorsesList = () => {
                       </div>
                     </div>
                   </div>
-                  {horse.weight !== null && (
-                    <p>
-                      {t("weight")}: {horse.weight}
-                    </p>
-                  )}
-                  {horse.age !== null && (
-                    <p>
-                      {t("age")}: {horse.age}
-                    </p>
-                  )}
-                  {horse.desc !== "" && (
-                    <p>
-                      {t(DataNameModel.HORSE_DESC)}:{" "}
-                      <span>
-                        {horse.desc.length > 100
-                          ? horse.desc.substring(0, 100) + "..."
-                          : horse.desc}
-                      </span>
-                    </p>
-                  )}
                 </div>
               </div>
             </li>

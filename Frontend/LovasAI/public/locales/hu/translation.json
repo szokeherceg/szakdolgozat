@@ -18,6 +18,8 @@
   "horse_name": "Ló neve",
   "weight": "Súly (kg)",
   "age": "Kor (év)",
+  "gender": "Nem",
+  "breed": "Fajta",
   "height": "Marmagasság (cm)",
   "upload_image": "Kép feltöltése",
   "save": "Mentés",
@@ -76,5 +78,9 @@
   "startdate": "Kezdő dátum",
   "enddate": "Befejező dátum",
   "datetimeformat": "éééé-hh-nn",
-  "view_more": "Továbbiak megtekintése"
+  "view_more": "Továbbiak megtekintése",
+  "select_gender": "Nem kiválasztása",
+  "male": "Hím",
+  "female": "Nőstény",
+  "gelding": "Ivartalanított hím"
 }

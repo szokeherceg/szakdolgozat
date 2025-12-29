@@ -11,6 +11,7 @@ import { FormSetUp, Input, Button, Header } from "../components";
 import { DataNameModel, HorseDataTypeModel } from "../models";
 
 import "./registration/registration.css";
+import { HorseDetail } from "./HorseDetail";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -34,6 +35,8 @@ export const AddHorse = () => {
         if (value === null || value === undefined) return true;
         return value >= 0;
       }),
+    gender: yup.string().nullable().optional(),
+    breed: yup.string().nullable().optional(),
 
     age: yup
       .number()
@@ -72,6 +75,8 @@ export const AddHorse = () => {
   } = useForm<HorseDataTypeModel>({
     resolver: yupResolver(horseSchema),
     defaultValues: {
+      breed: null,
+      gender: null,
       weight: null,
       age: null,
       desc: "",
@@ -86,6 +91,10 @@ export const AddHorse = () => {
     const postHorseData = async () => {
       const formData = new FormData();
       formData.append(DataNameModel.HORSE_NAME, data.name);
+      if (data.gender)
+        formData.append(DataNameModel.HORSE_GENDER, data.gender.toString());
+      if (data.breed)
+        formData.append(DataNameModel.HORSE_BREED, data.breed.toString());
       if (data.weight)
         formData.append(DataNameModel.HORSE_WEIGHT, data.weight.toString());
       if (data.age)
@@ -168,6 +177,28 @@ export const AddHorse = () => {
           {t("save")}
         </Button>
         <div className="input-group">
+          <label htmlFor="gender">{t("gender")}:</label>
+          <select id="gender" {...register("gender")} defaultValue="">
+            <option value="" disabled hidden>
+              {t("select_gender")}
+            </option>
+            <option value="male">{t("male")}</option>
+            <option value="female">{t("female")}</option>
+            <option value="gelding">{t("gelding")}</option>
+          </select>
+          {errors.gender && <p className="errors">{errors.gender.message}</p>}
+        </div>
+        <div className="input-group">
+          <label htmlFor="breed">{t("breed")}:</label>
+          <Input
+            id="breed"
+            type="text"
+            placeholder={t("breed")}
+            {...register("breed")}
+          />
+          {errors.breed && <p className="errors">{errors.breed.message}</p>}
+        </div>
+        <div className="input-group">
           <label htmlFor="weight">{t("weight")}:</label>
           <Input
             id="weight"
@@ -188,7 +219,6 @@ export const AddHorse = () => {
           />
           {errors.age && <p className="errors">{errors.age.message}</p>}
         </div>
-
         <div className="input-group">
           <label htmlFor="desc">{t("enter_description")}:</label>
           <Input

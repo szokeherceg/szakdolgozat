@@ -18,6 +18,8 @@
   "horse_name": "Pferdename",
   "weight": "Gewicht (kg)",
   "age": "Alter (Jahre)",
+  "gender": "Geschlecht",
+  "breed": "Rasse",
   "height": "Widerristhöhe (cm)",
   "upload_image": "Bild hochladen",
   "save": "Speichern",
@@ -74,5 +76,9 @@
   "startdate": "Startdatum",
   "enddate": "Enddatum",
   "datetimeformat": "yyyy-mm-dd",
-  "view_more": "Mehr anzeigen"
+  "view_more": "Mehr anzeigen",
+  "select_gender": "Geschlecht",
+  "male": "Männlich",
+  "female": "Weiblich",
+  "gelding": "Wallach"
 }

@@ -18,6 +18,8 @@
   "horse_name": "馬の名前",
   "weight": "体重 (kg)",
   "age": "年齢 (歳)",
+  "gender": "性別",
+  "breed": "品種",
   "height": "肩高 (cm)",
   "upload_image": "画像をアップロード",
   "save": "保存",
@@ -76,5 +78,9 @@
   "startdate": "開始日",
   "enddate": "終了日",
   "datetimeformat": "yyyy-mm-dd",
-  "view_more": "続きを読む"
+  "view_more": "続きを読む",
+  "select_gender": "性別を選択",
+  "male": "オス",
+  "female": "メス",
+  "gelding": "去勢馬"
 }

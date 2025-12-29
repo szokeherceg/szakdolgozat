@@ -1,6 +1,44 @@
 form {
   border-radius: 0.5rem;
 }
+
+.input-group select {
+  width: 100% !important;
+  height: 60px !important;
+  border-radius: 5px !important;
+  border: 1px solid #ccc !important;
+}
+
+.input-group select option {
+  width: 50% !important;
+  padding: 10px !important;
+  border: 1px solid #ccc !important;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.loading-image {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+  margin-top: 50px;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .form-centered {
   margin: 0 auto;
   width: 70vw;
@@ -61,11 +99,11 @@ form {
   padding: 10px;
 }
 .lang select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-bottom: 20px;
+  width: 100% !important;
+  height: 60px !important;
+  border-radius: 5px !important;
+  border: 1px solid #ccc !important;
+  margin-bottom: 20px !important;
 }
 
 .lang select option {
@@ -127,6 +165,40 @@ input {
   margin: 0;
   width: auto;
   height: auto;
+}
+
+.modal-image {
+  width: 50% !important;
+  height: auto !important;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.horse-info {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  text-align: left;
+}
+
+.horse-info p {
+  flex: 1;
+  margin: 10px 20px;
+}
+.horse-info .modal-image {
+  width: 400px !important;
+  height: auto !important;
+  margin-left: 20px;
+}
+
+.horse-name {
+  margin: 10px 20px;
+  font-size: 3rem;
+  font-weight: 700;
 }
 
 .modal-overlay {
@@ -213,6 +285,18 @@ label {
     flex-direction: column;
     align-items: center;
   }
+  .horse-detail-header {
+    display: flex;
+    flex-direction: column;
+  }
+  .horse-detail-header .modal-image {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .horse-name {
+    font-size: 3rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -252,6 +336,16 @@ label {
   .form-shifted {
     width: 50% !important;
   }
+  .horse-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .horse-info .modal-image {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0;
+  }
 }
 
 @media (max-height: 600px) {
@@ -281,5 +375,15 @@ label {
   }
   .form-shifted {
     width: 50% !important;
+  }
+
+  .horse-info {
+    flex-direction: column;
+    align-items: center;
+  }
+  .horse-info .modal-image {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0;
   }
 }
