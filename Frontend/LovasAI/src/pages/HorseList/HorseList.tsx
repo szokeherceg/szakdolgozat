@@ -250,39 +250,42 @@ export const HorsesList = () => {
       {selectedHorse && (
         <Modal isOpen={isHorseDetails} onClose={() => setHorseDetails(false)}>
           <div className="horse-details">
-            <h2>{selectedHorse.name}</h2>
-            {selectedHorse.weight !== null && (
-              <p>
-                {t(DataNameModel.HORSE_WEIGHT)}: {selectedHorse.weight}
-              </p>
-            )}
-            {selectedHorse.age !== null && (
-              <p>
-                {t(DataNameModel.HORSE_AGE)}: {selectedHorse.age}
-              </p>
-            )}
-            {selectedHorse.desc !== "" && (
-              <p>
-                {t(DataNameModel.HORSE_DESC)}:{" "}
-                <span>
-                  {selectedHorse.desc.length > 100
-                    ? selectedHorse.desc.substring(0, 100) + "..."
-                    : selectedHorse.desc}
-                </span>
-              </p>
-            )}
-            <Button
-              className="modal_button"
-              onClick={() => navigate(`/HorseDetail/${selectedHorse.id}`)}
-            >
-              {t("view_more")}
-            </Button>
-
-            <img
-              src={`${apiUrl}${selectedHorse.image}`}
-              alt={selectedHorse.name}
-              className="modal-image"
-            />
+            <div className="horse-info-container">
+              <div className="horse-info2">
+                <section className="info2-details">
+                  <h2>{selectedHorse.name}</h2>
+                  {selectedHorse.weight !== null && (
+                    <p>
+                      {t(DataNameModel.HORSE_WEIGHT)}: {selectedHorse.weight}
+                    </p>
+                  )}
+                  {selectedHorse.age !== null && (
+                    <p>
+                      {t(DataNameModel.HORSE_AGE)}: {selectedHorse.age}
+                    </p>
+                  )}
+                  {selectedHorse.desc !== "" && (
+                    <p>
+                      {t(DataNameModel.HORSE_DESC)}:{" "}
+                      <span className="description">{selectedHorse.desc}</span>
+                    </p>
+                  )}
+                </section>
+                <section>
+                  <img
+                    src={`${apiUrl}${selectedHorse.image}`}
+                    alt={selectedHorse.name}
+                    className="modal-image"
+                  />
+                </section>
+              </div>
+              <Button
+                className="modal_button"
+                onClick={() => navigate(`/HorseDetail/${selectedHorse.id}`)}
+              >
+                {t("view_more")}
+              </Button>
+            </div>
           </div>
         </Modal>
       )}
