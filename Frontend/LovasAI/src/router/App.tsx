@@ -23,7 +23,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/MainPage" element={<MainPage />} />
           <Route path="/HorsesList" element={<HorsesList />} />
-          <Route path="/AI" element={<AI />} />
+          <Route path="/AI/:id" element={<AI />} />
           <Route path="/Settings" element={<Settings onClose={() => {}} />} />
           <Route path="/AddHorse" element={<AddHorse />} />
           <Route path="/EditHorse/:id" element={<EditHorse />} />

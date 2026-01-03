@@ -41,6 +41,7 @@ class HorseData(models.Model):
     breed = models.CharField(max_length=100, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
     image = models.ImageField(upload_to='horse_images/')
+    video = models.FileField(upload_to='horse_videos/', null=True, blank=True)
     desc = models.TextField(null=True, blank=True)
     users = models.ManyToManyField(User, related_name='horses')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)

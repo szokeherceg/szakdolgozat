@@ -6,4 +6,5 @@ export type HorseDataTypeModel = {
   age?: number | null;
   desc?: string;
   image: FileList;
+  video?: FileList;
 };

@@ -123,7 +123,7 @@ export const EditHorse = () => {
         </div>
 
         <div className="input-group">
-          <label htmlFor="image">{t("upload_hint")}:</label>
+          <label htmlFor="image">{t("upload_hint_photo")}:</label>
           <Input
             id="image"
             type="file"
@@ -132,9 +132,6 @@ export const EditHorse = () => {
           />
           {errors.image && <p className="errors">{errors.image.message}</p>}
         </div>
-        <Button type="submit" className="save">
-          {t("save")}
-        </Button>
 
         <div className="input-group">
           <label htmlFor="weight">{t("weight")}:</label>

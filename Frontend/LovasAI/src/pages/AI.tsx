@@ -1,147 +1,112 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { FormSetUp, Input, Button, Header } from "../components";
-import { useTranslation } from "react-i18next";
+
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { HorseDataTypeModel } from "../models";
+import { toast } from "react-toastify";
+import classNames from "classnames";
+
+import { FormSetUp, Input, Button, Header } from "../components";
+import { HorseDataModel, DataNameModel } from "../models";
 
 import "./registration/registration.css";
-import classNames from "classnames";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const AI = () => {
-  const { t, i18n } = useTranslation();
+  const { id } = useParams();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-  useEffect(() => {}, [i18n.language]);
+  const [currentHorse, setCurrentHorse] = useState<any>(null);
 
   const horseSchema = yup.object().shape({
-    name: yup.string().required(t("required_name")),
-    weight: yup
-      .number()
-      .nullable()
-      .transform((value, originalValue) =>
-        originalValue === "" ? null : value
-      )
-      .notRequired()
-      .test("is-positive", t("invalid_weight"), (value) => {
-        if (value === null || value === undefined) return true;
-        return value >= 0;
-      }),
-
-    age: yup
-      .number()
-      .nullable()
-      .transform((value, originalValue) =>
-        originalValue === "" ? null : value
-      )
-      .notRequired()
-      .test("is-positive", t("invalid_age"), (value) => {
-        if (value === null || value === undefined) return true;
-        return value >= 0;
-      }),
-
-    image: yup
-      .mixed<FileList>()
-      .required(t("file_required"))
-      .test("fileType", t("invalid_file_type"), (value) => {
-        if (!value || !(value instanceof FileList) || value.length === 0) {
-          return false;
-        }
-        return ["image/jpeg", "image/png"].includes(value[0].type);
-      })
-      .test("fileSize", t("file_too_large"), (value) => {
-        if (!value || !(value instanceof FileList) || value.length === 0) {
-          return false;
-        }
-        return value[0].size <= 5 * 1024 * 1024;
-      }),
+    name: yup.string().optional(),
+    weight: yup.number().nullable().optional(),
+    age: yup.number().nullable().optional(),
     desc: yup.string().optional(),
+    image: yup.mixed<FileList>().optional(),
+    video: yup.mixed<FileList>().optional(),
+    breed: yup.string().nullable().optional(),
+    gender: yup.string().nullable().optional(),
   });
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<HorseDataTypeModel>({
+  } = useForm<HorseDataModel>({
     resolver: yupResolver(horseSchema),
-    defaultValues: {
-      weight: null,
-      age: null,
-      desc: "",
-    },
   });
 
-  const onSubmit = async (data: HorseDataTypeModel) => {
-    const token =
-      localStorage.getItem("accessToken") ||
-      localStorage.getItem("refreshToken");
+  useEffect(() => {
+    const fetchHorse = async () => {
+      try {
+        const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
+        const response = await axios.get(`${apiUrl}/horse-data/${id}/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const horse = response.data;
 
-    if (!token) {
-      toast.error("Nincs érvényes bejelentkezés! Kérlek, jelentkezz be.");
-      return;
-    }
+        setCurrentHorse(horse);
 
-    const postHorseData = async () => {
+        setValue(DataNameModel.HORSE_NAME as any, horse.name || "");
+        setValue(DataNameModel.HORSE_WEIGHT as any, horse.weight);
+        setValue(DataNameModel.HORSE_AGE as any, horse.age);
+        setValue(DataNameModel.HORSE_DESC as any, horse.desc || "");
+        setValue(DataNameModel.HORSE_BREED as any, horse.breed || "");
+        setValue(DataNameModel.HORSE_GENDER as any, horse.gender || "");
+      } catch (error) {
+        console.error("Failed to fetch horse data", error);
+        toast.error(t("failed_to_load_data"));
+      }
+    };
+    fetchHorse();
+  }, [id, setValue, t]);
+
+  const onSubmit = async (data: HorseDataModel) => {
+    try {
+      const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
+      if (!token) return;
+
       const formData = new FormData();
-      formData.append("name", data.name);
-      if (data.weight) formData.append("weight", data.weight.toString());
-      if (data.age) formData.append("age", data.age.toString());
+
+      if (data.name) formData.append(DataNameModel.HORSE_NAME, data.name);
+      if (data.weight !== undefined && data.weight !== null) {
+        formData.append(DataNameModel.HORSE_WEIGHT, data.weight.toString());
+      }
+      if (data.age !== undefined && data.age !== null) {
+        formData.append(DataNameModel.HORSE_AGE, data.age.toString());
+      }
+      if (data.desc) formData.append(DataNameModel.HORSE_DESC, data.desc);
+      if (data.breed) formData.append(DataNameModel.HORSE_BREED, data.breed);
+      if (data.gender) formData.append(DataNameModel.HORSE_GENDER, data.gender);
+
       if (data.image && data.image.length > 0) {
-        formData.append("image", data.image[0]);
+        formData.append(DataNameModel.HORSE_IMAGE, data.image[0]);
       }
-      formData.append("desc", data.desc?.trim() || "");
 
-      try {
-        const response = await axios.post(`${apiUrl}/horse-data/`, formData, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const horseId = response.data.id;
-        console.log("Horse data uploaded successfully, horseId:", horseId);
-
-        if (horseId) {
-          await createUserHorseConnection(horseId);
-        }
-      } catch (error: any) {
-        console.error("Hiba a ló adatainak feltöltésekor:", error);
-        if (error.response && error.response.status === 401) {
-          toast.error("Nem megfelelő hitelesítés. Kérlek, jelentkezz be újra.");
-        } else {
-          toast.error("Hiba a ló adatainak feltöltésekor.");
-        }
+      if (data.video && data.video.length > 0) {
+        formData.append(DataNameModel.HORSE_VIDEO, data.video[0]);
       }
-    };
 
-    const createUserHorseConnection = async (horseId: number) => {
-      try {
-        const payload = { horse_id: horseId };
-        console.log("Kapcsolat payload:", payload);
+      await axios.patch(`${apiUrl}/horse-data/${id}/`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-        await axios.post(`${apiUrl}/user-horses/`, payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        console.log("Horse-user kapcsolat létrejött");
-        toast.success("Kapcsolat sikeresen létrejött!");
-        navigate("/HorsesList");
-      } catch (error: any) {
-        console.error("Hiba a kapcsolat létrehozásakor:", error);
-        if (error.response && error.response.status === 401) {
-          toast.error("Nem megfelelő hitelesítés. Kérlek, jelentkezz be újra.");
-        } else {
-          toast.error("Hiba a kapcsolat létrehozásakor.");
-        }
-      }
-    };
-
-    await postHorseData();
+      toast.success(t("data_saved_successfully"));
+      navigate("/HorsesList");
+    } catch (error) {
+      console.error("Error while updating horse data:", error);
+      toast.error(t("update_failed"));
+    }
   };
 
   return (
@@ -157,66 +122,78 @@ export const AI = () => {
           "form-centered": !isSidebarOpen,
         })}
       >
-        <h2>{t("enter_data")}</h2>
+        <h1>
+          <strong>{t("ai_analysis")}</strong>
+        </h1>
+
+        {currentHorse && (
+          <div className="horse-info-ai">
+            <section className="image-preview-section">
+              {currentHorse.image && (
+                <img
+                  src={`${apiUrl}${currentHorse.image}`}
+                  alt={currentHorse.name}
+                  className="modal-image"
+                />
+              )}
+            </section>
+            <section className="details-section">
+              <p>
+                {t("horse_name")}: {currentHorse.name}
+              </p>
+              <p>
+                {t("gender")}: {t(currentHorse.gender)}
+              </p>
+              <p>
+                {t("breed")}: {currentHorse.breed}
+              </p>
+              <p>
+                {t("age")}: {currentHorse.age}
+              </p>
+              <p>
+                {t("weight")}: {currentHorse.weight} kg
+              </p>
+              <p>
+                {t("desc")}: {currentHorse.desc}
+              </p>
+            </section>
+          </div>
+        )}
+
+        <p>
+          <strong>{t("ai_analysis_hint")}</strong>
+        </p>
 
         <div className="input-group">
-          <label htmlFor="name">{t("horse_name")}:</label>
-          <Input
-            id="name"
-            type="text"
-            placeholder={t("horse_name")}
-            {...register("name")}
-          />
-          {errors.name && <p className="errors">{errors.name.message}</p>}
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="image">{t("upload_hint")}:</label>
+          <label htmlFor="image">{t("upload_hint_photo")}:</label>
           <Input
             id="image"
             type="file"
+            accept="image/*"
             {...register("image")}
             className="draganddrop"
           />
           {errors.image && <p className="errors">{errors.image.message}</p>}
         </div>
-        <Button type="submit" className="save">
-          {t("save")}
-        </Button>
-        <div className="input-group">
-          <label htmlFor="weight">{t("weight")}:</label>
-          <Input
-            id="weight"
-            type="number"
-            placeholder={t("weight")}
-            {...register("weight")}
-          />
-          {errors.weight && <p className="errors">{errors.weight.message}</p>}
-        </div>
 
         <div className="input-group">
-          <label htmlFor="age">{t("age")}:</label>
+          <label htmlFor="video">{t("upload_hint_video")}:</label>
           <Input
-            id="age"
-            type="number"
-            placeholder={t("age")}
-            {...register("age")}
+            id="video"
+            type="file"
+            accept="video/*"
+            {...register("video")}
+            className="draganddrop"
           />
-          {errors.age && <p className="errors">{errors.age.message}</p>}
+          {errors.video && <p className="errors">{errors.video.message}</p>}
         </div>
 
-        <div className="input-group">
-          <label htmlFor="desc">{t("enter_description")}:</label>
-          <Input
-            id="desc"
-            type="text"
-            placeholder={t("enter_description")}
-            {...register("desc")}
-          />
-          {errors.desc && <p className="errors">{errors.desc.message}</p>}
+        <div className="settings-buttons">
+          <Button type="button" onClick={() => navigate("/HorsesList")}>
+            {t("back")}
+          </Button>
+          <Button type="submit">{t("save")}</Button>
         </div>
-
-        <Button type="submit">{t("save")}</Button>
       </FormSetUp>
     </>
   );

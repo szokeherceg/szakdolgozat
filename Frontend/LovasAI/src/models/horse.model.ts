@@ -6,4 +6,8 @@ export interface HorseModel {
   image: string;
   desc: string;
   created_at: string;
+  updated_at: string;
+  breed?: string | null;
+  gender?: string | null;
+  video?: string | null;
 }

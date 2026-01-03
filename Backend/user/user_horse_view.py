@@ -13,8 +13,6 @@ class UserHorseView(APIView):
     def post(self, request):
         user = request.user
         horse_id = request.data.get('horse_id')
-
-       
         horse = HorseData.objects.get(id=horse_id)
         user_horse = UserHorse.objects.create(user=user, horse=horse)
 
@@ -23,7 +21,6 @@ class UserHorseView(APIView):
 
     def delete(self, request, horse_id):
         user = request.user
-
         user_horse = UserHorse.objects.get(user=user, horse_id=horse_id)
         user_horse.delete()
         

@@ -4,4 +4,7 @@ export type HorseDataModel = {
   age?: number | null;
   desc?: string;
   image?: FileList;
+  video?: FileList;
+  breed?: string | null;
+  gender?: string | null;
 };

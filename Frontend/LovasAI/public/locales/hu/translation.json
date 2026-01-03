@@ -24,7 +24,8 @@
   "upload_image": "Kép feltöltése",
   "save": "Mentés",
   "enter_data": "Adatok megadása",
-  "upload_hint": "Húzd ide a képet vagy kattints a feltöltéshez",
+  "upload_hint_photo": "Húzd ide a képet vagy kattints a feltöltéshez",
+  "upload_hint_video": "Húzd ide a videót vagy kattints a feltöltéshez",
   "login": "Bejelentkezés",
   "noprofile": "Még nincs profilja?",
   "signup": "Regisztráció",
@@ -82,5 +83,7 @@
   "select_gender": "Nem kiválasztása",
   "male": "Hím",
   "female": "Nőstény",
-  "gelding": "Ivartalanított hím"
+  "gelding": "Ivartalanított hím",
+  "ai_analysis": "Mesterséges intelligencia alapú elemzés",
+  "ai_analysis_hint": "Az alábbi pontokban képet lehet feltölteni a ló marmagasságának becsléséhez és videót a ló egészségi állapotának elemzéséhez."
 }

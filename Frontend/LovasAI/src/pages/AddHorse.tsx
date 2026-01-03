@@ -11,7 +11,6 @@ import { FormSetUp, Input, Button, Header } from "../components";
 import { DataNameModel, HorseDataTypeModel } from "../models";
 
 import "./registration/registration.css";
-import { HorseDetail } from "./HorseDetail";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
@@ -164,7 +163,7 @@ export const AddHorse = () => {
         </div>
 
         <div className="input-group">
-          <label htmlFor="image">{t("upload_hint")}:</label>
+          <label htmlFor="image">{t("upload_hint_photo")}:</label>
           <Input
             id="image"
             type="file"
@@ -173,9 +172,7 @@ export const AddHorse = () => {
           />
           {errors.image && <p className="errors">{errors.image.message}</p>}
         </div>
-        <Button type="submit" className="save">
-          {t("save")}
-        </Button>
+
         <div className="input-group">
           <label htmlFor="gender">{t("gender")}:</label>
           <select id="gender" {...register("gender")} defaultValue="">

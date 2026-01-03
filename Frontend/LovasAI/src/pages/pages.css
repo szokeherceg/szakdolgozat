@@ -215,6 +215,25 @@ input {
   margin-bottom: 20px;
   text-align: left;
 }
+.horse-info-ai {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 90%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.horse-info-ai p {
+  flex: 1;
+  margin: 10px 20px;
+}
+
+.horse-info-ai .modal-image {
+  width: 300px !important;
+  height: auto !important;
+  margin-left: 20px;
+}
 
 .horse-info p {
   flex: 1;
@@ -277,6 +296,7 @@ label {
 .description {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

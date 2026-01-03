@@ -24,7 +24,8 @@
   "upload_image": "Upload Image",
   "save": "Save",
   "enter_data": "Enter Data",
-  "upload_hint": "Drag image here or click to upload",
+  "upload_hint_photo": "Drag image here or click to upload",
+  "upload_hint_video": "Drag video here or click to upload",
   "login": "Log In",
   "noprofile": "Don't have a profile yet?",
   "signup": "Sign Up",
@@ -81,5 +82,7 @@
   "select_gender": "Gender",
   "male": "Male",
   "female": "Female",
-  "gelding": "Gelding"
+  "gelding": "Gelding",
+  "ai_analysis": "AI-based Analysis",
+  "ai_analysis_hint": "In the sections below, you can upload an image to estimate the horse's height and a video to analyze the horse's health condition."
 }
