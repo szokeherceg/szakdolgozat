@@ -84,5 +84,4 @@
   "female": "Female",
   "gelding": "Gelding",
   "ai_analysis": "AI-based Analysis",
-  "ai_analysis_hint": "In the sections below, you can upload an image to estimate the horse's height and a video to analyze the horse's health condition."
-}
+  "ai_analysis_hint": "Analysis of body measurements based on the pre-validated image. Video upload is also required for health analysis (optional)."}

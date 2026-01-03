@@ -83,5 +83,5 @@
   "female": "Weiblich",
   "gelding": "Wallach",
   "ai_analysis": "KI-basierte Analyse",
-  "ai_analysis_hint": "In den untenstehenden Abschnitten können Sie ein Bild hochladen, um die Höhe des Pferdes zu schätzen, und ein Video, um den Gesundheitszustand des Pferdes zu analysieren."
+  "ai_analysis_hint": "Analyse der Körpermaße basierend auf dem vorvalidierten Bild. Für die Gesundheitsanalyse ist auch das Hochladen eines Videos erforderlich (optional)."
 }

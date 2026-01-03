@@ -85,5 +85,5 @@
   "female": "Nőstény",
   "gelding": "Ivartalanított hím",
   "ai_analysis": "Mesterséges intelligencia alapú elemzés",
-  "ai_analysis_hint": "Az alábbi pontokban képet lehet feltölteni a ló marmagasságának becsléséhez és videót a ló egészségi állapotának elemzéséhez."
+  "ai_analysis_hint": "Testméretek elemzése az elővalidált kép alapján. Egészségügyi elemzéshez videó feltöltése is szükséges (opcionális)."
 }

@@ -138,24 +138,41 @@ export const AI = () => {
               )}
             </section>
             <section className="details-section">
-              <p>
-                {t("horse_name")}: {currentHorse.name}
-              </p>
-              <p>
-                {t("gender")}: {t(currentHorse.gender)}
-              </p>
-              <p>
-                {t("breed")}: {currentHorse.breed}
-              </p>
-              <p>
-                {t("age")}: {currentHorse.age}
-              </p>
-              <p>
-                {t("weight")}: {currentHorse.weight} kg
-              </p>
-              <p>
-                {t("desc")}: {currentHorse.desc}
-              </p>
+              {currentHorse.name && (
+                <p>
+                  {t("horse_name")}: {currentHorse.name}
+                </p>
+              )}
+
+              {currentHorse.gender && (
+                <p>
+                  {t("gender")}: {t(currentHorse.gender)}
+                </p>
+              )}
+
+              {currentHorse.breed && (
+                <p>
+                  {t("breed")}: {currentHorse.breed}
+                </p>
+              )}
+
+              {currentHorse.age && (
+                <p>
+                  {t("age")}: {currentHorse.age}
+                </p>
+              )}
+
+              {currentHorse.weight && (
+                <p>
+                  {t("weight")}: {currentHorse.weight} kg
+                </p>
+              )}
+
+              {currentHorse.desc && (
+                <p>
+                  {t("desc")}: {currentHorse.desc}
+                </p>
+              )}
             </section>
           </div>
         )}
@@ -163,19 +180,6 @@ export const AI = () => {
         <p>
           <strong>{t("ai_analysis_hint")}</strong>
         </p>
-
-        <div className="input-group">
-          <label htmlFor="image">{t("upload_hint_photo")}:</label>
-          <Input
-            id="image"
-            type="file"
-            accept="image/*"
-            {...register("image")}
-            className="draganddrop"
-          />
-          {errors.image && <p className="errors">{errors.image.message}</p>}
-        </div>
-
         <div className="input-group">
           <label htmlFor="video">{t("upload_hint_video")}:</label>
           <Input
