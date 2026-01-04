@@ -344,4 +344,7 @@
     max-width: 100vh;
     object-fit: fill;
   }
+  .horse-details .horse-info-container .horse-info2 {
+    flex-direction: row;
+  }
 }
