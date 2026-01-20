@@ -5,6 +5,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
+PASSWORD = config('PASSWORD')
 
 DEBUG = True
 
@@ -72,9 +73,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'animal_db',
         'USER': 'postgres',
-        'PASSWORD': 'password',
+        'PASSWORD': PASSWORD,
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
