@@ -209,3 +209,8 @@ package-lock.json
 .env
 *.log
 *.pt
+Backend/ai_model/load_data_to_the_model.py
+Backend/ai_model/.gradio/certificate.pem
+Backend/ai_model/configs/animal_2d_keypoint/topdown_heatmap/ap10k/td-hm_hrnet-w32_8xb64-210e_ap10k-256x256.py
+.gitignore
+Backend/ai_model/checkpoints/hrnet_w32_ap10k_256x256-18aac840_20211029.pth
