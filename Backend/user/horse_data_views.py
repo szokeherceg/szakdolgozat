@@ -58,7 +58,7 @@ class HorseDetailView(APIView):
         except HorseData.DoesNotExist:
             return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    def delete(self, request, id):
+    def delete(self, id):
         try:
             horse = HorseData.objects.get(id=id)
             horse.delete()

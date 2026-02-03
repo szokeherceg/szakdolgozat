@@ -74,7 +74,7 @@ DATABASES = {
         'NAME': 'animal_db',
         'USER': 'postgres',
         'PASSWORD': PASSWORD,
-        'HOST': 'localhost',
+        'HOST': '172.26.96.1',
         'PORT': '5433',
     }
 }
