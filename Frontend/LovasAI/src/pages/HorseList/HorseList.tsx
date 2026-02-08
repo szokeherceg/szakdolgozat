@@ -207,7 +207,6 @@ export const HorsesList = () => {
                 className="card-image"
               />
               <div className="card-content">
-                <div className="card-text">
                   <div className="card-top">
                     <h2>{horse.name}</h2>
                     <div className="card-buttons">
@@ -238,7 +237,7 @@ export const HorsesList = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+             
             </li>
           ))}
           {filteredHorses.length === 0 && (

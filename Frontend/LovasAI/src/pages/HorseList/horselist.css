@@ -95,6 +95,7 @@
 
 .card-content {
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   flex: 1;
@@ -187,6 +188,23 @@
   .card {
     width: 90%;
   }
+
+  .card{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center!important;
+  }
+
+
+.card-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start!important;
+}
+
+.card-top h2 {
+  margin: 0;
+}
 }
 
 @media (max-width: 768px) {
