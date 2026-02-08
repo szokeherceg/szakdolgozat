@@ -236,7 +236,6 @@ input {
 }
 
 .horse-info p {
-  flex: 1;
   margin: 10px 20px;
 }
 .horse-info .modal-image {
@@ -326,7 +325,8 @@ label {
   }
 
   .form-shifted {
-    width: 70% !important;
+    width: 65% !important;
+    margin-left: 120px;
   }
   .form-shifted .search-container {
     display: flex;
@@ -340,6 +340,20 @@ label {
     flex-direction: column;
     align-items: center;
   }
+
+  .form-shifted .list-header .search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .form-shifted .list-header .search-container .search-input {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  
   .horse-detail-header {
     display: flex;
     flex-direction: column;
@@ -404,7 +418,8 @@ label {
     width: 80vw;
   }
   .form-shifted {
-    width: 50% !important;
+    width: 55% !important;
+      margin-left: 85px;
   }
   .horse-info {
     flex-direction: column;
@@ -440,4 +455,28 @@ label {
     flex-direction: column;
     gap: 10px;
   }
+
+  .card .card-top {
+    flex-direction: column;
+    align-items: center;
+    justify-content: left!important;
+  }
+
+  .card .card-top h2{
+    width: 100%;
+    text-align: left!important;
+  }
+
+  .card .card-buttons img{
+    width: 50px!important;
+    height: 50px!important;
+  }
+}
+
+@media (max-width:450px) {
+  .card .card-buttons img{
+    width: 30px!important;
+    height: 30px!important;
+  }
+
 }

@@ -8,8 +8,59 @@
   padding: 0;
 }
 
-.button-container button {
+.horse-details {
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.horse-details .horse-info {
+  display: block !important; 
+  width: 100%;
+}
+
+.horse-details .horse-info .info-details {
+  display: block !important;
+}
+
+.horse-details .horse-info .info-details h2 {
+  margin: 0 0 10px 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.horse-details .horse-info .info-details p {
+  margin: 8px 0;
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+.description-text {
+  margin-top: 15px;
+  line-height: 1.6;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.horse-details .horse-info .modal-image {
+  float: right;
+  width: 40% !important; 
+  max-width: 350px;
+  height: auto !important;
+  margin-left: 20px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.horse-details button {
   height: 50px;
+  min-width: 150px;
+  cursor: pointer;
 }
 
 .card {
@@ -25,30 +76,7 @@
   gap: 20px;
   align-items: center;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.list-header {
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  width: 100% !important;
-  padding-left: 50px !important;
-  padding-right: 50px !important;
-}
-
-.horse-list-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  height: 100px;
-  padding-bottom: 20px;
-}
-.horse-list-header .new-horse {
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
+  cursor: pointer;
 }
 
 .card:hover {
@@ -61,7 +89,7 @@
   width: 200px;
   height: 150px;
   border-radius: 10px;
-  object-fit: fill;
+  object-fit: cover;
   background-color: #ddd;
 }
 
@@ -70,7 +98,6 @@
   flex-direction: column;
   justify-content: center;
   flex: 1;
-  height: 100%;
 }
 
 .card-top {
@@ -90,7 +117,6 @@
 .card-buttons img {
   width: 30px;
   height: 30px;
-  cursor: pointer;
   transition: transform 0.3s ease;
 }
 
@@ -98,48 +124,20 @@
   transform: scale(1.1);
 }
 
-.card h2,
-.card p {
-  margin: 0;
-  text-align: left;
-}
-
-.modal-image {
-  margin-top: 20px;
-  height: 300px;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-}
-.horse-details {
+.list-header {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  max-height: 95vh !important;
-  width: 90%;
-  max-width: 800px;
-  background-color: #ffffff;
-  border-radius: 15px;
-  padding: 30px 20px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  margin: 30px auto;
-  overflow-y: auto;
-  scrollbar-width: none;
-  scroll-behavior: smooth;
+  width: 100% !important;
+  padding: 0 50px 20px 50px;
 }
 
-.horse-details .modal-image {
+.horse-list-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
   width: 100%;
-  max-height: 400px;
-  object-fit: fill;
-  border-radius: 12px;
   margin-bottom: 20px;
-  display: block;
-}
-
-.horse-details button {
-  height: 50px;
-  margin-bottom: 10px;
 }
 
 .search-container {
@@ -173,178 +171,61 @@
   box-sizing: border-box;
   font-size: 1rem;
 }
-
-@media (max-width: 600px) {
-  .search-container {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .search-container .search-input {
-    min-width: 100%;
-  }
-
-  .modal-image {
-    height: auto;
-  }
-}
-
-.horse-details h2 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.horse-details p {
-  font-size: 1.1rem;
-  color: #666;
-  text-align: center;
-  margin-bottom: 20px;
-  line-height: 1.6;
-}
-.list-header {
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  width: 110%;
-  padding-left: 50px !important;
-  padding-right: 50px !important;
-  padding: 10px 50px;
-}
 .search-warning {
-  width: 90%;
   color: red;
-  font-size: 1.1rem;
-  text-align: left !important;
-  margin-top: -10px;
+  font-size: 0.9rem;
   margin-bottom: 10px;
 }
 
+
 @media (max-width: 1024px) {
-  .card {
-    flex-direction: column;
-    width: 90%;
-    padding: 15px;
-    gap: 0;
-  }
-
-  .card-top {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .card-content {
-    width: 100%;
-  }
-
   .horse-details {
+    width: 100%!important;
+    padding: 20px;
+  }
+  
+  .card {
     width: 90%;
-    padding: 25px;
-  }
-
-  .card-image,
-  .horse-details img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-  }
-  .list-header {
-    width: 110% !important;
   }
 }
 
 @media (max-width: 768px) {
+  .horse-details .horse-info .modal-image {
+    float: none;
+    width: 100% !important;
+    margin-left: 0;
+    margin-bottom: 20px;
+  }
+
   .card {
     flex-direction: column;
-    width: 90%;
-    padding: 15px;
-    gap: 15px;
+    align-items: flex-start;
   }
 
-  .card-content {
+  .card-image {
     width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
   }
 
-  .card h2 {
-    font-size: 1.5rem;
+  .search-container {
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .card p {
-    font-size: 1rem;
-  }
-
-  .horse-details {
-    width: 90%;
-    padding: 20px;
-  }
-
-  .horse-details h2 {
-    font-size: 1.5rem;
-  }
-
-  .horse-details p {
-    font-size: 1rem;
-  }
   .list-header {
-    width: 110% !important;
+    padding: 0 20px 20px 20px;
   }
 }
 
 @media (max-width: 480px) {
-  .card {
-    width: 100%;
-    padding: 10px;
-    gap: 10px;
-  }
-  .card-buttons .image-component {
-    height: 25px !important;
-    width: 25px !important;
-  }
-
-  .card h2 {
-    font-size: 1.2rem;
-  }
-
-  .card p {
-    font-size: 0.9rem;
-  }
-
-  .horse-list-header {
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .list-header {
-    width: 120% !important;
-  }
-  .search-warning {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    font-size: small;
-  }
-  .search-container {
-    width: 100%;
-    justify-content: center;
-  }
+.form-shifted{
+  width: 50%!important;
+  margin-right: 50px;
+  padding: 0 10px;
 }
-@media (max-height: 480px) {
-  .horse-details {
-    display: flex;
-    flex-wrap: wrap;
-    max-height: 80vh;
-  }
-  .horse-details p {
-    font-size: 0.9rem;
-    width: 30%;
-    margin: 5px auto;
-  }
-  .horse-details .modal-image {
-    max-width: 100vh;
-    object-fit: fill;
-  }
-  .horse-details .horse-info-container .horse-info2 {
-    flex-direction: row;
-  }
+.horse-details{
+  margin: 0;
+  align-items: center!important;
+}
 }

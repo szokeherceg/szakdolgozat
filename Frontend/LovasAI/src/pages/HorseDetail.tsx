@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button, FormSetUp, Header } from "../components";
 import axios from "axios";
@@ -37,11 +36,9 @@ export const HorseDetail = () => {
 
   if (!horse) {
     return (
-      <>
-        <div className="loader-container">
-          <img src={Load} alt="Loading..." className="loading-image" />
-        </div>
-      </>
+      <div className="loader-container">
+        <img src={Load} alt="Loading..." className="loading-image" />
+      </div>
     );
   }
 
@@ -52,36 +49,55 @@ export const HorseDetail = () => {
         setIsSidebarOpen={setIsSidebarOpen}
       />
       <FormSetUp className={isSidebarOpen ? "form-shifted" : "form-centered"}>
-        <div className="horse-info">
-          <section>
-            {horse.image && (
-              <img
-                src={`${apiUrl}${horse.image}`}
-                alt={horse.name}
-                className="modal-image"
-              />
-            )}
-          </section>
-          <section>
-            <h2 className="horse-name">{horse.name}</h2>
-            <p>
-              {t(DataNameModel.HORSE_GENDER)}: {t(horse.gender)}
-            </p>
-            <p>
-              {t(DataNameModel.HORSE_BREED)}: {horse.breed}
-            </p>
-            <p>
-              {t(DataNameModel.HORSE_AGE)}: {horse.age}
-            </p>
-            <p>
-              {t(DataNameModel.HORSE_WEIGHT)}: {horse.weight}
-            </p>
-            <p>
-              {t(DataNameModel.HORSE_DESC)}: {horse.desc}
-            </p>
-          </section>
+        <div className="horse-details" >
+          <div className="horse-info">
+            <img
+              src={`${apiUrl}${horse.image}`}
+              alt={horse.name}
+              className="modal-image"
+            />
+
+            <section className="info-details">
+              <h2 className="horse-name">{horse.name}</h2>
+              
+              {horse.gender && (
+                <p>
+                  <strong>{t(DataNameModel.HORSE_GENDER)}:</strong> {horse.gender}
+                </p>
+              )}
+              
+              {horse.breed && (
+                <p>
+                  <strong>{t(DataNameModel.HORSE_BREED)}:</strong> {horse.breed}
+                </p>
+              )}
+
+              {horse.age !== null && (
+                <p>
+                  <strong>{t(DataNameModel.HORSE_AGE)}:</strong> {horse.age}
+                </p>
+              )}
+
+              {horse.weight !== null && (
+                <p>
+                  <strong>{t(DataNameModel.HORSE_WEIGHT)} (kg):</strong> {horse.weight}
+                </p>
+              )}
+
+              {horse.desc && (
+                <p className="description-text">
+                  <strong>{t(DataNameModel.HORSE_DESC)}:</strong> {horse.desc}
+                </p>
+              )}
+            </section>
+          </div>
+
+          <div style={{ clear: "both", display: "flex", justifyContent: "center", marginTop: "20px" }}>
+            <Button onClick={handleBack}>
+              {t("back")}
+            </Button>
+          </div>
         </div>
-        <Button onClick={handleBack}>{t("back")}</Button>
       </FormSetUp>
     </>
   );

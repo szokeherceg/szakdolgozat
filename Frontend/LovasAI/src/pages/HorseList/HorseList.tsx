@@ -247,48 +247,54 @@ export const HorsesList = () => {
         </ul>
       </FormSetUp>
 
-      {selectedHorse && (
-        <Modal isOpen={isHorseDetails} onClose={() => setHorseDetails(false)}>
-          <div className="horse-details">
-            <div className="horse-info-container">
-              <div className="horse-info2">
-                <section className="info2-details">
-                  <h2>{selectedHorse.name}</h2>
-                  {selectedHorse.weight !== null && (
-                    <p>
-                      {t(DataNameModel.HORSE_WEIGHT)}: {selectedHorse.weight}
-                    </p>
-                  )}
-                  {selectedHorse.age !== null && (
-                    <p>
-                      {t(DataNameModel.HORSE_AGE)}: {selectedHorse.age}
-                    </p>
-                  )}
-                  {selectedHorse.desc !== "" && (
-                    <p>
-                      {t(DataNameModel.HORSE_DESC)}:{" "}
-                      <span className="description">{selectedHorse.desc}</span>
-                    </p>
-                  )}
-                </section>
-                <section>
-                  <img
-                    src={`${apiUrl}${selectedHorse.image}`}
-                    alt={selectedHorse.name}
-                    className="modal-image"
-                  />
-                </section>
-              </div>
-              <Button
-                className="modal_button"
-                onClick={() => navigate(`/HorseDetail/${selectedHorse.id}`)}
-              >
-                {t("view_more")}
-              </Button>
-            </div>
-          </div>
-        </Modal>
-      )}
+{selectedHorse && (
+  <Modal isOpen={isHorseDetails} onClose={() => setHorseDetails(false)}>
+    <div className="horse-details" style={{ backgroundColor: "#f9f9f9", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
+      <div className="horse-info">
+        
+        <img
+          src={`${apiUrl}${selectedHorse.image}`}
+          alt={selectedHorse.name}
+          className="modal-image"
+        />
+
+        <section className="info-details">
+          <h2 className="horse-name">{selectedHorse.name}</h2>
+          
+          {selectedHorse.weight !== null && (
+            <p>
+              <strong>{t(DataNameModel.HORSE_WEIGHT)}:</strong> {selectedHorse.weight} kg
+            </p>
+          )}
+          
+          {selectedHorse.age !== null && (
+            <p>
+              <strong>{t(DataNameModel.HORSE_AGE)}:</strong> {selectedHorse.age}
+            </p>
+          )}
+
+          {selectedHorse.desc !== "" && (
+            <p className="description-text">
+              <strong>{t(DataNameModel.HORSE_DESC)}:</strong>{" "}
+              {selectedHorse.desc.length > 100
+                          ? selectedHorse.desc.substring(0, 100) + "..."
+                          : selectedHorse.desc}
+            </p>
+          )}
+        </section>
+      </div>
+
+      <div style={{ clear: "both", display: "flex", justifyContent: "center", marginTop: "20px" }}>
+        <Button
+          className="modal_button"
+          onClick={() => navigate(`/HorseDetail/${selectedHorse.id}`)}
+        >
+          {t("view_more")}
+        </Button>
+      </div>
+    </div>
+  </Modal>
+)}
     </>
   );
 };
