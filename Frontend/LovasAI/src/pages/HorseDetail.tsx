@@ -62,31 +62,31 @@ export const HorseDetail = () => {
               
               {horse.gender && (
                 <p>
-                  <strong>{t(DataNameModel.HORSE_GENDER)}:</strong> {horse.gender}
+                  {t(DataNameModel.HORSE_GENDER)}: {t(horse.gender)}
                 </p>
               )}
               
               {horse.breed && (
                 <p>
-                  <strong>{t(DataNameModel.HORSE_BREED)}:</strong> {horse.breed}
+                  {t(DataNameModel.HORSE_BREED)}: {horse.breed}
                 </p>
               )}
 
               {horse.age !== null && (
                 <p>
-                  <strong>{t(DataNameModel.HORSE_AGE)}:</strong> {horse.age}
+                  {t(DataNameModel.HORSE_AGE)}: {horse.age}
                 </p>
               )}
 
               {horse.weight !== null && (
                 <p>
-                  <strong>{t(DataNameModel.HORSE_WEIGHT)} (kg):</strong> {horse.weight}
+                  {t(DataNameModel.HORSE_WEIGHT)} (kg): {horse.weight}
                 </p>
               )}
 
               {horse.desc && (
                 <p className="description-text">
-                  <strong>{t(DataNameModel.HORSE_DESC)}:</strong> {horse.desc}
+                  {t(DataNameModel.HORSE_DESC)}: {horse.desc}
                 </p>
               )}
             </section>

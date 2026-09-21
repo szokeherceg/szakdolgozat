@@ -9,7 +9,7 @@
 }
 
 .horse-details {
-  width: 100%!important;
+  width: 900px!important;
   max-width: 1000px;
   margin: 0 auto;
   padding: 30px;
@@ -18,24 +18,17 @@
 }
 
 .horse-details .horse-info {
-  display: block !important; 
+  display: flex !important; 
+  flex-direction: row-reverse; 
   width: 100%;
+  align-items: flex-start;
 }
 
 .horse-details .horse-info .info-details {
   display: block !important;
-}
-
-.horse-details .horse-info .info-details h2 {
-  margin: 0 0 10px 0;
-  font-size: 2.5rem;
-  font-weight: 700;
-}
-
-.horse-details .horse-info .info-details p {
-  margin: 8px 0;
-  text-align: left;
-  font-size: 1.1rem;
+  flex: 1;
+  min-width: 0;
+  margin: 0!important;
 }
 
 .description-text {
@@ -43,12 +36,42 @@
   line-height: 1.6;
   word-break: break-word;
   overflow-wrap: break-word;
-  max-width: 100%;
+  max-width: 100%; 
+  text-align: justify;
+}
+
+.horse-details .horse-info .modal-image {
+  flex-shrink: 0;
+  width: 350px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.horse-details .horse-info .info-details h2 {
+  margin: 0 0 10px 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  justify-content: flex-start;
+  width: 100%!important;
+}
+
+.horse-details .horse-info .info-details p {
+  margin: 8px 0;
+  text-align: left;
+  font-size: 1.1rem;
+  width: 100%;
+}
+
+.description-text {
+  margin-top: 15px;
+  line-height: 1.6;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 500px;
 }
 
 .horse-details .horse-info .modal-image {
   float: right;
-  width: 40% !important; 
   max-width: 350px;
   height: auto !important;
   margin-left: 20px;
@@ -181,8 +204,9 @@
 
 @media (max-width: 1024px) {
   .horse-details {
-    width: 100%!important;
-    padding: 20px;
+    width: 600px !important;
+    margin: 0 auto;
+    justify-content: flex-start!important;
   }
   
   .card {
@@ -205,12 +229,55 @@
 .card-top h2 {
   margin: 0;
 }
+
+.horse-details .horse-info {
+  display: flex !important;
+  /* Megtartjuk a fordított sorrendet, ha a képet jobbra szeretnéd */
+  flex-direction: column-reverse; 
+  width: 100%;
+  /* Lecsökkentjük a távolságot, hogy maradjon hely a szövegnek */
+  gap: 40px; 
+  align-items: center!important;
+  width: 400px!important;
+}
+.horse-details div{
+  width: 400px!important;
 }
 
+.horse-details .horse-info .info-details {
+  /* TÖRÖLD a width: 300px-et! */
+  display: block !important;
+  /* Ez a bűvös sor: engedi, hogy a szöveg kitöltse a maradék helyet */
+  flex: 2; 
+  min-width: 0;
+}
+
+.horse-details .horse-info .modal-image {
+  /* A kép ne nyomja össze a szöveget, maradjon fix méretű vagy arányos */
+  flex: 1;
+  max-width: 400px; /* Itt szabályozhatod a kép maximális méretét */
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.description-text {
+  margin-top: 15px;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  /* Sorkizárttá tesszük, hogy elegánsabb legyen a hosszú leírás */
+  text-align: justify!important;
+  word-break: break-word;
+  /* Töröld a max-width: 500px-et, hogy nyúlhasson! */
+}
+
+
+}
 @media (max-width: 768px) {
   .horse-details .horse-info .modal-image {
     float: none;
-    width: 100% !important;
+    width: 200px !important;
     margin-left: 0;
     margin-bottom: 20px;
   }
@@ -234,6 +301,10 @@
   .list-header {
     padding: 0 20px 20px 20px;
   }
+
+  .horse-details .horse-info .info-details {
+    width: 200px !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -243,7 +314,14 @@
   padding: 0 10px;
 }
 .horse-details{
+  width: 350px !important;
   margin: 0;
   align-items: center!important;
+}
+.horse-details .horse-info {
+  display: flex !important; 
+  flex-direction: column;
+  width: 100%;
+  gap:20px;
 }
 }

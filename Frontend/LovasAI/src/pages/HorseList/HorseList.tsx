@@ -262,19 +262,19 @@ export const HorsesList = () => {
           
           {selectedHorse.weight !== null && (
             <p>
-              <strong>{t(DataNameModel.HORSE_WEIGHT)}:</strong> {selectedHorse.weight} kg
+              {t(DataNameModel.HORSE_WEIGHT)}: {selectedHorse.weight} kg
             </p>
           )}
           
           {selectedHorse.age !== null && (
             <p>
-              <strong>{t(DataNameModel.HORSE_AGE)}:</strong> {selectedHorse.age}
+              {t(DataNameModel.HORSE_AGE)}: {selectedHorse.age}
             </p>
           )}
 
           {selectedHorse.desc !== "" && (
             <p className="description-text">
-              <strong>{t(DataNameModel.HORSE_DESC)}:</strong>{" "}
+              {t(DataNameModel.HORSE_DESC)}:{" "}
               {selectedHorse.desc.length > 100
                           ? selectedHorse.desc.substring(0, 100) + "..."
                           : selectedHorse.desc}

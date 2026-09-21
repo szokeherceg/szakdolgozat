@@ -94,15 +94,12 @@ export const AI = () => {
         formData.append(DataNameModel.HORSE_VIDEO, data.video[0]);
       }
 
-      await axios.patch(`${apiUrl}/horse-data/${id}/`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
+      await axios.get(`${apiUrl}/ai/${id}/`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       toast.success(t("data_saved_successfully"));
-      navigate("/HorsesList");
+      navigate("/HorseDetail/" + id);
     } catch (error) {
       console.error("Error while updating horse data:", error);
       toast.error(t("update_failed"));
@@ -127,8 +124,7 @@ export const AI = () => {
         </h1>
 
         {currentHorse && (
-          <div className="horse-info-ai">
-            <section className="image-preview-section">
+          <div className="horse-details"><div className="horse-info">
               {currentHorse.image && (
                 <img
                   src={`${apiUrl}${currentHorse.image}`}
@@ -136,7 +132,6 @@ export const AI = () => {
                   className="modal-image"
                 />
               )}
-            </section>
             <section className="details-section">
               {currentHorse.name && (
                 <p>
@@ -174,6 +169,7 @@ export const AI = () => {
                 </p>
               )}
             </section>
+          </div>
           </div>
         )}
 

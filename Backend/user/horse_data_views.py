@@ -7,6 +7,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import HorseData
+from ultralytics import YOLO
+import os
+from ultralytics import YOLO
+from django.conf import settings
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 class HorseDataView(APIView):
     parser_classes = [MultiPartParser, FormParser]
@@ -65,3 +72,35 @@ class HorseDetailView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except HorseData.DoesNotExist:
             return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class AI_View(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id):
+        try:
+            horse = HorseData.objects.get(id=id)
+            model = YOLO('yolov8n.pt') 
+            results = model(horse.image.path)
+            
+            output_folder = os.path.join(settings.MEDIA_ROOT, 'ai_results')
+            os.makedirs(output_folder, exist_ok=True)
+            res = results[0]
+            filename = f"analyzed_{os.path.basename(horse.image.path)}"
+            save_path = os.path.join(output_folder, filename)
+            
+            res.save(filename=save_path)
+            
+            serializer = HorseDataSerializer(horse)
+            data = serializer.data
+            data['analyzed_image_url'] = f"{settings.MEDIA_URL}ai_results/{filename}"
+            data['detections'] = [
+                {"box": box.xyxy[0].tolist(), "conf": float(box.conf[0]), "cls": int(box.cls[0])}
+                for box in res.boxes
+            ]
+
+            return Response(data)
+            
+        except HorseData.DoesNotExist:
+            return Response({"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
