@@ -1,13 +1,16 @@
+import os
+
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 PASSWORD = config('PASSWORD')
 
-DEBUG = True
+DEBUG = not os.environ.get('RENDER')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
 
@@ -47,7 +50,6 @@ MIDDLEWARE = [
 ]
 
 
-
 ROOT_URLCONF = 'animal_main.urls'
 
 TEMPLATES = [
@@ -69,14 +71,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'animal_main.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'animal_db',
-        'USER': 'postgres',
-        'PASSWORD': PASSWORD,
-        'HOST': '172.26.96.1',
-        'PORT': '5433',
-    }
+    'default': dj_database_url.config(
+        default=f"postgresql://postgres:{PASSWORD}@172.26.96.1:5433/animal_db",
+        conn_max_age=600,
+        ssl_require=False,
+    )
 }
 
 AUTH_USER_MODEL = 'user.User'
@@ -97,29 +96,14 @@ SIMPLE_JWT = {
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173"
-]
-
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
-
-STATIC_URL = 'static/'
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://lovasai.onrender.com",
 ]
 
 CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
 ]
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 CORS_ALLOW_METHODS = [
     'GET',
@@ -131,3 +115,17 @@ CORS_ALLOW_METHODS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
