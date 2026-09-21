@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { DataNameModel, HorseModel } from "../../models";
 
 import Trash from "./../../assets/trash.svg";
-import AI from "./../../assets/ai.svg";
+import AI from "./../../assets/AI.svg";
 import Edit from "./../../assets/edit-246.png";
 import NotFound from "./../../assets/notfound.png";
 
