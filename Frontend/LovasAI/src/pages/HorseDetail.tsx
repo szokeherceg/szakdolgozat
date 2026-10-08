@@ -80,7 +80,7 @@ export const HorseDetail = () => {
 
               {horse.weight !== null && (
                 <p>
-                  {t(DataNameModel.HORSE_WEIGHT)} (kg): {horse.weight}
+                  {t(DataNameModel.HORSE_WEIGHT)}: {horse.weight}
                 </p>
               )}
 

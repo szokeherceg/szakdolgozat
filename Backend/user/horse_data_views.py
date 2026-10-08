@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 import os
 from django.conf import settings
+from .horse_height import measure_horse
 
 
 class HorseDataView(APIView):
@@ -109,50 +110,26 @@ class AI_View(APIView):
 
     def get(self, request, id):
         try:
-            # Csak akkor töltjük be az Ultralytics/PyTorch csomagot,
-            # amikor ténylegesen szükség van az AI modellre.
-            from ultralytics import YOLO
-
             horse = HorseData.objects.get(id=id)
 
-            model = YOLO("yolov8n.pt")
-            results = model(horse.image.path)
+            height = measure_horse(horse.image.path)
 
-            output_folder = os.path.join(settings.MEDIA_ROOT, "ai_results")
+            if height is None:
+                return Response(
+                    {"success": False},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
-            os.makedirs(output_folder, exist_ok=True)
-
-            res = results[0]
-
-            filename = f"analyzed_{os.path.basename(horse.image.path)}"
-
-            save_path = os.path.join(output_folder, filename)
-
-            res.save(filename=save_path)
-
-            serializer = HorseDataSerializer(horse)
-
-            data = serializer.data
-
-            data["analyzed_image_url"] = f"{settings.MEDIA_URL}ai_results/{filename}"
-
-            data["detections"] = [
-                {
-                    "box": box.xyxy[0].tolist(),
-                    "conf": float(box.conf[0]),
-                    "cls": int(box.cls[0]),
-                }
-                for box in res.boxes
-            ]
-
-            return Response(data)
-
-        except HorseData.DoesNotExist:
             return Response(
-                {"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND
+                {
+                    "success": True,
+                    "height": height,
+                },
+                status=status.HTTP_200_OK,
             )
 
         except Exception as e:
             return Response(
-                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )

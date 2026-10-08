@@ -90,10 +90,6 @@ export const AI = () => {
         formData.append(DataNameModel.HORSE_IMAGE, data.image[0]);
       }
 
-      if (data.video && data.video.length > 0) {
-        formData.append(DataNameModel.HORSE_VIDEO, data.video[0]);
-      }
-
       await axios.get(`${apiUrl}/ai/${id}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -172,21 +168,6 @@ export const AI = () => {
           </div>
           </div>
         )}
-
-        <p>
-          <strong>{t("ai_analysis_hint")}</strong>
-        </p>
-        <div className="input-group">
-          <label htmlFor="video">{t("upload_hint_video")}:</label>
-          <Input
-            id="video"
-            type="file"
-            accept="video/*"
-            {...register("video")}
-            className="draganddrop"
-          />
-          {errors.video && <p className="errors">{errors.video.message}</p>}
-        </div>
 
         <div className="settings-buttons">
           <Button type="button" onClick={() => navigate("/HorsesList")}>
