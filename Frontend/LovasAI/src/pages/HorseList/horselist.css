@@ -10,7 +10,6 @@
 
 .horse-details {
   width: 900px!important;
-  max-width: 1000px;
   margin: 0 auto;
   padding: 30px;
   border-radius: 12px;
@@ -314,7 +313,7 @@
   padding: 0 10px;
 }
 .horse-details{
-  width: 350px !important;
+  width: 250px !important;
   margin: 0;
   align-items: center!important;
 }

@@ -98,8 +98,8 @@ export const HorseDetail = () => {
             </section>
           </div>
 
-          <div style={{ clear: "both", display: "flex", justifyContent: "center", marginTop: "20px" }}>
-            <Button onClick={handleBack}>
+          <div className="details-button">
+            <Button onClick={() => navigate("/HorsesList")}>
               {t("back")}
             </Button>
           </div>

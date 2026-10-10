@@ -186,7 +186,7 @@ export const EditHorse = () => {
           {errors.desc && <p className="errors">{errors.desc.message}</p>}
         </div>
 
-        <div className="settings-buttons">
+        <div className="details-button">
           <Button type="submit" onClick={() => navigate("/HorsesList")}>
             {t("back")}
           </Button>

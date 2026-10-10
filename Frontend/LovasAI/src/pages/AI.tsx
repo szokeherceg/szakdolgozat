@@ -148,13 +148,7 @@ export const AI = () => {
           </div>
 
           <div
-            style={{
-              clear: "both",
-              display: "flex",
-              justifyContent: "center",
-              gap: "12px",
-              marginTop: "20px",
-            }}
+            className="details-button"
           >
             <Button type="button" onClick={handleBack}>
               {t("back")}
