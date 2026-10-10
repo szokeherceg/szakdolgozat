@@ -120,10 +120,13 @@ class AI_View(APIView):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
+            horse.height = height
+            horse.save(update_fields=["height"])
+
             return Response(
                 {
                     "success": True,
-                    "height": height,
+                    "height": horse.height,
                 },
                 status=status.HTTP_200_OK,
             )

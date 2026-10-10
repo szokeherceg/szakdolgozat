@@ -119,8 +119,6 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
         >
           <option value="hu">{t("hungarian")}</option>
           <option value="en">{t("english")}</option>
-          <option value="de">{t("german")}</option>
-          <option value="ja">{t("japanese")}</option>
         </select>
       </div>
 

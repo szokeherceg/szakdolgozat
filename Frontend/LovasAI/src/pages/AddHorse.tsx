@@ -34,6 +34,17 @@ export const AddHorse = () => {
         if (value === null || value === undefined) return true;
         return value >= 0;
       }),
+    height: yup
+      .number()
+      .nullable()
+      .transform((value, originalValue) =>
+        originalValue === "" ? null : value
+      )
+      .notRequired()
+      .test("is-positive", t("invalid_height"), (value) => {
+        if (value === null || value === undefined) return true;
+        return value >= 0;
+      }),
     gender: yup.string().nullable().optional(),
     breed: yup.string().nullable().optional(),
 
@@ -77,6 +88,7 @@ export const AddHorse = () => {
       breed: null,
       gender: null,
       weight: null,
+      height: null,
       age: null,
       desc: "",
     },
@@ -96,6 +108,8 @@ export const AddHorse = () => {
         formData.append(DataNameModel.HORSE_BREED, data.breed.toString());
       if (data.weight)
         formData.append(DataNameModel.HORSE_WEIGHT, data.weight.toString());
+      if (data.height)
+        formData.append(DataNameModel.HORSE_HEIGHT, data.height.toString());
       if (data.age)
         formData.append(DataNameModel.HORSE_AGE, data.age.toString());
       if (data.image && data.image.length > 0) {
@@ -204,6 +218,17 @@ export const AddHorse = () => {
             {...register("weight")}
           />
           {errors.weight && <p className="errors">{errors.weight.message}</p>}
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="height">{t("height")}:</label>
+          <Input
+            id="height"
+            type="number"
+            placeholder={t("height")}
+            {...register("height")}
+          />
+          {errors.height && <p className="errors">{errors.height.message}</p>}
         </div>
 
         <div className="input-group">

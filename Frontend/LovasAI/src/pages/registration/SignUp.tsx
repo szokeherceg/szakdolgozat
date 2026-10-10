@@ -25,8 +25,6 @@ export const SignUp = () => {
     return [
       DataNameModel.HUNGARIAN,
       DataNameModel.ENGLISH,
-      DataNameModel.GERMAN,
-      DataNameModel.JAPANESE,
     ].includes(lng as DataNameModel)
       ? lng.split("-")[0]
       : DataNameModel.HUNGARIAN;
@@ -104,14 +102,6 @@ export const SignUp = () => {
             {
               label: t("english"),
               onClick: () => handleLanguageChange(DataNameModel.ENGLISH),
-            },
-            {
-              label: t("german"),
-              onClick: () => handleLanguageChange(DataNameModel.GERMAN),
-            },
-            {
-              label: t("japanese"),
-              onClick: () => handleLanguageChange(DataNameModel.JAPANESE),
             },
           ]}
         />

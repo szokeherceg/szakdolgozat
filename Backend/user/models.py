@@ -37,6 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class HorseData(models.Model):
     name = models.CharField(max_length=255)
     weight = models.FloatField(null=True, blank=True)
+    height = models.FloatField(null=True, blank=True)
     gender = models.CharField(max_length=50, null=True, blank=True)
     breed = models.CharField(max_length=100, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)

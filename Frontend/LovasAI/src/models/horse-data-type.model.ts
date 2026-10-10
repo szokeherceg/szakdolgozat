@@ -3,8 +3,8 @@ export type HorseDataTypeModel = {
   gender?: string | null;
   breed?: string | null;
   weight?: number | null;
+  height?: number | null;
   age?: number | null;
   desc?: string;
   image: FileList;
-  video?: FileList;
 };

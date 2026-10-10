@@ -42,7 +42,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 class HorseDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = HorseData
-        fields = ["id","name", "weight","gender", "breed", "age", "image", "desc","created_at", "updated_at"]
+        fields = ["id","name", "weight","height", "gender", "breed", "age", "image", "desc","created_at", "updated_at"]
         
 class UserHorseSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)

@@ -260,11 +260,17 @@ export const HorsesList = () => {
         <section className="info-details">
           <h2 className="horse-name">{selectedHorse.name}</h2>
           
+           {selectedHorse.height !== null && (
+            <p>
+              {t(DataNameModel.HORSE_HEIGHT)}: {selectedHorse.height} cm
+            </p>
+          )}
           {selectedHorse.weight !== null && (
             <p>
               {t(DataNameModel.HORSE_WEIGHT)}: {selectedHorse.weight} kg
             </p>
           )}
+         
           
           {selectedHorse.age !== null && (
             <p>

@@ -26,6 +26,7 @@ export const AI = () => {
   const horseSchema = yup.object().shape({
     name: yup.string().optional(),
     weight: yup.number().nullable().optional(),
+    height: yup.number().nullable().optional(),
     age: yup.number().nullable().optional(),
     desc: yup.string().optional(),
     image: yup.mixed<FileList>().optional(),
@@ -56,6 +57,7 @@ export const AI = () => {
 
         setValue(DataNameModel.HORSE_NAME as any, horse.name || "");
         setValue(DataNameModel.HORSE_WEIGHT as any, horse.weight);
+        setValue(DataNameModel.HORSE_HEIGHT as any, horse.height);
         setValue(DataNameModel.HORSE_AGE as any, horse.age);
         setValue(DataNameModel.HORSE_DESC as any, horse.desc || "");
         setValue(DataNameModel.HORSE_BREED as any, horse.breed || "");
@@ -78,6 +80,9 @@ export const AI = () => {
       if (data.name) formData.append(DataNameModel.HORSE_NAME, data.name);
       if (data.weight !== undefined && data.weight !== null) {
         formData.append(DataNameModel.HORSE_WEIGHT, data.weight.toString());
+      }
+      if (data.height !== undefined && data.height !== null) {
+        formData.append(DataNameModel.HORSE_HEIGHT, data.height.toString());
       }
       if (data.age !== undefined && data.age !== null) {
         formData.append(DataNameModel.HORSE_AGE, data.age.toString());
@@ -152,7 +157,11 @@ export const AI = () => {
                   {t("age")}: {currentHorse.age}
                 </p>
               )}
-
+              {currentHorse.height && (
+                <p>
+                  {t("height")}: {currentHorse.height} cm
+                </p>
+              )}
               {currentHorse.weight && (
                 <p>
                   {t("weight")}: {currentHorse.weight} kg

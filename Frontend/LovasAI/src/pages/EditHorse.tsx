@@ -50,6 +50,10 @@ export const EditHorse = () => {
           horse.weight !== null ? horse.weight : null
         );
         setValue(
+          DataNameModel.HORSE_HEIGHT,
+          horse.height !== null ? horse.height : null
+        );
+        setValue(
           DataNameModel.HORSE_AGE,
           horse.age !== null ? horse.age : null
         );
@@ -72,6 +76,9 @@ export const EditHorse = () => {
       if (data.name) formData.append(DataNameModel.HORSE_NAME, data.name);
       if (data.weight !== undefined && data.weight !== null) {
         formData.append(DataNameModel.HORSE_WEIGHT, data.weight.toString());
+      }
+      if (data.height !== undefined && data.height !== null) {
+        formData.append(DataNameModel.HORSE_HEIGHT, data.height.toString());
       }
       if (data.age !== undefined && data.age !== null) {
         formData.append(DataNameModel.HORSE_AGE, data.age.toString());
@@ -142,6 +149,17 @@ export const EditHorse = () => {
             {...register("weight")}
           />
           {errors.weight && <p className="errors">{errors.weight.message}</p>}
+        </div>
+        
+        <div className="input-group">
+          <label htmlFor="height">{t("height")}:</label>
+          <Input
+            id="height"
+            type="number"
+            placeholder={t("height")}
+            {...register("height")}
+          />
+          {errors.height && <p className="errors">{errors.height.message}</p>}
         </div>
 
         <div className="input-group">

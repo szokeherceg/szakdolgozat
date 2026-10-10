@@ -84,14 +84,6 @@ export const SignIn = () => {
                 label: t("english"),
                 onClick: () => handleLanguageChange(DataNameModel.ENGLISH),
               },
-              {
-                label: t("german"),
-                onClick: () => handleLanguageChange(DataNameModel.GERMAN),
-              },
-              {
-                label: t("japanese"),
-                onClick: () => handleLanguageChange(DataNameModel.JAPANESE),
-              },
             ]}
           />
         </div>

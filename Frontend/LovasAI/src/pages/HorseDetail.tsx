@@ -78,6 +78,12 @@ export const HorseDetail = () => {
                 </p>
               )}
 
+               {horse.height !== null && (
+                <p>
+                  {t(DataNameModel.HORSE_HEIGHT)}: {horse.height}
+                </p>
+              )}
+
               {horse.weight !== null && (
                 <p>
                   {t(DataNameModel.HORSE_WEIGHT)}: {horse.weight}

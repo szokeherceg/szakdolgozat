@@ -2,6 +2,7 @@ export interface HorseModel {
   id: number;
   name: string;
   weight: number;
+  height: number;
   age: number;
   image: string;
   desc: string;
@@ -9,5 +10,4 @@ export interface HorseModel {
   updated_at: string;
   breed?: string | null;
   gender?: string | null;
-  video?: string | null;
 }
