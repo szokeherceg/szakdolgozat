@@ -9,6 +9,8 @@ from rest_framework import status
 import os
 from django.conf import settings
 from .horse_height import measure_horse
+from django.core.files import File
+from pathlib import Path
 
 
 class HorseDataView(APIView):
@@ -104,35 +106,29 @@ class HorseDetailView(APIView):
                 {"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-
 class AI_View(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id):
         try:
             horse = HorseData.objects.get(id=id)
-
-            height = measure_horse(horse.image.path)
+            height, result_path = measure_horse(horse.image.path)
 
             if height is None:
-                return Response(
-                    {"success": False},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+                return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
 
             horse.height = height
-            horse.save(update_fields=["height"])
 
-            return Response(
-                {
-                    "success": True,
-                    "height": horse.height,
-                },
-                status=status.HTTP_200_OK,
-            )
+            with result_path.open("rb") as image:
+                horse.ai_image.save(result_path.name, File(image), save=False)
+
+            horse.save(update_fields=["height", "ai_image", "updated_at"])
+
+            return Response({
+                "success": True,
+                "height": horse.height,
+                "image": horse.ai_image.url,
+            }, status=status.HTTP_200_OK)
 
         except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

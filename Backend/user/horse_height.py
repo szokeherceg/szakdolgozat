@@ -786,4 +786,4 @@ def measure_horse(
     cv2.putText(annotated, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3, cv2.LINE_AA)
     cv2.imwrite(str(result_path), annotated)
 
-    return height
+    return height, result_path

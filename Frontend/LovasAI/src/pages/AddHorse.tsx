@@ -209,26 +209,29 @@ export const AddHorse = () => {
           />
           {errors.breed && <p className="errors">{errors.breed.message}</p>}
         </div>
-        <div className="input-group">
-          <label htmlFor="weight">{t("weight")}:</label>
-          <Input
-            id="weight"
-            type="number"
-            placeholder={t("weight")}
-            {...register("weight")}
-          />
-          {errors.weight && <p className="errors">{errors.weight.message}</p>}
-        </div>
 
         <div className="input-group">
           <label htmlFor="height">{t("height")}:</label>
           <Input
             id="height"
             type="number"
+            step="0.1"
             placeholder={t("height")}
             {...register("height")}
           />
           {errors.height && <p className="errors">{errors.height.message}</p>}
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="weight">{t("weight")}:</label>
+          <Input
+            id="weight"
+            type="number"
+            step="0.1"
+            placeholder={t("weight")}
+            {...register("weight")}
+          />
+          {errors.weight && <p className="errors">{errors.weight.message}</p>}
         </div>
 
         <div className="input-group">

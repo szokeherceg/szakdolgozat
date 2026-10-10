@@ -156,6 +156,7 @@ export const EditHorse = () => {
           <Input
             id="height"
             type="number"
+            step="0.1"
             placeholder={t("height")}
             {...register("height")}
           />
@@ -167,6 +168,7 @@ export const EditHorse = () => {
           <Input
             id="age"
             type="number"
+            step="0.1"
             placeholder={t("age")}
             {...register("age")}
           />

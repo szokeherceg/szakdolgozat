@@ -1,111 +1,90 @@
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import classNames from "classnames";
 
-import { FormSetUp, Input, Button, Header } from "../components";
-import { HorseDataModel, DataNameModel } from "../models";
-
-import "./registration/registration.css";
-
-const apiUrl = import.meta.env.VITE_BASE_URL;
+import { Button, FormSetUp, Header } from "../components";
+import { DataNameModel } from "../models";
+import Load from "./../assets/load.svg";
 
 export const AI = () => {
-  const { id } = useParams();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [horse, setHorse] = useState<any>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [hasAnalysis, setHasAnalysis] = useState(false);
+
+  const { id } = useParams<{ id: string }>();
+  const apiUrl = import.meta.env.VITE_BASE_URL;
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [currentHorse, setCurrentHorse] = useState<any>(null);
 
-  const horseSchema = yup.object().shape({
-    name: yup.string().optional(),
-    weight: yup.number().nullable().optional(),
-    height: yup.number().nullable().optional(),
-    age: yup.number().nullable().optional(),
-    desc: yup.string().optional(),
-    image: yup.mixed<FileList>().optional(),
-    video: yup.mixed<FileList>().optional(),
-    breed: yup.string().nullable().optional(),
-    gender: yup.string().nullable().optional(),
-  });
+  const handleBack = () => {
+    navigate("/HorsesList");
+  };
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<HorseDataModel>({
-    resolver: yupResolver(horseSchema),
-  });
-
-  useEffect(() => {
-    const fetchHorse = async () => {
-      try {
-        const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
-        const response = await axios.get(`${apiUrl}/horse-data/${id}/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const horse = response.data;
-
-        setCurrentHorse(horse);
-
-        setValue(DataNameModel.HORSE_NAME as any, horse.name || "");
-        setValue(DataNameModel.HORSE_WEIGHT as any, horse.weight);
-        setValue(DataNameModel.HORSE_HEIGHT as any, horse.height);
-        setValue(DataNameModel.HORSE_AGE as any, horse.age);
-        setValue(DataNameModel.HORSE_DESC as any, horse.desc || "");
-        setValue(DataNameModel.HORSE_BREED as any, horse.breed || "");
-        setValue(DataNameModel.HORSE_GENDER as any, horse.gender || "");
-      } catch (error) {
-        console.error("Failed to fetch horse data", error);
-        toast.error(t("failed_to_load_data"));
-      }
-    };
-    fetchHorse();
-  }, [id, setValue, t]);
-
-  const onSubmit = async (data: HorseDataModel) => {
+  const fetchHorse = async () => {
     try {
       const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
-      if (!token) return;
 
-      const formData = new FormData();
-
-      if (data.name) formData.append(DataNameModel.HORSE_NAME, data.name);
-      if (data.weight !== undefined && data.weight !== null) {
-        formData.append(DataNameModel.HORSE_WEIGHT, data.weight.toString());
-      }
-      if (data.height !== undefined && data.height !== null) {
-        formData.append(DataNameModel.HORSE_HEIGHT, data.height.toString());
-      }
-      if (data.age !== undefined && data.age !== null) {
-        formData.append(DataNameModel.HORSE_AGE, data.age.toString());
-      }
-      if (data.desc) formData.append(DataNameModel.HORSE_DESC, data.desc);
-      if (data.breed) formData.append(DataNameModel.HORSE_BREED, data.breed);
-      if (data.gender) formData.append(DataNameModel.HORSE_GENDER, data.gender);
-
-      if (data.image && data.image.length > 0) {
-        formData.append(DataNameModel.HORSE_IMAGE, data.image[0]);
-      }
-
-      await axios.get(`${apiUrl}/ai/${id}/`, {
+      const response = await axios.get(`${apiUrl}/horse-data/${id}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      toast.success(t("data_saved_successfully"));
-      navigate("/HorseDetail/" + id);
+      setHorse(response.data);
     } catch (error) {
-      console.error("Error while updating horse data:", error);
-      toast.error(t("update_failed"));
+      console.error("Failed to fetch horse data", error);
+      toast.error(t("failed_to_load_data"));
     }
   };
+
+  useEffect(() => {
+    fetchHorse();
+  }, [id]);
+
+  const handleAnalysis = async () => {
+    try {
+      const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
+
+      if (!token) return;
+
+      setIsAnalyzing(true);
+
+      const response = await axios.get(`${apiUrl}/ai/${id}/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.data.success) {
+        toast.error(t("update_failed"));
+        return;
+      }
+
+      setHorse((prev: any) => ({
+        ...prev,
+        height: response.data.height,
+        ai_image: response.data.image,
+      }));
+
+      setHasAnalysis(true);
+      toast.success(t("data_saved_successfully"));
+    } catch (error) {
+      console.error("Error while running AI analysis:", error);
+      toast.error(t("update_failed"));
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  if (!horse) {
+    return (
+      <div className="loader-container">
+        <img src={Load} alt="Loading..." className="loading-image" />
+      </div>
+    );
+  }
+
+  const imageUrl = horse.ai_image || horse.image;
 
   return (
     <>
@@ -113,76 +92,84 @@ export const AI = () => {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
+
       <FormSetUp
-        onSubmit={handleSubmit(onSubmit)}
-        className={classNames("ai-form", {
-          "form-shifted": isSidebarOpen,
-          "form-centered": !isSidebarOpen,
-        })}
+        className={isSidebarOpen ? "form-shifted" : "form-centered"}
       >
-        <h1>
-          <strong>{t("ai_analysis")}</strong>
-        </h1>
+        <div className="horse-details">
+          <div className="horse-info">
+            {imageUrl && (
+              <img
+                src={`${apiUrl}${imageUrl}`}
+                alt={horse.name}
+                className="modal-image"
+              />
+            )}
 
-        {currentHorse && (
-          <div className="horse-details"><div className="horse-info">
-              {currentHorse.image && (
-                <img
-                  src={`${apiUrl}${currentHorse.image}`}
-                  alt={currentHorse.name}
-                  className="modal-image"
-                />
-              )}
-            <section className="details-section">
-              {currentHorse.name && (
-                <p>
-                  {t("horse_name")}: {currentHorse.name}
-                </p>
-              )}
+            <section className="info-details">
+              <h2 className="horse-name">{horse.name}</h2>
 
-              {currentHorse.gender && (
+              {horse.gender && (
                 <p>
-                  {t("gender")}: {t(currentHorse.gender)}
+                  {t(DataNameModel.HORSE_GENDER)}: {t(horse.gender)}
                 </p>
               )}
 
-              {currentHorse.breed && (
+              {horse.breed && (
                 <p>
-                  {t("breed")}: {currentHorse.breed}
+                  {t(DataNameModel.HORSE_BREED)}: {horse.breed}
                 </p>
               )}
 
-              {currentHorse.age && (
+              {horse.age != null && (
                 <p>
-                  {t("age")}: {currentHorse.age}
-                </p>
-              )}
-              {currentHorse.height && (
-                <p>
-                  {t("height")}: {currentHorse.height} cm
-                </p>
-              )}
-              {currentHorse.weight && (
-                <p>
-                  {t("weight")}: {currentHorse.weight} kg
+                  {t(DataNameModel.HORSE_AGE)}: {horse.age}
                 </p>
               )}
 
-              {currentHorse.desc && (
+              {horse.height != null && (
                 <p>
-                  {t("desc")}: {currentHorse.desc}
+                  {t(DataNameModel.HORSE_HEIGHT)}: {horse.height} cm
+                </p>
+              )}
+
+              {horse.weight != null && (
+                <p>
+                  {t(DataNameModel.HORSE_WEIGHT)}: {horse.weight} kg
+                </p>
+              )}
+
+              {horse.desc && (
+                <p className="description-text">
+                  {t(DataNameModel.HORSE_DESC)}: {horse.desc}
                 </p>
               )}
             </section>
           </div>
-          </div>
-        )}
 
-        <div className="settings-buttons">
-          <Button type="button" onClick={() => navigate("/HorsesList")}>
-            {t("back")}
-          </Button>
-          <Button type="submit">{t("save")}</Button>
+          <div
+            style={{
+              clear: "both",
+              display: "flex",
+              justifyContent: "center",
+              gap: "12px",
+              marginTop: "20px",
+            }}
+          >
+            <Button type="button" onClick={handleBack}>
+              {t("back")}
+            </Button>
+
+            {!hasAnalysis && (
+              <Button
+                type="button"
+                onClick={handleAnalysis}
+                disabled={isAnalyzing}
+              >
+                {t("save")}
+              </Button>
+            )}
+          </div>
         </div>
       </FormSetUp>
     </>
