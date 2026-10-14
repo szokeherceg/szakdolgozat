@@ -93,5 +93,7 @@
   "reset_password": "Új jelszó beállítása",
   "new_password": "Új jelszó",
   "invalid_reset_link": "Érvénytelen hivatkozás",
-  "password_reset_success": "Jelszó sikeres frissítése"
+  "password_reset_success": "Jelszó sikeres frissítése",
+  "forgot_password_question": "Elfelejtette jelszavát?",
+   "email_sent": "Email elküldve"
 }

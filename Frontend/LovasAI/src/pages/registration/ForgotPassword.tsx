@@ -34,9 +34,7 @@ export const ForgotPasswordModal = ({
         { email: email.trim() },
       );
 
-      toast.success(
-        response.data.message || t("password_reset_email_sent"),
-      );
+      toast.success(t(response.data.message)),      
       onClose();
     } catch {
       toast.error(t("could_not_save"));

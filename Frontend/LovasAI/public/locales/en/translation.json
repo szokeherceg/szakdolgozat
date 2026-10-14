@@ -92,5 +92,7 @@
   "reset_password": "Reset password",
   "new_password": "New password",
   "invalid_reset_link": "Invalid reset link",
-  "password_reset_success": "Password reset was success"
+  "password_reset_success": "Password reset was success",
+  "forgot_password_question": "Did you forget your password?",
+  "email_sent": "The email has been sent"
 }
