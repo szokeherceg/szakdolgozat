@@ -119,7 +119,7 @@ export const SignIn = () => {
             <div>
               <Link to="/">{t("signup")}</Link>
             </div>
-            <div>{"Elfelejtette jelszavát?"}</div>
+            <div>{t("forgot_password_question")}</div>
             <div>
               <Link
                 to="#"
