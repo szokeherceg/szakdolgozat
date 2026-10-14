@@ -5,3 +5,4 @@ export * from "./settings.model";
 export * from "./horse-data-type.model";
 export * from "./data-name.model";
 export * from "./userhorse.model";
+export * from "./settings-form.model";

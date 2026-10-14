@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserDetailSerializer
+from .serializers import UserDetailSerializer, UserSerializer
+
 
 class UserDetailView(APIView):
     permission_classes = [IsAuthenticated]
@@ -14,11 +15,22 @@ class UserDetailView(APIView):
         user = request.user
         data = request.data.copy()
 
-        password = data.get("password", None)
+        password = data.get("password")
+
         if password:
+            password_serializer = UserSerializer(
+                user,
+                data={"password": password},
+                partial=True,
+            )
+
+            if not password_serializer.is_valid():
+                return Response(
+                    {"error": password_serializer.errors["password"]},
+                    status=400,
+                )
+
             user.set_password(password)
-            user.save()
-            data.pop("password")
 
         name = data.get("name", None)
         lang = data.get("lang", None)

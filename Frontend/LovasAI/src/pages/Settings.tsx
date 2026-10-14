@@ -3,7 +3,8 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Input, Button, FormSetUp } from "../components";
 import { useTranslation } from "react-i18next";
-import { SettingsModel } from "../models";
+import { SettingsFormData, SettingsModel } from "../models";
+import { toast } from "react-toastify";
 
 import Show from "./../assets/show-password.svg";
 import Hide from "./../assets/hide-password.svg";
@@ -16,7 +17,14 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language);
 
-  const { register, handleSubmit, setValue } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm<SettingsFormData>({
     defaultValues: {
       email: "",
       password: "",
@@ -37,9 +45,10 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
 
         const userData = response.data;
 
-        setValue("email", userData.email);
-        setValue("name", userData.name);
-        setValue("language", userData.language);
+        setValue("email", userData.email ?? "");
+        setValue("name", userData.name ?? "");
+        setValue("language", userData.lang ?? i18n.language);
+        setLang(userData.lang ?? i18n.language);
       } catch (error) {
         console.error("Error while fetching user details:", error);
       }
@@ -52,12 +61,35 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
     setLang(language);
   };
 
-  const onSubmit = async (data: {
-    email?: string | null;
-    password?: string | null;
-    language: string | null;
-    name?: string;
-  }) => {
+  const onSubmit = async (data: SettingsFormData) => {
+    clearErrors("password");
+
+    if (data.password) {
+      if (data.password.length < 15) {
+        setError("password", {
+          type: "manual",
+          message: t("password_too_short"),
+        });
+        toast.error(t("password_too_short"));
+        return;
+      }
+
+      const weakPasswords = ["jelszo", "password", "qwerty", "admin"];
+
+      if (
+        weakPasswords.some((weakPassword) =>
+          data.password.toLowerCase().includes(weakPassword),
+        )
+      ) {
+        setError("password", {
+          type: "manual",
+          message: t("weak_password"),
+        });
+        toast.error(t("weak_password"));
+        return;
+      }
+    }
+
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) return;
@@ -72,7 +104,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
         },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       i18n.changeLanguage(lang);
@@ -80,6 +112,20 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
       onUpdated?.();
     } catch (error) {
       console.error("Error while updating user details:", error);
+
+      if (axios.isAxiosError(error)) {
+        const responseError = error.response?.data?.error;
+        const passwordError = error.response?.data?.password;
+
+        if (responseError || passwordError) {
+          toast.error(
+            String(responseError ?? passwordError),
+          );
+          return;
+        }
+      }
+
+      toast.error(t("could_not_save"));
     }
   };
 

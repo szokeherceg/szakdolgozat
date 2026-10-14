@@ -41,8 +41,23 @@ export const SignUp = () => {
     name: yup.string().required(t("required_name")),
     password: yup
       .string()
-      .min(6, t("password_too_short"))
-      .required(t("required_field")),
+      .min(15, t("password_too_short"))
+      .required(t("required_field"))
+      .test(
+        "week_password",
+        t("weak_password"),
+        (value) => {
+          if (!value) return true;
+
+          const normalized = value.toLowerCase();
+          const weekPasswords = ["jelszo", "password", "qwerty", "admin",];
+
+          return !weekPasswords.some((pattern) =>
+            normalized.includes(pattern)
+          );
+        }
+      ),
+
     password2: yup
       .string()
       .oneOf([yup.ref("password")], t("passwords_do_not_match"))
@@ -69,25 +84,34 @@ export const SignUp = () => {
     setValue("lang", language);
   };
 
-  const onSubmit = async (data: {
-    email: string;
-    name: string;
-    password: string;
-    password2: string;
-    lang: string;
-  }) => {
-    try {
-      await axios.post(`${apiUrl}/register/`, data);
+const onSubmit = async (data: {
+  email: string;
+  name: string;
+  password: string;
+  password2: string;
+  lang: string;
+}) => {
+  try {
+    const response = await axios.post(`${apiUrl}/register/`, data);
+
+    if (response.status === 201) {
       toast.success(t("registration_successful"));
       navigate("/SignIn");
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toast.error(error.response.data?.error || t("registration_failed"));
-      } else {
-        toast.error(t("registration_failed"));
-      }
     }
-  };
+  } catch (error: any) {
+    const responseData = error.response?.data;
+
+    const messages = Object.values(responseData || {})
+      .flatMap((value) => Array.isArray(value) ? value : [value])
+      .filter((value): value is string => typeof value === "string");
+
+    toast.error(
+      messages.length > 0
+        ? messages.join(" ")
+        : t("registration_failed")
+    );
+  }
+};
 
   return (
     <div className="signin-container">

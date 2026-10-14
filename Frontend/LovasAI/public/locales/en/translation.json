@@ -50,7 +50,7 @@
   "enter_description": "Enter description",
   "required_field": "This field is required.",
   "invalid_email": "Invalid email address.",
-  "password_too_short": "Minimum 6 characters.",
+  "password_too_short": "The password must be at least 15 characters long.",
   "file_required": "File upload is required.",
   "invalid_file_type": "Only image files are allowed! (jpg, png)",
   "file_too_large": "The file size cannot exceed 5MB.",
@@ -65,6 +65,7 @@
   "login_successful": "Login successful",
   "login_failed": "Login failed",
   "data_saved_successfully": "Data saved successfully",
+  "could_not_save": "We could not save the data",
   "desc": "Description",
   "password2": "Confirm Password",
   "password_do_not_match": "Passwords do not match",
@@ -84,4 +85,6 @@
   "female": "Female",
   "gelding": "Gelding",
   "ai_analysis": "AI-based Analysis",
-  "ai_analysis_hint": "Analysis of body measurements based on the pre-validated image. Video upload is also required for health analysis (optional)."}
+  "ai_analysis_hint": "Analysis of body measurements based on the pre-validated image. Video upload is also required for health analysis (optional).",
+  "week_password": "The password is too weak. Please choose another one."
+}
