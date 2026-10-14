@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { DataNameModel } from "../../models";
+import { ForgotPasswordModal } from "./ForgotPassword";
 
 import { toast } from "react-toastify";
 
@@ -22,6 +23,7 @@ const apiUrl = import.meta.env.VITE_BASE_URL;
 export const SignIn = () => {
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
 
   const handleLanguageChange = (language: string) => {
     i18n.changeLanguage(language);
@@ -117,9 +119,24 @@ export const SignIn = () => {
             <div>
               <Link to="/">{t("signup")}</Link>
             </div>
+            <div>
+              <Link
+                to="#"
+                onClick={(event) => {
+                  event.preventDefault();
+                  setShowPasswordReset(true);
+                }}
+              >
+                {t("forgot_password")}
+              </Link>
+            </div>
           </div>
         </FormSetUp>
       </div>
+
+      {showPasswordReset && (
+        <ForgotPasswordModal onClose={() => setShowPasswordReset(false)} />
+      )}
     </>
   );
 };

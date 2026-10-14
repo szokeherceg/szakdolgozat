@@ -153,6 +153,18 @@
   display: inline-block;
 }
 
+form.password-reset {
+  position: relative;
+  top: 0;
+  left: auto;
+  transform: none;
+  width: 50%;
+  min-height: auto;
+  height: auto;
+  margin: 0 auto !important;
+  padding: 20px;
+}
+
 @media (max-width: 768px) {
   .signin-container .container {
     width: 90%;
@@ -225,4 +237,8 @@
     display: block;
     text-align: center;
   }
+}
+
+form.password-reset .settings-header {
+  font-size: 1.2rem;
 }

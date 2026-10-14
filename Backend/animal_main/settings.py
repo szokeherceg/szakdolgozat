@@ -77,6 +77,10 @@ DATABASES = {
         "PORT": "5433",
     }
 }
+DEFAULT_FROM_EMAIL = "LovasAI <onboarding@resend.dev>"
+RESEND_API_KEY = config("RESEND_API_KEY")
+FRONTEND_URL = config("FRONTEND_URL")
+PASSWORD_RESET_TIMEOUT = 1800
 
 AUTH_USER_MODEL = "user.User"
 
@@ -102,7 +106,7 @@ SIMPLE_JWT = {
 }
 
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOWED_ORIGINS = [config("FRONTEND_URL")]
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
@@ -113,7 +117,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOWED_ORIGINS = [config("FRONTEND_URL")]
 
 CORS_ALLOW_HEADERS = [
     "content-type",

@@ -87,5 +87,11 @@
   "gelding": "Ivartalanított hím",
   "ai_analysis": "Mesterséges intelligencia alapú elemzés",
   "ai_analysis_hint": "Testméretek elemzése az elővalidált kép alapján. Egészségügyi elemzéshez videó feltöltése is szükséges (opcionális).",
-  "weak_password": "A jelszó túl egyszerű. Válasszon másikat."
+  "weak_password": "A jelszó túl egyszerű. Válasszon másikat.",
+  "forgot_password": "Elfelejtett jelszó",
+  "send": "Küldés",
+  "reset_password": "Új jelszó beállítása",
+  "new_password": "Új jelszó",
+  "invalid_reset_link": "Érvénytelen hivatkozás",
+  "password_reset_success": "Jelszó sikeres frissítése"
 }

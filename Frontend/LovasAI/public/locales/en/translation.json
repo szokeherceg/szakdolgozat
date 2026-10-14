@@ -86,5 +86,11 @@
   "gelding": "Gelding",
   "ai_analysis": "AI-based Analysis",
   "ai_analysis_hint": "Analysis of body measurements based on the pre-validated image. Video upload is also required for health analysis (optional).",
-  "week_password": "The password is too weak. Please choose another one."
+  "week_password": "The password is too weak. Please choose another one.",
+  "forgot_password": "Forgot password",
+  "send": "Send",
+  "reset_password": "Reset password",
+  "new_password": "New password",
+  "invalid_reset_link": "Invalid reset link",
+  "password_reset_success": "Password reset was success"
 }

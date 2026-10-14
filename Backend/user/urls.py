@@ -9,6 +9,7 @@ from .registration_views import RegisterView
 from .horse_data_views import HorseDataView, HorseDetailView
 from .token_refresh_view import CustomTokenRefreshView
 from .horse_data_views import AI_View
+from .mail import PasswordResetRequestView, PasswordResetConfirmView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -19,6 +20,8 @@ urlpatterns = [
     path("api/token/refresh/", CustomTokenRefreshView.as_view(), name="token_refresh"),
     path('user-horses/', UserHorseView.as_view(), name='user_horses'),
     path("ai/<int:id>/", AI_View.as_view(), name='ai_horse_detail'),
+    path("password-reset/", PasswordResetRequestView.as_view()),
+    path("password-reset/confirm/", PasswordResetConfirmView.as_view()),
 ]
 
 if settings.DEBUG:
