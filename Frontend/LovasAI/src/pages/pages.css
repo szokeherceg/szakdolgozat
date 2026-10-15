@@ -3,6 +3,42 @@ form {
   min-width: 0;
   max-width: 100%;
 }
+.input-container input,
+.input-container textarea {
+  color: #3b3b3b;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+
+.input-container input:hover,
+.input-container textarea:hover,
+.input-container input:focus,
+.input-container textarea:focus {
+  border-color: #d1d5db;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+
+.input-container input::placeholder,
+.input-container textarea::placeholder {
+  color: #3b3b3b;
+  opacity: 1;
+}
+
+.input-container input[type="date"] {
+  color: #3b3b3b;
+}
+
+.input-container input[type="date"]::-webkit-datetime-edit {
+  color: #5a5f66;
+}
+
+.input-container input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
 
 .horse-info-container {
   display: flex;
@@ -100,7 +136,9 @@ form {
   width: 70vw;
   max-width: 100%;
   min-width: 0;
-  transition: margin-left 0.3s ease, width 0.3s ease;
+  transition:
+    margin-left 0.3s ease,
+    width 0.3s ease;
 }
 
 .form-shifted {
@@ -108,7 +146,9 @@ form {
   width: calc(100% - 90px);
   max-width: 100%;
   min-width: 0;
-  transition: margin-left 0.3s ease, width 0.3s ease;
+  transition:
+    margin-left 0.3s ease,
+    width 0.3s ease;
 }
 
 .horse-details {
@@ -161,7 +201,8 @@ form {
   min-width: 0;
 }
 
-.ai-form input {
+.ai-form input,
+.ai-form select {
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -170,6 +211,8 @@ form {
   border: 1px solid #ccc;
   margin-bottom: 20px;
   position: relative;
+  color: #3b3b3b;
+  text-align: left;
 }
 
 .lang {
@@ -384,13 +427,23 @@ input {
   overflow-wrap: anywhere;
 }
 
+.edit-horse-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+
 @media (max-width: 1024px) {
   .horse-details {
     width: 100% !important;
     max-width: 100%;
     height: auto;
     padding: 0 15px;
-    align-items: center!important;
+    align-items: center !important;
   }
 
   .ai-form {
@@ -400,7 +453,7 @@ input {
 
   .settings {
     height: 100vh;
-    width: 100%!important;
+    width: 100% !important;
     max-width: 100%;
     top: 15%;
     overflow-y: auto;
@@ -502,6 +555,24 @@ input {
     max-width: 100% !important;
     height: auto !important;
     margin-bottom: 0;
+  }
+
+  .edit-horse-buttons {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .edit-horse-secondary-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .edit-horse-buttons button {
+    width: 100%;
+    min-width: 0;
   }
 }
 
@@ -612,8 +683,8 @@ input {
 
   .search-container {
     flex-direction: column;
-    justify-content: left!important;
-    width: 100%!important;
+    justify-content: left !important;
+    width: 100% !important;
   }
 
   .card .card-top {

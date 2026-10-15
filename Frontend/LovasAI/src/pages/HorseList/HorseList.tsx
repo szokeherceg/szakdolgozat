@@ -3,7 +3,6 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import { Button, FormSetUp, Header, Image, Input } from "../../components";
-import { Modal } from "../modal/Modal";
 import { useNavigate } from "react-router-dom";
 import { DataNameModel, HorseModel } from "../../models";
 
@@ -23,10 +22,10 @@ export const HorsesList = () => {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [showNotFound, setShowNotFound] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { t } = useTranslation();
-  const [isHorseDetails, setHorseDetails] = useState(false);
-  const [selectedHorse, setSelectedHorse] = useState<HorseModel | null>(null);
   const navigate = useNavigate();
 
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
@@ -58,11 +57,14 @@ export const HorsesList = () => {
 
         if (Array.isArray(response.data)) {
           setHorses(response.data);
+          setShowNotFound(response.data.length === 0);
         } else {
           console.log("Horses fetched:", response.data);
         }
       } catch (error) {
         console.error("Error fetching horses:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -89,11 +91,6 @@ export const HorsesList = () => {
     } catch (error) {
       console.error("Failed to delete horse:", error);
     }
-  };
-
-  const handleHorseClick = (horse: HorseModel) => {
-    setSelectedHorse(horse);
-    setHorseDetails(true);
   };
 
   const filteredHorses = horses.filter((horse) => {
@@ -199,7 +196,7 @@ export const HorsesList = () => {
             <li
               key={index}
               className="card"
-              onClick={() => handleHorseClick(horse)}
+              onClick={() => navigate(`/HorseDetail/${horse.id}`)}
             >
               <img
                 src={`${apiUrl}${horse.image}`}
@@ -240,66 +237,11 @@ export const HorsesList = () => {
              
             </li>
           ))}
-          {filteredHorses.length === 0 && (
-            <Image height="200px" width="auto" src={NotFound} />
+          {!loading && showNotFound && filteredHorses.length === 0 && (
+              <Image height="200px" width="auto" src={NotFound} />
           )}
         </ul>
       </FormSetUp>
-
-{selectedHorse && (
-  <Modal isOpen={isHorseDetails} onClose={() => setHorseDetails(false)}>
-    <div className="horse-details" style={{ backgroundColor: "#f9f9f9", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
-      <div className="horse-info">
-        
-        <img
-          src={`${apiUrl}${selectedHorse.image}`}
-          alt={selectedHorse.name}
-          className="modal-image"
-        />
-
-        <section className="info-details">
-          <h2 className="horse-name">{selectedHorse.name}</h2>
-          
-           {selectedHorse.height !== null && (
-            <p>
-              {t(DataNameModel.HORSE_HEIGHT)}: {selectedHorse.height} cm
-            </p>
-          )}
-          {selectedHorse.weight !== null && (
-            <p>
-              {t(DataNameModel.HORSE_WEIGHT)}: {selectedHorse.weight} kg
-            </p>
-          )}
-         
-          
-          {selectedHorse.age !== null && (
-            <p>
-              {t(DataNameModel.HORSE_AGE)}: {selectedHorse.age}
-            </p>
-          )}
-
-          {selectedHorse.desc !== "" && (
-            <p className="description-text">
-              {t(DataNameModel.HORSE_DESC)}:{" "}
-              {selectedHorse.desc.length > 100
-                          ? selectedHorse.desc.substring(0, 100) + "..."
-                          : selectedHorse.desc}
-            </p>
-          )}
-        </section>
-      </div>
-
-      <div style={{ clear: "both", display: "flex", justifyContent: "center", marginTop: "20px" }}>
-        <Button
-          className="modal_button"
-          onClick={() => navigate(`/HorseDetail/${selectedHorse.id}`)}
-        >
-          {t("view_more")}
-        </Button>
-      </div>
-    </div>
-  </Modal>
-)}
     </>
   );
 };

@@ -95,22 +95,51 @@ class UserDetailSerializer(serializers.ModelSerializer):
         ]
 
 
+
 class HorseDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = HorseData
         fields = [
             "id",
             "name",
+            "chip_number",
+            "stable_name",
+            "studbook_number",
+            "birth_date",
+            "gender",
+            "color",
+            "markings",
+            "branding",
+            "breeder",
+            "owner",
+            "father",
+            "mother",
+            "maternal_grandsire",
             "weight",
             "height",
-            "gender",
+            "girth",
+            "cannon_girth",
             "breed",
             "age",
             "image",
+            "ai_image",
             "desc",
             "created_at",
             "updated_at",
         ]
+        read_only_fields = [
+            "id",
+            "ai_image",
+            "created_at",
+            "updated_at",
+        ]
+
+    def update(self, instance, validated_data):
+        validated_data.pop("chip_number", None)
+        validated_data.pop("studbook_number", None)
+
+        return super().update(instance, validated_data)
+
 
 
 class UserHorseSerializer(serializers.ModelSerializer):

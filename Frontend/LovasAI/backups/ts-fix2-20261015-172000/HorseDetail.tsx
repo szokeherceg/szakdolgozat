@@ -1,0 +1,105 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Button, FormSetUp, Header } from "../components";
+import axios from "axios";
+import { DataNameModel } from "../models";
+import Load from "./../assets/load.svg";
+
+export const HorseDetail = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [horse, setHorse] = useState<any>(null);
+  const { id } = useParams<{ id: string }>();
+  const apiUrl = import.meta.env.VITE_BASE_URL;
+  const { t } = useTranslation();
+
+  const fetchHorse = async () => {
+    try {
+      const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
+      const response = await axios.get(`${apiUrl}/horse-data/${id}/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setHorse(response.data);
+    } catch (error) {
+      console.error("Failed to fetch horse data", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchHorse();
+  }, [id]);
+
+  if (!horse) {
+    return (
+      <div className="loader-container">
+        <img src={Load} alt="Loading..." className="loading-image" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <Header
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+      <FormSetUp className={isSidebarOpen ? "form-shifted" : "form-centered"}>
+        <div className="horse-details" >
+          <div className="horse-info">
+            <img
+              src={`${apiUrl}${horse.image}`}
+              alt={horse.name}
+              className="modal-image"
+            />
+
+            <section className="info-details">
+              <h2 className="horse-name">{horse.name}</h2>
+              
+              {horse.gender && (
+                <p>
+                  {t(DataNameModel.HORSE_GENDER)}: {t(horse.gender)}
+                </p>
+              )}
+              
+              {horse.breed && (
+                <p>
+                  {t(DataNameModel.HORSE_BREED)}: {horse.breed}
+                </p>
+              )}
+
+              {horse.age !== null && (
+                <p>
+                  {t(DataNameModel.HORSE_AGE)}: {horse.age}
+                </p>
+              )}
+
+               {horse.height !== null && (
+                <p>
+                  {t(DataNameModel.HORSE_HEIGHT)}: {horse.height}
+                </p>
+              )}
+
+              {horse.weight !== null && (
+                <p>
+                  {t(DataNameModel.HORSE_WEIGHT)}: {horse.weight}
+                </p>
+              )}
+
+              {horse.desc && (
+                <p className="description-text">
+                  {t(DataNameModel.HORSE_DESC)}: {horse.desc}
+                </p>
+              )}
+            </section>
+          </div>
+
+          <div className="details-button">
+            <Button onClick={() => navigate("/HorsesList")}>
+              {t("back")}
+            </Button>
+          </div>
+        </div>
+      </FormSetUp>
+    </>
+  );
+};

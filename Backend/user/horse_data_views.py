@@ -63,48 +63,75 @@ class HorseDataView(APIView):
 
 class HorseDetailView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_horse(self, request, id):
+        try:
+            horse = HorseData.objects.get(id=id)
+        except HorseData.DoesNotExist:
+            return None
+
+        has_access = (
+            UserHorse.objects.filter(
+                user=request.user,
+                horse=horse,
+            ).exists()
+            or horse.users.filter(id=request.user.id).exists()
+        )
+
+        if not has_access:
+            return None
+
+        return horse
 
     def get(self, request, id):
-        try:
-            horse = HorseData.objects.get(id=id)
-            serializer = HorseDataSerializer(horse)
+        horse = self.get_horse(request, id)
 
-            return Response(serializer.data)
-
-        except HorseData.DoesNotExist:
+        if horse is None:
             return Response(
-                {"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "Horse not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
+
+        serializer = HorseDataSerializer(horse)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, id):
-        try:
-            horse = HorseData.objects.get(id=id)
+        horse = self.get_horse(request, id)
 
-            serializer = HorseDataSerializer(horse, data=request.data, partial=True)
-
-            if serializer.is_valid():
-                serializer.save()
-
-                return Response(serializer.data)
-
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        except HorseData.DoesNotExist:
+        if horse is None:
             return Response(
-                {"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "Horse not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
+
+        serializer = HorseDataSerializer(
+            horse,
+            data=request.data,
+            partial=True,
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     def delete(self, request, id):
-        try:
-            horse = HorseData.objects.get(id=id)
-            horse.delete()
+        horse = self.get_horse(request, id)
 
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        except HorseData.DoesNotExist:
+        if horse is None:
             return Response(
-                {"error": "Horse not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "Horse not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
+
+        horse.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class AI_View(APIView):
     permission_classes = [IsAuthenticated]

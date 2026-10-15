@@ -47,7 +47,7 @@ export const Input: React.FC<InputProps> = ({
     <div className="input-container">
       <input
         type={inputType}
-        className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 ${className}`}
+        className={`w-full p-3 border rounded-lg shadow-sm focus:ring-2 ${className}`}
         {...props}
       />
       {type === "password" && srcShow && srcHide && (

@@ -14,10 +14,6 @@ export const HorseDetail = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const handleBack = () => {
-    navigate("/HorsesList");
-  };
-
   const fetchHorse = async () => {
     try {
       const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);

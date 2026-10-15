@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { Input, Button, FormSetUp } from "../components";
+import { Input, Button, FormSetUp, Select } from "../components";
 import { useTranslation } from "react-i18next";
 import { SettingsFormData, SettingsModel } from "../models";
 import { toast } from "react-toastify";
@@ -23,7 +23,6 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
     setValue,
     setError,
     clearErrors,
-    formState: { errors },
   } = useForm<SettingsFormData>({
     defaultValues: {
       email: "",
@@ -32,6 +31,11 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
       language: i18n.language,
     },
   });
+
+  const languageOptions = [
+    { value: "hu", label: t("hungarian") },
+    { value: "en", label: t("english") },
+  ];
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -59,6 +63,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
 
   const handleLanguageChange = (language: string) => {
     setLang(language);
+    setValue("language", language);
   };
 
   const onSubmit = async (data: SettingsFormData) => {
@@ -99,7 +104,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
         {
           ...(data.email && { email: data.email }),
           ...(data.password && { password: data.password }),
-          ...(lang && { lang: lang }),
+          ...(lang && { lang }),
           ...(data.name && { name: data.name }),
         },
         {
@@ -118,9 +123,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
         const passwordError = error.response?.data?.password;
 
         if (responseError || passwordError) {
-          toast.error(
-            String(responseError ?? passwordError),
-          );
+          toast.error(String(responseError ?? passwordError));
           return;
         }
       }
@@ -141,7 +144,7 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
       <label className="block text-sm font-medium text-gray-600">
         {t("name")}
       </label>
-      <Input type="string" {...register("name")} placeholder={t("name")} />
+      <Input type="text" {...register("name")} placeholder={t("name")} />
 
       <label className="block text-sm font-medium text-gray-600">
         {t("password")}
@@ -155,18 +158,21 @@ export const Settings = ({ onClose, onUpdated }: SettingsModel) => {
       />
 
       <div className="lang">
-        <label className="block text-sm font-medium text-gray-600 mb-2">
-          {t("language")}
-        </label>
-        <select
-          value={lang}
-          onChange={(e) => handleLanguageChange(e.target.value)}
-          className="block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-        >
-          <option value="hu">{t("hungarian")}</option>
-          <option value="en">{t("english")}</option>
-        </select>
-      </div>
+  <label htmlFor="language" className="block text-sm font-medium text-gray-600 mb-2">
+    {t("language")}
+  </label>
+  <div className="settings-select">
+    <Select
+      inputId="language"
+      options={languageOptions}
+      value={lang}
+      onChange={handleLanguageChange}
+      placeholder={t("language")}
+      isClearable={false}
+      isSearchable={false}
+    />
+  </div>
+</div>
 
       <div className="settings-buttons">
         <Button type="button" onClick={onClose}>

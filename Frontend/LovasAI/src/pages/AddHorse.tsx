@@ -1,153 +1,166 @@
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import classNames from "classnames";
-
-import { FormSetUp, Input, Button, Header } from "../components";
-import { DataNameModel, HorseDataTypeModel } from "../models";
+import { toast } from "react-toastify";
+import { FormSetUp, Input, Button, Header, Select } from "../components";
+import { DataNameModel } from "../models";
 
 import "./registration/registration.css";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
+const horseSchema = yup.object({
+  name: yup.string().required("required_name"),
+  chip_number: yup.string().required("required_chip_number"),
+  owner: yup.string().required("required_owner"),
+  stable_name: yup.string().optional(),
+  studbook_number: yup.string().optional(),
+  birth_date: yup.string().optional(),
+  gender: yup.string().optional(),
+  color: yup.string().optional(),
+  markings: yup.string().optional(),
+  branding: yup.string().optional(),
+  breeder: yup.string().optional(),
+  father: yup.string().optional(),
+  mother: yup.string().optional(),
+  maternal_grandsire: yup.string().optional(),
+  desc: yup.string().optional(),
+  image: yup
+    .mixed<FileList>()
+    .optional()
+    .test("fileType", "invalid_file_type", (value) => {
+      if (!value || value.length === 0) return true;
+      return ["image/jpeg", "image/png"].includes(value[0].type);
+    })
+    .test("fileSize", "file_too_large", (value) => {
+      if (!value || value.length === 0) return true;
+      return value[0].size <= 5 * 1024 * 1024;
+    }),
+});
+
+type HorseFormData = yup.InferType<typeof horseSchema>;
+
+type SelectOption = {
+  value: string;
+  label: string;
+};
+
 export const AddHorse = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-  useEffect(() => {}, [i18n.language]);
-
-  const horseSchema = yup.object().shape({
-    name: yup.string().required(t("required_name")),
-    weight: yup
-      .number()
-      .nullable()
-      .transform((value, originalValue) =>
-        originalValue === "" ? null : value
-      )
-      .notRequired()
-      .test("is-positive", t("invalid_weight"), (value) => {
-        if (value === null || value === undefined) return true;
-        return value >= 0;
-      }),
-    height: yup
-      .number()
-      .nullable()
-      .transform((value, originalValue) =>
-        originalValue === "" ? null : value
-      )
-      .notRequired()
-      .test("is-positive", t("invalid_height"), (value) => {
-        if (value === null || value === undefined) return true;
-        return value >= 0;
-      }),
-    gender: yup.string().nullable().optional(),
-    breed: yup.string().nullable().optional(),
-
-    age: yup
-      .number()
-      .nullable()
-      .transform((value, originalValue) =>
-        originalValue === "" ? null : value
-      )
-      .notRequired()
-      .test("is-positive", t("invalid_age"), (value) => {
-        if (value === null || value === undefined) return true;
-        return value >= 0;
-      }),
-
-    image: yup
-      .mixed<FileList>()
-      .required(t("file_required"))
-      .test("fileType", t("invalid_file_type"), (value) => {
-        if (!value || !(value instanceof FileList) || value.length === 0) {
-          return false;
-        }
-        return ["image/jpeg", "image/png"].includes(value[0].type);
-      })
-      .test("fileSize", t("file_too_large"), (value) => {
-        if (!value || !(value instanceof FileList) || value.length === 0) {
-          return false;
-        }
-        return value[0].size <= 5 * 1024 * 1024;
-      }),
-    desc: yup.string().optional(),
-  });
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    control,
+    watch,
     formState: { errors },
-  } = useForm<HorseDataTypeModel>({
+  } = useForm<HorseFormData>({
     resolver: yupResolver(horseSchema),
     defaultValues: {
-      breed: null,
-      gender: null,
-      weight: null,
-      height: null,
-      age: null,
+      name: "",
+      chip_number: "",
+      owner: "",
+      stable_name: "",
+      studbook_number: "",
+      birth_date: "",
+      gender: "",
+      color: "",
+      markings: "",
+      branding: "",
+      breeder: "",
+      father: "",
+      mother: "",
+      maternal_grandsire: "",
       desc: "",
     },
   });
 
-  const onSubmit = async (data: HorseDataTypeModel) => {
-    const token =
-      localStorage.getItem(DataNameModel.ACCESS_TOKEN) ||
-      localStorage.getItem(DataNameModel.REFRESH_TOKEN);
+  const color = watch("color");
 
-    const postHorseData = async () => {
+  const genderOptions: SelectOption[] = [
+    { value: "male", label: t("stallion") },
+    { value: "female", label: t("mare") },
+    { value: "gelding", label: t("horse_gelding") },
+  ];
+
+  const colorOptions: SelectOption[] = [
+    { value: "bay", label: t("bay") },
+    { value: "chestnut", label: t("chestnut") },
+    { value: "black", label: t("black") },
+    { value: "grey", label: t("grey") },
+    { value: "dun", label: t("dun") },
+    { value: "roan", label: t("roan") },
+    { value: "other", label: t("other") },
+  ];
+
+  const onSubmit = async (data: HorseFormData) => {
+    setLoading(true);
+
+    try {
+      const token =
+        localStorage.getItem(DataNameModel.ACCESS_TOKEN) ||
+        localStorage.getItem(DataNameModel.REFRESH_TOKEN);
+
+      if (!token) {
+        toast.error(t("missing_token"));
+        return;
+      }
+
       const formData = new FormData();
-      formData.append(DataNameModel.HORSE_NAME, data.name);
-      if (data.gender)
-        formData.append(DataNameModel.HORSE_GENDER, data.gender.toString());
-      if (data.breed)
-        formData.append(DataNameModel.HORSE_BREED, data.breed.toString());
-      if (data.weight)
-        formData.append(DataNameModel.HORSE_WEIGHT, data.weight.toString());
-      if (data.height)
-        formData.append(DataNameModel.HORSE_HEIGHT, data.height.toString());
-      if (data.age)
-        formData.append(DataNameModel.HORSE_AGE, data.age.toString());
-      if (data.image && data.image.length > 0) {
-        formData.append(DataNameModel.HORSE_IMAGE, data.image[0]);
-      }
-      formData.append(DataNameModel.HORSE_DESC, data.desc?.trim() || "");
 
-      try {
-        const response = await axios.post(`${apiUrl}/horse-data/`, formData, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const horseId = response.data.id;
-        console.log("Horse data uploaded successfully, horseId:", horseId);
-
-        if (horseId) {
-          await createUserHorseConnection(horseId);
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "image") {
+          if (value instanceof FileList && value.length > 0) {
+            formData.append("image", value[0]);
+          }
+        } else if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
         }
-      } catch (error: any) {
-        console.error("Hiba a ló adatainak feltöltésekor:", error);
+      });
+
+      const response = await axios.post(
+        `${apiUrl}/horse-data/`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const horseId = response.data.id;
+
+      if (!horseId) {
+        throw new Error("The created horse ID was not returned.");
       }
-    };
 
-    const createUserHorseConnection = async (horseId: number) => {
-      try {
-        const payload = { horse_id: horseId };
+      await axios.post(
+        `${apiUrl}/user-horses/`,
+        { horse_id: horseId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-        await axios.post(`${apiUrl}/user-horses/`, payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        navigate("/HorsesList");
-      } catch (error: any) {
-        console.error("Hiba a kapcsolat létrehozásakor:", error);
-      }
-    };
-
-    await postHorseData();
+      toast.success(t("data_saved_successfully"));
+      navigate("/HorsesList");
+    } catch (error) {
+      console.error("Error while saving horse data:", error);
+      toast.error(t("could_not_save"));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -156,6 +169,7 @@ export const AddHorse = () => {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
+
       <FormSetUp
         onSubmit={handleSubmit(onSubmit)}
         className={classNames("ai-form", {
@@ -163,99 +177,213 @@ export const AddHorse = () => {
           "form-centered": !isSidebarOpen,
         })}
       >
-        <h2>{t("enter_data")}</h2>
+        <h2>{t("addhorse")}</h2>
 
         <div className="input-group">
-          <label htmlFor="name">{t("horse_name")}:</label>
+          <label htmlFor="name">{t("name")} *</label>
           <Input
             id="name"
             type="text"
-            placeholder={t("horse_name")}
+            placeholder={t("name")}
             {...register("name")}
           />
-          {errors.name && <p className="errors">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="errors">{t(errors.name.message ?? "")}</p>
+          )}
         </div>
 
         <div className="input-group">
-          <label htmlFor="image">{t("upload_hint_photo")}:</label>
+          <label htmlFor="chip_number">{t("horse_chip_number")} *</label>
+          <Input
+            id="chip_number"
+            type="text"
+            placeholder={t("horse_chip_number")}
+            {...register("chip_number")}
+          />
+          {errors.chip_number && (
+            <p className="errors">
+              {t(errors.chip_number.message ?? "")}
+            </p>
+          )}
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="owner">{t("owner")} *</label>
+          <Input
+            id="owner"
+            type="text"
+            placeholder={t("owner")}
+            {...register("owner")}
+          />
+          {errors.owner && (
+            <p className="errors">{t(errors.owner.message ?? "")}</p>
+          )}
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="stable_name">{t("stable_name")}</label>
+          <Input
+            id="stable_name"
+            type="text"
+            placeholder={t("stable_name")}
+            {...register("stable_name")}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="studbook_number">{t("studbook_number")}</label>
+          <Input
+            id="studbook_number"
+            type="text"
+            placeholder={t("studbook_number")}
+            {...register("studbook_number")}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="birth_date">{t("birth_date")}</label>
+          <Input id="birth_date" type="date" {...register("birth_date")} />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="gender">{t("gender")}</label>
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field }) => (
+              <Select
+                inputId="gender"
+                name={field.name}
+                ref={field.ref}
+                options={genderOptions}
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                placeholder={t("select_horse_sex")}
+                isClearable
+                isSearchable
+              />
+            )}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="color">{t("horse_color")}</label>
+          <Controller
+            name="color"
+            control={control}
+            render={({ field }) => (
+              <Select
+                inputId="color"
+                name={field.name}
+                ref={field.ref}
+                options={colorOptions}
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                placeholder={t("select_horse_color")}
+                isClearable
+                isSearchable
+              />
+            )}
+          />
+          {color === "other" && <p>{t("other_color_note")}</p>}
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="markings">{t("markings")}</label>
+          <textarea
+            id="markings"
+            rows={3}
+            placeholder={t("markings")}
+            {...register("markings")}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="branding">{t("branding")}</label>
+          <Input
+            id="branding"
+            type="text"
+            placeholder={t("branding")}
+            {...register("branding")}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="breeder">{t("breeder")}</label>
+          <Input
+            id="breeder"
+            type="text"
+            placeholder={t("breeder")}
+            {...register("breeder")}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="father">{t("father")}</label>
+          <Input
+            id="father"
+            type="text"
+            placeholder={t("father")}
+            {...register("father")}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="mother">{t("mother")}</label>
+          <Input
+            id="mother"
+            type="text"
+            placeholder={t("mother")}
+            {...register("mother")}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="maternal_grandsire">
+            {t("maternal_grandsire")}
+          </label>
+          <Input
+            id="maternal_grandsire"
+            type="text"
+            placeholder={t("maternal_grandsire")}
+            {...register("maternal_grandsire")}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="image">{t("birth_photo")}</label>
           <Input
             id="image"
             type="file"
-            {...register("image")}
+            accept="image/jpeg,image/png"
             className="draganddrop"
+            {...register("image")}
           />
-          {errors.image && <p className="errors">{errors.image.message}</p>}
+          {errors.image && (
+            <p className="errors">{t(errors.image.message ?? "")}</p>
+          )}
         </div>
 
         <div className="input-group">
-          <label htmlFor="gender">{t("gender")}:</label>
-          <select id="gender" {...register("gender")} defaultValue="">
-            <option value="" disabled hidden>
-              {t("select_gender")}
-            </option>
-            <option value="male">{t("male")}</option>
-            <option value="female">{t("female")}</option>
-            <option value="gelding">{t("gelding")}</option>
-          </select>
-          {errors.gender && <p className="errors">{errors.gender.message}</p>}
-        </div>
-        <div className="input-group">
-          <label htmlFor="breed">{t("breed")}:</label>
-          <Input
-            id="breed"
-            type="text"
-            placeholder={t("breed")}
-            {...register("breed")}
-          />
-          {errors.breed && <p className="errors">{errors.breed.message}</p>}
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="height">{t("height")}:</label>
-          <Input
-            id="height"
-            type="number"
-            step="0.1"
-            placeholder={t("height")}
-            {...register("height")}
-          />
-          {errors.height && <p className="errors">{errors.height.message}</p>}
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="weight">{t("weight")}:</label>
-          <Input
-            id="weight"
-            type="number"
-            step="0.1"
-            placeholder={t("weight")}
-            {...register("weight")}
-          />
-          {errors.weight && <p className="errors">{errors.weight.message}</p>}
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="age">{t("age")}:</label>
-          <Input
-            id="age"
-            type="number"
-            placeholder={t("age")}
-            {...register("age")}
-          />
-          {errors.age && <p className="errors">{errors.age.message}</p>}
-        </div>
-        <div className="input-group">
-          <label htmlFor="desc">{t("enter_description")}:</label>
-          <Input
+          <label htmlFor="desc">{t("other_data")}</label>
+          <textarea
             id="desc"
-            type="text"
-            placeholder={t("enter_description")}
+            rows={3}
+            placeholder={t("other_data")}
             {...register("desc")}
           />
-          {errors.desc && <p className="errors">{errors.desc.message}</p>}
         </div>
 
-        <Button type="submit">{t("save")}</Button>
+        <div className="edit-horse-buttons">
+          <Button type="button" onClick={() => navigate("/HorsesList")}>
+            {t("back")}
+          </Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? t("saving") : t("save")}
+          </Button>
+        </div>
       </FormSetUp>
     </>
   );
