@@ -7,7 +7,7 @@ from .user_horse_view import UserHorseView
 from animal_main import settings
 from .registration_views import RegisterView
 from .horse_data_views import HorseDataView, HorseDetailView
-from .token_refresh_view import CustomTokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 from .horse_data_views import AI_View
 from .mail import PasswordResetRequestView, PasswordResetConfirmView
 
@@ -17,7 +17,7 @@ urlpatterns = [
     path('horse-data/', HorseDataView.as_view(), name='horse-data'),
     path("horse-data/<int:id>/", HorseDetailView.as_view()),
     path('user_details/', UserDetailView.as_view(), name='user_detail'),
-    path("api/token/refresh/", CustomTokenRefreshView.as_view(), name="token_refresh"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path('user-horses/', UserHorseView.as_view(), name='user_horses'),
     path("ai/<int:id>/", AI_View.as_view(), name='ai_horse_detail'),
     path("password-reset/", PasswordResetRequestView.as_view()),

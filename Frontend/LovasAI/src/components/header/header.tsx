@@ -24,21 +24,15 @@ export const Header = ({ isSidebarOpen, setIsSidebarOpen }: HeaderProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [userData, setUserData] = useState<string>("");
+  const [userData, setUserData] = useState("");
 
   const toggleSideBar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const fetchUser = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) return;
-
     try {
-      const response = await axios.get(`${apiUrl}/user_details/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
+      const response = await axios.get(`${apiUrl}/user_details/`);
       setUserData(response.data.name);
     } catch (error) {
       console.error("User fetch failed", error);
@@ -54,6 +48,7 @@ export const Header = ({ isSidebarOpen, setIsSidebarOpen }: HeaderProps) => {
     localStorage.removeItem(DataNameModel.REFRESH_TOKEN);
     sessionStorage.removeItem(DataNameModel.ACCESS_TOKEN);
     sessionStorage.removeItem(DataNameModel.REFRESH_TOKEN);
+    localStorage.removeItem("session_expiry");
     navigate("/SignIn");
   };
 

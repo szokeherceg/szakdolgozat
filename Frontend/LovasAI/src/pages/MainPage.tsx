@@ -9,20 +9,15 @@ const apiUrl = import.meta.env.VITE_BASE_URL;
 
 export const MainPage = () => {
   const { t, i18n } = useTranslation();
-  const [, setUserLanguage] = useState<string>("");
+  const [, setUserLanguage] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) return;
-
       try {
-        const response = await axios.get(`${apiUrl}/user_details/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
+        const response = await axios.get(`${apiUrl}/user_details/`);
         const userLang = response.data.lang;
+
         await i18n.changeLanguage(userLang);
         setUserLanguage(userLang);
       } catch (error) {
@@ -31,7 +26,7 @@ export const MainPage = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [i18n]);
 
   return (
     <>
@@ -39,6 +34,7 @@ export const MainPage = () => {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
+
       <FormSetUp className={isSidebarOpen ? "form-shifted" : "form-centered"}>
         <div className="main-content">
           <h2>{t("what_is_this")}</h2>
