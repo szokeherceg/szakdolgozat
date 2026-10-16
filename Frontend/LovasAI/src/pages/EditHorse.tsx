@@ -87,7 +87,7 @@ export const EditHorse = () => {
   const genderOptions = [
     { value: "male", label: t("stallion") },
     { value: "female", label: t("mare") },
-    { value: "gelding", label: t("horse_gelding") },
+    { value: "gelding", label: t("gelding") },
   ];
 
   const colorOptions = [
@@ -232,7 +232,7 @@ export const EditHorse = () => {
         </div>
 
         <div className="input-group">
-          <label htmlFor="chip_number">{t("horse_chip_number")}</label>
+          <label htmlFor="chip_number">{t("chip_number")}</label>
           <Input
             id="chip_number"
             type="text"
@@ -305,7 +305,7 @@ export const EditHorse = () => {
         </div>
 
         <div className="input-group">
-          <label htmlFor="color">{t("horse_color")}</label>
+          <label htmlFor="color">{t("color")}</label>
           <Controller
             name="color"
             control={control}

@@ -35,7 +35,11 @@ export const MainPage = () => {
         setIsSidebarOpen={setIsSidebarOpen}
       />
 
-      <FormSetUp className={isSidebarOpen ? "form-shifted" : "form-centered"}>
+      <FormSetUp
+        className={`page-layout main-page ${
+          isSidebarOpen ? "form-shifted" : "form-centered"
+        }`}
+      >
         <div className="main-content">
           <h2>{t("what_is_this")}</h2>
           <p>{t("what_is_this_desc")}</p>

@@ -285,12 +285,12 @@ export const HorseDetail = () => {
                       : null,
                   )}
                   {showField(
-                    t(DataNameModel.HORSE_GENDER),
+                    t("gender"),
                     horse.gender ? t(horse.gender) : null,
-                  )}
+                  )}{" "}
                   {showField(t(DataNameModel.HORSE_BREED), horse.breed)}
                   {showField(t(DataNameModel.HORSE_AGE), horse.age)}
-                  {showField(t("color"), horse.color)}
+                  {showField(t("color"), horse.color ? t(horse.color) : null)}
                   {showField(t("markings"), horse.markings)}
                   {showField(t("branding"), horse.branding)}
                   {showField(t("breeder"), horse.breeder)}
@@ -327,17 +327,6 @@ export const HorseDetail = () => {
             </div>
 
             <div className="measurement-search-container">
-              <div className="search-input">
-                <label htmlFor="measurement-search">{t("search")}</label>
-                <input
-                  id="measurement-search"
-                  type="search"
-                  value={measurementSearch}
-                  onChange={(event) => setMeasurementSearch(event.target.value)}
-                  placeholder={t("search")}
-                />
-              </div>
-
               <div className="search-input">
                 <label htmlFor="measurement-start-date">{t("startdate")}</label>
                 <DatePicker

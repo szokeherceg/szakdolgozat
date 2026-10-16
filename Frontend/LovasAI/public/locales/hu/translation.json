@@ -1,4 +1,3 @@
-
 {
   "settings": "Beállítások",
   "email": "E-mail cím",
@@ -81,8 +80,9 @@
   "datetimeformat": "éééé-hh-nn",
   "view_more": "Továbbiak megtekintése",
   "select_gender": "Nem kiválasztása",
-  "male": "Hím",
-  "female": "Nőstény",
+  "male": "Mén",
+  "female": "Kanca",
+  "gelding": "Herélt",
   "gelding": "Ivartalanított hím",
   "ai_analysis": "Mesterséges intelligencia alapú elemzés",
   "ai_analysis_hint": "Testméretek elemzése az elővalidált kép alapján. Egészségügyi elemzéshez videó feltöltése is szükséges (opcionális).",
@@ -103,8 +103,7 @@
   "stable_name": "Istállónév (becenév)",
   "studbook_number": "Törzskönyvi szám",
   "birth_date": "Születési dátum",
-  "horse_sex": "Ivar",
-  "horse_color": "Szín",
+  "color": "Szín",
   "markings": "Jegyek, pigmentáltság",
   "branding": "Bélyegzés",
   "breeder": "Tenyésztő",
@@ -119,9 +118,6 @@
   "select_option": "Válassz",
   "select_horse_sex": "Válassz ivart",
   "select_horse_color": "Válassz színt",
-  "stallion": "Mén",
-  "mare": "Kanca",
-  "horse_gelding": "Herélt",
   "bay": "Pej",
   "chestnut": "Sárga",
   "black": "Fekete",
@@ -142,7 +138,7 @@
   "show_less": "Kevesebb",
   "show_more": "Több",
   "add_measurement": "Mérés hozzáadása",
-  "measurement_date":" Mérés időpontja",
+  "measurement_date": " Mérés időpontja",
   "measurement_image_hint": "A méréshez olyan oldalnézeti képet használj, amelyen a ló teljes teste látható, és szerepel rajta egy ArUco jelölő.",
   "measurement_image": "Mérési kép"
 }

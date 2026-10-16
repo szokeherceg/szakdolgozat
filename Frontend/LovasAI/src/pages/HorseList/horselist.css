@@ -135,6 +135,15 @@
 }
 
 @media (max-width: 1024px) {
+  .horse-list-page .search-container {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
   .horse-list-page .card {
     width: 90%;
     flex-direction: column;
@@ -150,9 +159,6 @@
   .horse-list-page .card-top h2 {
     margin: 0;
   }
-}
-
-@media (max-width: 768px) {
   .horse-list-page .card {
     align-items: flex-start;
   }

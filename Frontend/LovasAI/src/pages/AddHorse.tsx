@@ -89,7 +89,7 @@ export const AddHorse = () => {
   const genderOptions: SelectOption[] = [
     { value: "male", label: t("stallion") },
     { value: "female", label: t("mare") },
-    { value: "gelding", label: t("horse_gelding") },
+    { value: "gelding", label: t("gelding") },
   ];
 
   const colorOptions: SelectOption[] = [
@@ -197,7 +197,7 @@ export const AddHorse = () => {
           <Input
             id="chip_number"
             type="text"
-            placeholder={t("horse_chip_number")}
+            placeholder={t("chip_number")}
             {...register("chip_number")}
           />
           {errors.chip_number && (
@@ -268,7 +268,7 @@ export const AddHorse = () => {
         </div>
 
         <div className="input-group">
-          <label htmlFor="color">{t("horse_color")}</label>
+          <label htmlFor="color">{t("color")}</label>
           <Controller
             name="color"
             control={control}

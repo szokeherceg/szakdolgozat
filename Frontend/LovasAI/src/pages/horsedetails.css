@@ -13,7 +13,6 @@
 
 .horse-detail-page .horse-info {
     display: flex;
-    align-items: flex-start;
     gap: 24px;
     width: 100%;
     padding: 20px;
@@ -414,5 +413,10 @@
     .horse-detail-page .measurement-icon-button img {
         width: 38px !important;
         height: 38px !important;
+    }
+
+    .info-details {
+        width: 100% !important;
+        justify-content: center;
     }
 }
