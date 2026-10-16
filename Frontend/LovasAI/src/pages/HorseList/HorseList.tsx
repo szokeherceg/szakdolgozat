@@ -107,7 +107,7 @@ export const HorsesList = () => {
       ? new Date(
           startDate.getFullYear(),
           startDate.getMonth(),
-          startDate.getDate()
+          startDate.getDate(),
         )
       : null;
 
@@ -119,7 +119,7 @@ export const HorsesList = () => {
           23,
           59,
           59,
-          999
+          999,
         )
       : null;
 
@@ -139,7 +139,11 @@ export const HorsesList = () => {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
-      <FormSetUp className={isSidebarOpen ? "form-shifted" : "form-centered"}>
+      <FormSetUp
+        className={`page-layout horse-list-page ${
+          isSidebarOpen ? "form-shifted" : "form-centered"
+        }`}
+      >
         <div className="list-header">
           <div className="horse-list-header">
             <h1>{t("myhorses")}</h1>
@@ -204,41 +208,40 @@ export const HorsesList = () => {
                 className="card-image"
               />
               <div className="card-content">
-                  <div className="card-top">
-                    <h2>{horse.name}</h2>
-                    <div className="card-buttons">
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/EditHorse/${horse.id}`);
-                        }}
-                      >
-                        <Image height="55px" width="55px" src={Edit} />
-                      </div>
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteHorse(horse);
-                        }}
-                      >
-                        <Image height="45px" width="45px" src={Trash} />
-                      </div>
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/AI/${horse.id}`);
-                        }}
-                      >
-                        <Image height="50px" width="50px" src={AI} />
-                      </div>
+                <div className="card-top">
+                  <h2>{horse.name}</h2>
+                  <div className="card-buttons">
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/EditHorse/${horse.id}`);
+                      }}
+                    >
+                      <Image height="55px" width="55px" src={Edit} />
+                    </div>
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteHorse(horse);
+                      }}
+                    >
+                      <Image height="45px" width="45px" src={Trash} />
+                    </div>
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/AI/${horse.id}`);
+                      }}
+                    >
+                      <Image height="50px" width="50px" src={AI} />
                     </div>
                   </div>
                 </div>
-             
+              </div>
             </li>
           ))}
           {!loading && showNotFound && filteredHorses.length === 0 && (
-              <Image height="200px" width="auto" src={NotFound} />
+            <Image height="200px" width="auto" src={NotFound} />
           )}
         </ul>
       </FormSetUp>

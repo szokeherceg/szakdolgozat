@@ -1,8 +1,10 @@
+
 from rest_framework import serializers
-from .models import User, HorseData, UserHorse
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
+
+from .models import User, HorseData, HorseMeasurement, UserHorse
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,7 +23,6 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
     def validate_password(self, value):
-        # ezek később bővíthetőek más jelszavakkal is
         forbidden_words = [
             "jelszo",
             "password",
@@ -51,16 +52,12 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        lang = validated_data.get("lang", "hu")
-
-        user = User.objects.create_user(
+        return User.objects.create_user(
             email=validated_data["email"],
             password=validated_data["password"],
-            name=validated_data["name"],
-            lang=lang,
+            name=validated_data.get("name"),
+            lang=validated_data.get("lang", "hu"),
         )
-
-        return user
 
 
 class LoginSerializer(serializers.Serializer):
@@ -68,10 +65,10 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        email = data.get("email")
-        password = data.get("password")
-
-        user = authenticate(username=email, password=password)
+        user = authenticate(
+            username=data.get("email"),
+            password=data.get("password"),
+        )
 
         if user is None:
             raise serializers.ValidationError("Invalid email or password")
@@ -95,7 +92,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
         ]
 
 
-
 class HorseDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = HorseData
@@ -115,31 +111,37 @@ class HorseDataSerializer(serializers.ModelSerializer):
             "father",
             "mother",
             "maternal_grandsire",
-            "weight",
-            "height",
-            "girth",
-            "cannon_girth",
             "breed",
             "age",
             "image",
-            "ai_image",
             "desc",
             "created_at",
             "updated_at",
         ]
+        read_only_fields = ["id", "created_at", "updated_at"]
+
+
+class HorseMeasurementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HorseMeasurement
+        fields = [
+            "id",
+            "horse",
+            "measured_at",
+            "inserted_at",
+            "height",
+            "weight",
+            "girth",
+            "cannon_girth",
+            "image",
+            "ai_image",
+        ]
         read_only_fields = [
             "id",
+            "horse",
+            "inserted_at",
             "ai_image",
-            "created_at",
-            "updated_at",
         ]
-
-    def update(self, instance, validated_data):
-        validated_data.pop("chip_number", None)
-        validated_data.pop("studbook_number", None)
-
-        return super().update(instance, validated_data)
-
 
 
 class UserHorseSerializer(serializers.ModelSerializer):

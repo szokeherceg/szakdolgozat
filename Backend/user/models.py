@@ -1,10 +1,14 @@
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.utils import timezone
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError("The Email field must be set")
+
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -14,7 +18,9 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+
         return self.create_user(email, password, **extra_fields)
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
@@ -23,12 +29,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    
-    lang = models.CharField(max_length=2, default='hu')
+    lang = models.CharField(max_length=2, default="hu")
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     def __str__(self):
@@ -53,21 +58,11 @@ class HorseData(models.Model):
     mother = models.CharField(max_length=255, blank=True, default="")
     maternal_grandsire = models.CharField(max_length=255, blank=True, default="")
 
-    weight = models.FloatField(null=True, blank=True)
-    height = models.FloatField(null=True, blank=True)
-    girth = models.FloatField(null=True, blank=True)
-    cannon_girth = models.FloatField(null=True, blank=True)
-
     breed = models.CharField(max_length=100, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
 
     image = models.ImageField(
         upload_to="horse_images/",
-        null=True,
-        blank=True,
-    )
-    ai_image = models.ImageField(
-        upload_to="ai_results/",
         null=True,
         blank=True,
     )
@@ -82,24 +77,36 @@ class HorseData(models.Model):
         return self.name
 
 
-    def __str__(self):
-        return self.name
-
 class HorseMeasurement(models.Model):
     horse = models.ForeignKey(
         HorseData,
         on_delete=models.CASCADE,
-        related_name="measurements"
+        related_name="measurements",
     )
+
+    measured_at = models.DateTimeField(default=timezone.now)
+    inserted_at = models.DateTimeField(auto_now_add=True)
+
     height = models.FloatField(null=True, blank=True)
     weight = models.FloatField(null=True, blank=True)
     girth = models.FloatField(null=True, blank=True)
     cannon_girth = models.FloatField(null=True, blank=True)
-    measured_at = models.DateTimeField(auto_now_add=True)
+
+    image = models.ImageField(
+        upload_to="horse_measurements/",
+        null=True,
+        blank=True,
+    )
+    ai_image = models.ImageField(
+        upload_to="ai_results/",
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return f"{self.horse.name} - {self.measured_at:%Y-%m-%d %H:%M}"
-    
+
+
 class UserHorse(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     horse = models.ForeignKey(HorseData, on_delete=models.CASCADE)
@@ -107,4 +114,3 @@ class UserHorse(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.horse.name}"
-

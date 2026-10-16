@@ -1,4 +1,3 @@
-
 {
   "settings": "Settings",
   "email": "Email address",
@@ -137,5 +136,9 @@
   "invalid_cannon_girth": "Cannon bone circumference cannot be negative.",
   "horse_image_hint": "JPG or PNG format, up to 5 MB.",
   "missing_token": "No authentication token found.",
-  "saving": "Saving"
+  "saving": "Saving",
+  "chip_number": "Chip number",
+  "show_less": "Show less",
+  "show_more": "Show more",
+  "add_measurement": "Add measurement"
 }

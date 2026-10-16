@@ -137,5 +137,9 @@
   "invalid_cannon_girth": "A szárkörméret nem lehet negatív.",
   "horse_image_hint": "JPG vagy PNG formátum, legfeljebb 5 MB.",
   "missing_token": "Nincs bejelentkezési token.",
-  "saving": "Mentés"
+  "saving": "Mentés",
+  "chip_number": "Azonsoító",
+  "show_less": "Kevesebb",
+  "show_more": "Több",
+  "add_measurement": "Mérés hozzáadása"
 }

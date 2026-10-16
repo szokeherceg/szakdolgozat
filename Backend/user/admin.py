@@ -75,7 +75,7 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(HorseData)
 class HorseDataAdmin(admin.ModelAdmin):
-    list_display = ('name', 'weight', 'age')
+    list_display = ('name', 'age')
     search_fields = ('name',)
     list_filter = ('age',)
 

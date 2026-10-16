@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,6 +7,8 @@ import { toast } from "react-toastify";
 import { Button, FormSetUp, Header } from "../components";
 import { DataNameModel } from "../models";
 import Load from "./../assets/load.svg";
+
+import "./list.css";
 
 export const AI = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -94,7 +95,9 @@ export const AI = () => {
       />
 
       <FormSetUp
-        className={isSidebarOpen ? "form-shifted" : "form-centered"}
+        className={`page-layout horse-detail-page ${
+          isSidebarOpen ? "form-shifted" : "form-centered"
+        }`}
       >
         <div className="horse-details">
           <div className="horse-info">
@@ -147,9 +150,7 @@ export const AI = () => {
             </section>
           </div>
 
-          <div
-            className="details-button"
-          >
+          <div className="details-button">
             <Button type="button" onClick={handleBack}>
               {t("back")}
             </Button>
