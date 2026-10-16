@@ -141,5 +141,8 @@
   "chip_number": "Azonsoító",
   "show_less": "Kevesebb",
   "show_more": "Több",
-  "add_measurement": "Mérés hozzáadása"
+  "add_measurement": "Mérés hozzáadása",
+  "measurement_date":" Mérés időpontja",
+  "measurement_image_hint": "A méréshez olyan oldalnézeti képet használj, amelyen a ló teljes teste látható, és szerepel rajta egy ArUco jelölő.",
+  "measurement_image": "Mérési kép"
 }

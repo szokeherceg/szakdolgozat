@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { DataNameModel, HorseModel } from "../../models";
 
 import Trash from "./../../assets/trash.svg";
-import AI from "./../../assets/AI.svg";
 import Edit from "./../../assets/edit-246.png";
 import NotFound from "./../../assets/notfound.png";
 
@@ -226,14 +225,6 @@ export const HorsesList = () => {
                       }}
                     >
                       <Image height="45px" width="45px" src={Trash} />
-                    </div>
-                    <div
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/AI/${horse.id}`);
-                      }}
-                    >
-                      <Image height="50px" width="50px" src={AI} />
                     </div>
                   </div>
                 </div>

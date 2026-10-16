@@ -165,6 +165,13 @@ form.password-reset {
   padding: 20px;
 }
 
+.measurement-image-hint {
+  margin: 0 0 10px;
+  text-align: center !important;
+  width: 100%;
+  font-weight: 700;
+}
+
 @media (max-width: 768px) {
   .signin-container .container {
     width: 90%;

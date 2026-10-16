@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import {
   AddHorse,
+  AddMeasurement,
   AI,
   SignIn,
   SignUp,
@@ -9,6 +10,7 @@ import {
   HorsesList,
   Settings,
   EditHorse,
+  EditMeasurement,
   HorseDetail,
 } from "../pages";
 import { ProtectedRoute } from "./protected-route";
@@ -32,7 +34,9 @@ function App() {
             element={<Settings onClose={() => {}} />}
           />
           <Route path="/AddHorse" element={<AddHorse />} />
+          <Route path="/AddMeasurement/:id" element={<AddMeasurement />} />
           <Route path="/EditHorse/:id" element={<EditHorse />} />
+          <Route path="/EditMeasurement/:id" element={<EditMeasurement />} />
           <Route path="/HorseDetail/:id" element={<HorseDetail />} />
         </Route>
       </Routes>

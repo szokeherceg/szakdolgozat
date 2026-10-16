@@ -3,10 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import DatePicker from "react-datepicker";
-import { Button, FormSetUp, Header,Image } from "../components";
+import { Button, FormSetUp, Header, Image } from "../components";
 import { DataNameModel } from "../models";
+
+import Trash from "./../assets/trash.svg";
+import AI from "./../assets/AI.svg";
+import Edit from "./../assets/edit-246.png";
 import Load from "./../assets/load.svg";
 import NotFound from "../assets/notfound.png";
+
 import "react-datepicker/dist/react-datepicker.css";
 import "./list.css";
 import "./horsedetails.css";
@@ -43,8 +48,19 @@ interface HorseMeasurement {
   girth?: number | null;
   cannon_girth?: number | null;
   image?: string | null;
-  ai_image?: string | null;
 }
+
+const apiUrl = import.meta.env.VITE_BASE_URL;
+
+const getMediaUrl = (path?: string | null) => {
+  if (!path) return NotFound;
+
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path;
+  }
+
+  return `${apiUrl}${path.startsWith("/") ? path : `/${path}`}`;
+};
 
 export const HorseDetail = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -58,7 +74,6 @@ export const HorseDetail = () => {
   const [measurementsError, setMeasurementsError] = useState(false);
 
   const { id } = useParams<{ id: string }>();
-  const apiUrl = import.meta.env.VITE_BASE_URL;
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -75,18 +90,18 @@ export const HorseDetail = () => {
       setMeasurements([]);
       setMeasurementsError(false);
 
-      const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
+      const token =
+        localStorage.getItem(DataNameModel.ACCESS_TOKEN) ||
+        localStorage.getItem(DataNameModel.REFRESH_TOKEN);
+
+      const config = token
+        ? { headers: { Authorization: `Bearer ${token}` } }
+        : {};
 
       try {
-        const horseResponse = await axios.get(
-          `${apiUrl}/horse-data/${id}/`,
-          config,
-        );
+        const response = await axios.get(`${apiUrl}/horse-data/${id}/`, config);
 
-        setHorse(horseResponse.data);
+        setHorse(response.data);
       } catch (error) {
         console.error("Failed to fetch horse data:", error);
         setHorse(null);
@@ -95,15 +110,19 @@ export const HorseDetail = () => {
       }
 
       try {
-        const measurementsResponse = await axios.get(
+        const response = await axios.get(
           `${apiUrl}/horse-data/${id}/measurements/`,
           config,
         );
 
+        const data = response.data;
+
         setMeasurements(
-          Array.isArray(measurementsResponse.data)
-            ? measurementsResponse.data
-            : [],
+          Array.isArray(data)
+            ? data
+            : Array.isArray(data?.results)
+              ? data.results
+              : [],
         );
       } catch (error) {
         console.error("Failed to fetch measurements:", error);
@@ -114,8 +133,8 @@ export const HorseDetail = () => {
       }
     };
 
-    fetchData();
-  }, [id, apiUrl]);
+    void fetchData();
+  }, [id]);
 
   const filteredMeasurements = useMemo(() => {
     return measurements.filter((measurement) => {
@@ -136,6 +155,10 @@ export const HorseDetail = () => {
         );
 
       const measuredDate = new Date(measurement.measured_at);
+
+      if (Number.isNaN(measuredDate.getTime())) {
+        return false;
+      }
 
       const start = startDate
         ? new Date(
@@ -168,15 +191,39 @@ export const HorseDetail = () => {
   const showField = (label: string, value?: string | number | null) =>
     value !== undefined && value !== null && value !== "" ? (
       <p key={label}>
-        {label}: {value}
+        <div>{label}:</div> {value}
       </p>
     ) : null;
 
+  const handleDeleteMeasurement = async (measurementId: number) => {
+    const token =
+      localStorage.getItem(DataNameModel.ACCESS_TOKEN) ||
+      localStorage.getItem(DataNameModel.REFRESH_TOKEN);
+
+    try {
+      await axios.delete(`${apiUrl}/measurements/${measurementId}/`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+
+      setMeasurements((previous) =>
+        previous.filter((measurement) => measurement.id !== measurementId),
+      );
+    } catch (error) {
+      console.error("Failed to delete measurement:", error);
+    }
+  };
+
   if (loading) {
     return (
-      <div className="loader-container">
-        <img src={Load} alt="Loading..." className="loading-image" />
-      </div>
+      <>
+        <Header
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
+        <div className="loader-container">
+          <img src={Load} alt="Loading..." className="loading-image" />
+        </div>
+      </>
     );
   }
 
@@ -188,7 +235,7 @@ export const HorseDetail = () => {
           setIsSidebarOpen={setIsSidebarOpen}
         />
         <FormSetUp
-          className={`page-layout horse-list-page  ${
+          className={`page-layout horse-detail-page ${
             isSidebarOpen ? "form-shifted" : "form-centered"
           }`}
         >
@@ -216,7 +263,7 @@ export const HorseDetail = () => {
           <div className="horse-info">
             {horse.image && (
               <img
-                src={`${apiUrl}${horse.image}`}
+                src={getMediaUrl(horse.image)}
                 alt={horse.name}
                 className="modal-image"
               />
@@ -258,7 +305,7 @@ export const HorseDetail = () => {
               <div className="details-expand">
                 <Button
                   type="button"
-                  onClick={() => setShowAllData((prev) => !prev)}
+                  onClick={() => setShowAllData((previous) => !previous)}
                   aria-expanded={showAllData}
                   aria-label={showAllData ? t("show_less") : t("show_more")}
                 >
@@ -270,7 +317,7 @@ export const HorseDetail = () => {
 
           <section className="measurements-section">
             <div className="measurements-header">
-              <h2>{t("measurements")}</h2>
+              <h2>{t("page_measurements")}</h2>
               <Button
                 type="button"
                 onClick={() => navigate(`/AddMeasurement/${horse.id}`)}
@@ -302,6 +349,7 @@ export const HorseDetail = () => {
                   endDate={endDate ?? undefined}
                   dateFormat="yyyy-MM-dd"
                   placeholderText={t("datetimeformat")}
+                  isClearable
                 />
               </div>
 
@@ -317,45 +365,88 @@ export const HorseDetail = () => {
                   minDate={startDate ?? undefined}
                   dateFormat="yyyy-MM-dd"
                   placeholderText={t("datetimeformat")}
+                  isClearable
                 />
               </div>
             </div>
 
             {measurementsError ? (
-              <Image height="200px" width="500px" src={NotFound} />
+              <Image height="200px" width="auto" src={NotFound} />
             ) : filteredMeasurements.length > 0 ? (
-              <ul className="measurements-list">
+              <ul className="chess measurement-cards">
                 {filteredMeasurements.map((measurement) => (
-                  <li key={measurement.id} className="measurement-card">
-                    <h3>
-                      {new Date(measurement.measured_at).toLocaleDateString()}
-                    </h3>
-
-                    {showField(t("horse_height"), measurement.height)}
-                    {showField(t("horse_weight"), measurement.weight)}
-                    {showField(t("girth"), measurement.girth)}
-                    {showField(t("cannon_girth"), measurement.cannon_girth)}
-
+                  <li
+                    key={measurement.id}
+                    className="card measurement-list-card"
+                  >
                     {measurement.image && (
                       <img
-                        src={`${apiUrl}${measurement.image}`}
+                        src={getMediaUrl(measurement.image)}
                         alt={t("measurement_image")}
-                        className="measurement-image"
+                        className="card-image measurement-card-image"
+                        loading="lazy"
                       />
                     )}
 
-                    {measurement.ai_image && (
-                      <img
-                        src={`${apiUrl}${measurement.ai_image}`}
-                        alt={t("ai_result")}
-                        className="measurement-image"
-                      />
-                    )}
+                    <div className="card-content">
+                      <div className="card-top">
+                        <h2 className="measurement-card-date">
+                          {new Date(
+                            measurement.measured_at,
+                          ).toLocaleDateString()}
+                        </h2>
+
+                        <div className="card-buttons">
+                          <button
+                            type="button"
+                            className="measurement-icon-button"
+                            onClick={() =>
+                              navigate(`/EditMeasurement/${measurement.id}`)
+                            }
+                            aria-label={t("edit")}
+                            title={t("edit")}
+                          >
+                            <Image height="48px" width="48px" src={Edit} />
+                          </button>
+
+                          <button
+                            type="button"
+                            className="measurement-icon-button"
+                            onClick={() =>
+                              void handleDeleteMeasurement(measurement.id)
+                            }
+                            aria-label={t("delete")}
+                            title={t("delete")}
+                          >
+                            <Image height="40px" width="40px" src={Trash} />
+                          </button>
+
+                          <button
+                            type="button"
+                            className="measurement-icon-button"
+                            onClick={() =>
+                              navigate(
+                                `/AI/${measurement.horse}?measurementId=${measurement.id}`,
+                              )
+                            }
+                          >
+                            <Image height="48px" width="48px" src={AI} />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="measurement-values">
+                        {showField(t("height"), measurement.height)}
+                        {showField(t("weight"), measurement.weight)}
+                        {showField(t("girth"), measurement.girth)}
+                        {showField(t("cannon_girth"), measurement.cannon_girth)}
+                      </div>
+                    </div>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>{t("no_measurements_found")}</p>
+              <Image height="200px" width="400px" src={NotFound} />
             )}
           </section>
 

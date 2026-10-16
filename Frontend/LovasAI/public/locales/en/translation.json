@@ -140,5 +140,8 @@
   "chip_number": "Chip number",
   "show_less": "Show less",
   "show_more": "Show more",
-  "add_measurement": "Add measurement"
+  "add_measurement": "Add measurement",
+  "measurement_date": "Measurement date",
+  "measurement_image_hint": "For accurate measurement, use a side-view image showing the horse's entire body and an ArUco marker.",
+  "measurement_image": "Measurement image"
 }
