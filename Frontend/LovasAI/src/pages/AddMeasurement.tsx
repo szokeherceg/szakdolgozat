@@ -23,7 +23,8 @@ const measurementSchema = yup.object({
     )
     .nullable()
     .optional()
-    .min(0, "invalid_measurement"),
+    .min(50, "invalid_measurement")
+    .max(175, "invalid_measurement"),
   weight: yup
     .number()
     .transform((value, originalValue) =>
@@ -31,7 +32,8 @@ const measurementSchema = yup.object({
     )
     .nullable()
     .optional()
-    .min(0, "invalid_measurement"),
+    .min(25, "invalid_measurement")
+    .max(900, "invalid_measurement"),
   girth: yup
     .number()
     .transform((value, originalValue) =>
@@ -39,7 +41,8 @@ const measurementSchema = yup.object({
     )
     .nullable()
     .optional()
-    .min(0, "invalid_measurement"),
+    .min(40, "invalid_measurement")
+    .max(230, "invalid_measurement"),
   cannon_girth: yup
     .number()
     .transform((value, originalValue) =>
@@ -47,10 +50,13 @@ const measurementSchema = yup.object({
     )
     .nullable()
     .optional()
-    .min(0, "invalid_measurement"),
+    .min(6, "invalid_measurement")
+    .max(32, "invalid_measurement"),
   image: yup
     .mixed<FileList>()
-    .optional()
+    .test("required", "file_required", (value) => {
+      return value instanceof FileList && value.length > 0;
+    })
     .test("fileType", "invalid_file_type", (value) => {
       if (!value || value.length === 0) return true;
       return ["image/jpeg", "image/png"].includes(value[0].type);
@@ -153,6 +159,7 @@ export const AddMeasurement = () => {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
+
       <FormSetUp
         onSubmit={handleSubmit(onSubmit)}
         className={classNames("ai-form", {
@@ -180,7 +187,8 @@ export const AddMeasurement = () => {
             id="height"
             type="number"
             step="any"
-            min="0"
+            min="50"
+            max="175"
             placeholder={t("height")}
             {...register("height")}
           />
@@ -195,7 +203,8 @@ export const AddMeasurement = () => {
             id="weight"
             type="number"
             step="any"
-            min="0"
+            min="25"
+            max="900"
             placeholder={t("weight")}
             {...register("weight")}
           />
@@ -210,7 +219,8 @@ export const AddMeasurement = () => {
             id="girth"
             type="number"
             step="any"
-            min="0"
+            min="40"
+            max="230"
             placeholder={t("girth")}
             {...register("girth")}
           />
@@ -225,7 +235,8 @@ export const AddMeasurement = () => {
             id="cannon_girth"
             type="number"
             step="any"
-            min="0"
+            min="6"
+            max="32"
             placeholder={t("cannon_girth")}
             {...register("cannon_girth")}
           />
@@ -233,6 +244,7 @@ export const AddMeasurement = () => {
             <p className="errors">{t(errors.cannon_girth.message ?? "")}</p>
           )}
         </div>
+
         <div className="input-group">
           <p className="measurement-image-hint">
             {t("measurement_image_hint")}
@@ -250,12 +262,13 @@ export const AddMeasurement = () => {
             <p className="errors">{t(errors.image.message ?? "")}</p>
           )}
         </div>
+
         <div className="edit-horse-buttons">
           <Button type="button" onClick={() => navigate(`/HorseDetail/${id}`)}>
             {t("back")}
           </Button>
           <Button type="submit" disabled={loading}>
-            {loading ? t("saving") : t("save")}
+            {t("save")}
           </Button>
         </div>
       </FormSetUp>

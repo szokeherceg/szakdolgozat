@@ -8,21 +8,21 @@ from .models import User, HorseData, UserHorse
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'name', 'lang')
+        fields = ("email", "name", "lang")
 
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = User
         fields = (
-            'email',
-            'name',
-            'lang',
-            'is_active',
-            'is_staff',
-            'is_superuser',
-            'groups',
-            'user_permissions',
+            "email",
+            "name",
+            "lang",
+            "is_active",
+            "is_staff",
+            "is_superuser",
+            "groups",
+            "user_permissions",
         )
 
 
@@ -32,41 +32,41 @@ class UserAdmin(BaseUserAdmin):
     form = CustomUserChangeForm
     model = User
 
-    list_display = ('email', 'name', 'lang', 'date_joined', 'is_active', 'is_staff')
-    search_fields = ('email', 'name')
-    list_filter = ('lang', 'is_active', 'is_staff')
-    ordering = ('-date_joined',)
-    readonly_fields = ('date_joined',)
+    list_display = ("email", "name", "lang", "date_joined", "is_active", "is_staff")
+    search_fields = ("email", "name")
+    list_filter = ("lang", "is_active", "is_staff")
+    ordering = ("-date_joined",)
+    readonly_fields = ("date_joined",)
 
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('Személyes adatok', {'fields': ('name', 'lang')}),
+        (None, {"fields": ("email", "password")}),
+        ("Személyes adatok", {"fields": ("name", "lang")}),
         (
-            'Jogosultságok',
+            "Jogosultságok",
             {
-                'fields': (
-                    'is_active',
-                    'is_staff',
-                    'is_superuser',
-                    'user_permissions',
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "user_permissions",
                 )
             },
         ),
-        ('Csatlakozás dátuma', {'fields': ('date_joined',)}),
+        ("Csatlakozás dátuma", {"fields": ("date_joined",)}),
     )
 
     add_fieldsets = (
         (
             None,
             {
-                'fields': (
-                    'email',
-                    'name',
-                    'lang',
-                    'password1',
-                    'password2',
-                    'is_active',
-                    'is_staff',
+                "fields": (
+                    "email",
+                    "name",
+                    "lang",
+                    "password1",
+                    "password2",
+                    "is_active",
+                    "is_staff",
                 ),
             },
         ),
@@ -75,12 +75,12 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(HorseData)
 class HorseDataAdmin(admin.ModelAdmin):
-    list_display = ('name', 'age')
-    search_fields = ('name',)
-    list_filter = ('age',)
+    list_display = ("name",)
+    search_fields = ("name",)
+
 
 @admin.register(UserHorse)
 class UserHorseAdmin(admin.ModelAdmin):
-    list_display = ('user', 'horse', 'created_at')
-    search_fields = ('name', 'name')
-    list_filter = ('created_at',)
+    list_display = ("user", "horse", "created_at")
+    search_fields = ("user__email", "horse__name")
+    list_filter = ("created_at",)

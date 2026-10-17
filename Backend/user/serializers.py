@@ -112,13 +112,23 @@ class HorseDataSerializer(serializers.ModelSerializer):
             "mother",
             "maternal_grandsire",
             "breed",
-            "age",
             "image",
             "desc",
             "created_at",
             "updated_at",
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
+    def validate_chip_number(self, value):
+        value = value.strip()
+
+        if value and HorseData.objects.filter(
+            chip_number=value
+        ).exclude(pk=self.instance.pk if self.instance else None).exists():
+            raise serializers.ValidationError(
+                "Ez a chipazonosító már szerepel az adatbázisban."
+            )
+
+        return value
 
 
 class HorseMeasurementSerializer(serializers.ModelSerializer):

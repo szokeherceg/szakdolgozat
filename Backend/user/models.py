@@ -2,6 +2,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class UserManager(BaseUserManager):
@@ -39,7 +40,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-
 class HorseData(models.Model):
     name = models.CharField(max_length=255)
     chip_number = models.CharField(max_length=100, blank=True, default="")
@@ -59,7 +59,6 @@ class HorseData(models.Model):
     maternal_grandsire = models.CharField(max_length=255, blank=True, default="")
 
     breed = models.CharField(max_length=100, null=True, blank=True)
-    age = models.IntegerField(null=True, blank=True)
 
     image = models.ImageField(
         upload_to="horse_images/",
@@ -68,10 +67,23 @@ class HorseData(models.Model):
     )
     desc = models.TextField(null=True, blank=True)
 
-    users = models.ManyToManyField(User, related_name="horses")
+    users = models.ManyToManyField(
+        User,
+        through="UserHorse",
+        related_name="horses",
+    )
 
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["chip_number"],
+                condition=~models.Q(chip_number=""),
+                name="unique_horse_chip_number",
+            ),
+        ]
 
     def __str__(self):
         return self.name
@@ -87,10 +99,41 @@ class HorseMeasurement(models.Model):
     measured_at = models.DateTimeField(default=timezone.now)
     inserted_at = models.DateTimeField(auto_now_add=True)
 
-    height = models.FloatField(null=True, blank=True)
-    weight = models.FloatField(null=True, blank=True)
-    girth = models.FloatField(null=True, blank=True)
-    cannon_girth = models.FloatField(null=True, blank=True)
+    height = models.FloatField(
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(50.0),
+            MaxValueValidator(175.0),
+        ],
+    )
+
+    weight = models.FloatField(
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(25.0),
+            MaxValueValidator(900.0),
+        ],
+    )
+
+    girth = models.FloatField(
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(40.0),
+            MaxValueValidator(230.0),
+        ],
+    )
+
+    cannon_girth = models.FloatField(
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(6.0),
+            MaxValueValidator(32.0),
+        ],
+    )
 
     image = models.ImageField(
         upload_to="horse_measurements/",
@@ -107,6 +150,7 @@ class HorseMeasurement(models.Model):
         return f"{self.horse.name} - {self.measured_at:%Y-%m-%d %H:%M}"
 
 
+
 class UserHorse(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     horse = models.ForeignKey(HorseData, on_delete=models.CASCADE)
@@ -114,3 +158,4 @@ class UserHorse(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.horse.name}"
+

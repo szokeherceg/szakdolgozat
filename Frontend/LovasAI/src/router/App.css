@@ -1,0 +1,10 @@
+.Toastify__toast {
+  width: 400px;
+}
+
+.Toastify__close-button {
+    width:fit-content;
+  position: absolute;
+  top: 0;
+  right: 10px!important;
+}

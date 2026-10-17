@@ -138,5 +138,7 @@
   "add_measurement": "Add measurement",
   "measurement_date": "Measurement date",
   "measurement_image_hint": "For accurate measurement, use a side-view image showing the horse's entire body and an ArUco marker.",
-  "measurement_image": "Measurement image"
+  "measurement_image": "Measurement image",
+  "horse_already_exist": "A horse with the specified chip number already exists.",
+  "invalid_measurement": "The value must be within the allowed range."
 }

@@ -16,7 +16,7 @@ export const FormSetUp: React.FC<FormSetUpProps> = ({
 }) => {
   return (
     <>
-      <form onSubmit={onSubmit} className={classNames(className)}>
+      <form noValidate onSubmit={onSubmit} className={className}>
         {children}
       </form>
     </>

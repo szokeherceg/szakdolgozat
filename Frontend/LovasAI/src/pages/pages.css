@@ -298,6 +298,23 @@ input {
   margin-top: 24px;
 }
 
+.react-datepicker__close-icon {
+    cursor: pointer;
+    background-color: transparent;
+    justify-content: center;
+    align-items: center!important;
+    border: 0;
+    outline: 0;
+    padding: 6px 6px 6px 6px!important;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: fit-content!important;
+    width: fit-content;
+    display: table-cell;
+    vertical-align: middle;
+}
+
 
 @media (max-width: 1024px) {
   .horse-details {

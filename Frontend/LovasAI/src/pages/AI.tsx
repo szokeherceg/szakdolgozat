@@ -248,7 +248,7 @@ export const AI = () => {
               <h2 className="horse-name">{horse.name}</h2>
 
               <p>
-                <strong>{t("measurements")}:</strong>{" "}
+                <strong>{t("page_measurements")}:</strong>{" "}
                 {new Date(measurement.measured_at).toLocaleDateString()}
               </p>
 
@@ -300,7 +300,7 @@ export const AI = () => {
               onClick={handleAnalysis}
               disabled={isAnalyzing || !measurement.image}
             >
-              {isAnalyzing ? t("loading") : t("save")}
+              {t("save")}
             </Button>
           </div>
         </div>

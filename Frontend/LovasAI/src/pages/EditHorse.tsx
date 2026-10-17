@@ -85,8 +85,8 @@ export const EditHorse = () => {
   const color = watch("color");
 
   const genderOptions = [
-    { value: "male", label: t("stallion") },
-    { value: "female", label: t("mare") },
+    { value: "male", label: t("male") },
+    { value: "female", label: t("female") },
     { value: "gelding", label: t("gelding") },
   ];
 

@@ -20,31 +20,39 @@ const measurementSchema = yup.object({
   height: yup
     .number()
     .transform((value, originalValue) =>
-      originalValue === "" ? undefined : value,
+      originalValue === "" || originalValue === undefined ? null : value,
     )
     .nullable()
-    .optional(),
+    .optional()
+    .min(50, "invalid_measurement")
+    .max(175, "invalid_measurement"),
   weight: yup
     .number()
     .transform((value, originalValue) =>
-      originalValue === "" ? undefined : value,
+      originalValue === "" || originalValue === undefined ? null : value,
     )
     .nullable()
-    .optional(),
+    .optional()
+    .min(25, "invalid_measurement")
+    .max(900, "invalid_measurement"),
   girth: yup
     .number()
     .transform((value, originalValue) =>
-      originalValue === "" ? undefined : value,
+      originalValue === "" || originalValue === undefined ? null : value,
     )
     .nullable()
-    .optional(),
+    .optional()
+    .min(40, "invalid_measurement")
+    .max(230, "invalid_measurement"),
   cannon_girth: yup
     .number()
     .transform((value, originalValue) =>
-      originalValue === "" ? undefined : value,
+      originalValue === "" || originalValue === undefined ? null : value,
     )
     .nullable()
-    .optional(),
+    .optional()
+    .min(6, "invalid_measurement")
+    .max(32, "invalid_measurement"),
   image: yup
     .mixed<FileList>()
     .optional()
@@ -77,19 +85,17 @@ export const EditMeasurement = () => {
     resolver: yupResolver(measurementSchema),
     defaultValues: {
       measured_at: "",
-      height: undefined,
-      weight: undefined,
-      girth: undefined,
-      cannon_girth: undefined,
+      height: null,
+      weight: null,
+      girth: null,
+      cannon_girth: null,
     },
   });
 
   useEffect(() => {
     const fetchMeasurement = async () => {
       try {
-        const token =
-          localStorage.getItem(DataNameModel.ACCESS_TOKEN) ||
-          localStorage.getItem(DataNameModel.REFRESH_TOKEN);
+        const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
 
         if (!token || !id) {
           toast.error(t("could_not_save"));
@@ -108,10 +114,10 @@ export const EditMeasurement = () => {
           "measured_at",
           measurement.measured_at ? measurement.measured_at.slice(0, 10) : "",
         );
-        setValue("height", measurement.height ?? undefined);
-        setValue("weight", measurement.weight ?? undefined);
-        setValue("girth", measurement.girth ?? undefined);
-        setValue("cannon_girth", measurement.cannon_girth ?? undefined);
+        setValue("height", measurement.height ?? null);
+        setValue("weight", measurement.weight ?? null);
+        setValue("girth", measurement.girth ?? null);
+        setValue("cannon_girth", measurement.cannon_girth ?? null);
       } catch (error) {
         console.error("Failed to fetch measurement:", error);
         toast.error(t("could_not_save"));
@@ -127,9 +133,7 @@ export const EditMeasurement = () => {
     setLoading(true);
 
     try {
-      const token =
-        localStorage.getItem(DataNameModel.ACCESS_TOKEN) ||
-        localStorage.getItem(DataNameModel.REFRESH_TOKEN);
+      const token = localStorage.getItem(DataNameModel.ACCESS_TOKEN);
 
       if (!token) {
         toast.error(t("missing_token"));
@@ -139,13 +143,18 @@ export const EditMeasurement = () => {
       const formData = new FormData();
 
       formData.append("measured_at", data.measured_at);
-      formData.append("height", data.height == null ? "" : String(data.height));
-      formData.append("weight", data.weight == null ? "" : String(data.weight));
-      formData.append("girth", data.girth == null ? "" : String(data.girth));
-      formData.append(
+
+      const numericFields = [
+        "height",
+        "weight",
+        "girth",
         "cannon_girth",
-        data.cannon_girth == null ? "" : String(data.cannon_girth),
-      );
+      ] as const;
+
+      numericFields.forEach((key) => {
+        const value = data[key];
+        formData.append(key, value == null ? "" : String(value));
+      });
 
       if (data.image?.length) {
         formData.append("image", data.image[0]);
@@ -193,7 +202,14 @@ export const EditMeasurement = () => {
 
         <div className="input-group">
           <label htmlFor="height">{t("height")}</label>
-          <Input id="height" type="number" step="any" {...register("height")} />
+          <Input
+            id="height"
+            type="number"
+            step="any"
+            min="50"
+            max="175"
+            {...register("height")}
+          />
           {errors.height && (
             <p className="errors">{t(errors.height.message ?? "")}</p>
           )}
@@ -201,7 +217,14 @@ export const EditMeasurement = () => {
 
         <div className="input-group">
           <label htmlFor="weight">{t("weight")}</label>
-          <Input id="weight" type="number" step="any" {...register("weight")} />
+          <Input
+            id="weight"
+            type="number"
+            step="any"
+            min="25"
+            max="900"
+            {...register("weight")}
+          />
           {errors.weight && (
             <p className="errors">{t(errors.weight.message ?? "")}</p>
           )}
@@ -209,7 +232,14 @@ export const EditMeasurement = () => {
 
         <div className="input-group">
           <label htmlFor="girth">{t("girth")}</label>
-          <Input id="girth" type="number" step="any" {...register("girth")} />
+          <Input
+            id="girth"
+            type="number"
+            step="any"
+            min="40"
+            max="230"
+            {...register("girth")}
+          />
           {errors.girth && (
             <p className="errors">{t(errors.girth.message ?? "")}</p>
           )}
@@ -221,6 +251,8 @@ export const EditMeasurement = () => {
             id="cannon_girth"
             type="number"
             step="any"
+            min="6"
+            max="32"
             {...register("cannon_girth")}
           />
           {errors.cannon_girth && (
@@ -247,7 +279,7 @@ export const EditMeasurement = () => {
             {t("back")}
           </Button>
           <Button type="submit" disabled={loading}>
-            {loading ? t("saving") : t("save")}
+            {t("save")}
           </Button>
         </div>
       </FormSetUp>

@@ -87,8 +87,8 @@ export const AddHorse = () => {
   const color = watch("color");
 
   const genderOptions: SelectOption[] = [
-    { value: "male", label: t("stallion") },
-    { value: "female", label: t("mare") },
+    { value: "male", label: t("male") },
+    { value: "female", label: t("female") },
     { value: "gelding", label: t("gelding") },
   ];
 
@@ -127,15 +127,11 @@ export const AddHorse = () => {
         }
       });
 
-      const response = await axios.post(
-        `${apiUrl}/horse-data/`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await axios.post(`${apiUrl}/horse-data/`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       const horseId = response.data.id;
 
@@ -157,7 +153,18 @@ export const AddHorse = () => {
       navigate("/HorsesList");
     } catch (error) {
       console.error("Error while saving horse data:", error);
-      toast.error(t("could_not_save"));
+
+      if (axios.isAxiosError(error)) {
+        const responseData = error.response?.data;
+
+        if (responseData?.chip_number) {
+          toast.error(t("horse_already_exist"));
+        } else {
+          toast.error(t("could_not_save"));
+        }
+      } else {
+        toast.error(t("could_not_save"));
+      }
     } finally {
       setLoading(false);
     }
@@ -201,9 +208,7 @@ export const AddHorse = () => {
             {...register("chip_number")}
           />
           {errors.chip_number && (
-            <p className="errors">
-              {t(errors.chip_number.message ?? "")}
-            </p>
+            <p className="errors">{t(errors.chip_number.message ?? "")}</p>
           )}
         </div>
 
@@ -341,9 +346,7 @@ export const AddHorse = () => {
         </div>
 
         <div className="input-group">
-          <label htmlFor="maternal_grandsire">
-            {t("maternal_grandsire")}
-          </label>
+          <label htmlFor="maternal_grandsire">{t("maternal_grandsire")}</label>
           <Input
             id="maternal_grandsire"
             type="text"
