@@ -33,7 +33,7 @@ form {
 }
 
 .form-centered {
-  margin: 0 auto;
+  margin: 10px 10px;
   width: 70vw;
   max-width: 100%;
   min-width: 0;
@@ -43,7 +43,7 @@ form {
 }
 
 .form-shifted {
-  margin-left: 90px;
+  margin-left: 110px;
   width: calc(100% - 90px);
   max-width: 100%;
   min-width: 0;
@@ -230,7 +230,7 @@ input {
 
 .horse-name {
   margin: 10px 20px;
-  font-size: 5rem!important;
+  font-size: 5rem !important;
   font-weight: 700;
   overflow-wrap: anywhere;
 }
@@ -271,7 +271,6 @@ input {
   margin: 0;
 }
 
-
 .settings .input-container .image-component {
   position: absolute;
   right: 20px;
@@ -299,22 +298,31 @@ input {
 }
 
 .react-datepicker__close-icon {
-    cursor: pointer;
-    background-color: transparent;
-    justify-content: center;
-    align-items: center!important;
-    border: 0;
-    outline: 0;
-    padding: 6px 6px 6px 6px!important;
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: fit-content!important;
-    width: fit-content;
-    display: table-cell;
-    vertical-align: middle;
+  cursor: pointer;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center !important;
+  border: 0;
+  outline: 0;
+  padding: 6px 6px 6px 6px !important;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: fit-content !important;
+  width: fit-content;
+  display: table-cell;
+  vertical-align: middle;
 }
 
+.errors {
+  margin-bottom: 0;
+}
+
+.date-picker-input,
+.input-group .react-datepicker-wrapper {
+  width: 100% !important;
+  display: block;
+}
 
 @media (max-width: 1024px) {
   .horse-details {
@@ -353,8 +361,8 @@ input {
   }
 
   .horse-info {
-    flex-direction: column!important;
-    justify-items: center!important;
+    flex-direction: column !important;
+    justify-items: center !important;
     align-items: center;
   }
 
@@ -375,11 +383,11 @@ input {
     gap: 12px;
   }
   .horse-name {
-  margin: 10px 20px;
-  font-size: 3rem!important;
-  font-weight: 700;
-  overflow-wrap: anywhere;
-}
+    margin: 10px 20px;
+    font-size: 3rem !important;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
 }
 
 @media (max-width: 768px) {
@@ -404,14 +412,14 @@ input {
   }
 
   .form-centered {
-    width: 90%!important;
+    width: 90% !important;
     max-width: 100%;
-    margin-left: 0!important;
+    margin-left: 0 !important;
     margin-right: auto;
   }
 
   .form-shifted {
-    width: calc(100% - 280px)!important;
+    width: calc(100% - 280px) !important;
     max-width: 70%;
     margin-left: 85px;
   }
@@ -470,7 +478,7 @@ input {
 
 @media (max-width: 450px) {
   .form-shifted {
-    width: calc(100% - 200px)!important;
+    width: calc(100% - 200px) !important;
     margin-left: 90px;
   }
 
@@ -479,7 +487,7 @@ input {
   }
 
   .horse-name {
-    font-size: 1.6rem;
+    font-size: 1rem !important;
     margin: 10px;
   }
 
@@ -502,5 +510,8 @@ input {
 
   .details-button {
     flex-direction: column-reverse;
+  }
+  h2 {
+    font-size: 1rem !important;
   }
 }

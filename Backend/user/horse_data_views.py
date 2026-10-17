@@ -1,4 +1,3 @@
-
 from django.core.files import File
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -26,13 +25,16 @@ class HorseDataView(APIView):
     def get(self, request):
         horses = HorseData.objects.filter(
             Q(users=request.user)
-            | Q(id__in=UserHorse.objects.filter(
-                user=request.user
-            ).values_list("horse_id", flat=True))
+            | Q(
+                id__in=UserHorse.objects.filter(user=request.user).values_list(
+                    "horse_id", flat=True
+                )
+            )
         ).distinct()
 
         serializer = HorseDataSerializer(horses, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request):
         serializer = HorseDataSerializer(data=request.data)
 
@@ -161,7 +163,13 @@ class HorseMeasurementView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        serializer = HorseMeasurementSerializer(data=request.data)
+        serializer = HorseMeasurementSerializer(
+            data=request.data,
+            context={
+                "request": request,
+                "horse": horse,
+            },
+        )
 
         if not serializer.is_valid():
             return Response(
@@ -183,9 +191,7 @@ class HorseMeasurementDetailView(APIView):
 
     def get_measurement(self, request, id):
         try:
-            measurement = HorseMeasurement.objects.select_related(
-                "horse"
-            ).get(id=id)
+            measurement = HorseMeasurement.objects.select_related("horse").get(id=id)
         except HorseMeasurement.DoesNotExist:
             return None
 
@@ -248,9 +254,7 @@ class HorseMeasurementAIView(APIView):
 
     def post(self, request, id):
         try:
-            measurement = HorseMeasurement.objects.select_related(
-                "horse"
-            ).get(id=id)
+            measurement = HorseMeasurement.objects.select_related("horse").get(id=id)
         except HorseMeasurement.DoesNotExist:
             return Response(
                 {"error": "Measurement not found"},

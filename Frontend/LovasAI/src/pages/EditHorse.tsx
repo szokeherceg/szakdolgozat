@@ -5,12 +5,14 @@ import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
 import classNames from "classnames";
 
 import { FormSetUp, Input, Button, Header, Select } from "../components";
 import { DataNameModel } from "../models";
 
+import "react-datepicker/dist/react-datepicker.css";
 import "./registration/registration.css";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
@@ -45,6 +47,14 @@ const horseSchema = yup.object({
 });
 
 type HorseFormData = yup.InferType<typeof horseSchema>;
+
+const formatDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
 
 export const EditHorse = () => {
   const { id } = useParams();
@@ -83,6 +93,7 @@ export const EditHorse = () => {
   });
 
   const color = watch("color");
+  const birthDate = watch("birth_date");
 
   const genderOptions = [
     { value: "male", label: t("male") },
@@ -125,7 +136,7 @@ export const EditHorse = () => {
         setValue("owner", horse.owner ?? "");
         setValue("stable_name", horse.stable_name ?? "");
         setValue("studbook_number", horse.studbook_number ?? "");
-        setValue("birth_date", horse.birth_date ?? "");
+        setValue("birth_date", horse.birth_date?.slice(0, 10) ?? "");
         setValue("gender", horse.gender ?? "");
         setValue("color", horse.color ?? "");
         setValue("markings", horse.markings ?? "");
@@ -276,11 +287,23 @@ export const EditHorse = () => {
 
         <div className="input-group">
           <label htmlFor="birth_date">{t("birth_date")}</label>
-          <Input
+          <DatePicker
             id="birth_date"
-            type="date"
-            {...register("birth_date")}
+            selected={
+              birthDate ? new Date(`${birthDate.slice(0, 10)}T00:00:00`) : null
+            }
+            onChange={(date: Date | null) => {
+              setValue("birth_date", date ? formatDate(date) : "", {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+            }}
+            dateFormat="yyyy-MM-dd"
+            placeholderText={t("datetimeformat")}
+            className="date-picker-input"
+            autoComplete="off"
           />
+          <input type="hidden" {...register("birth_date")} />
         </div>
 
         <div className="input-group">
@@ -377,9 +400,7 @@ export const EditHorse = () => {
         </div>
 
         <div className="input-group">
-          <label htmlFor="maternal_grandsire">
-            {t("maternal_grandsire")}
-          </label>
+          <label htmlFor="maternal_grandsire">{t("maternal_grandsire")}</label>
           <Input
             id="maternal_grandsire"
             type="text"

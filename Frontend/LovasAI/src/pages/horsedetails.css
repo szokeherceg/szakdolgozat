@@ -378,7 +378,7 @@
 @media (max-width: 480px) {
     .horse-detail-page .horse-info,
     .horse-detail-page .measurements-section {
-        padding: 12px;
+        padding: 3px;
     }
 
     .horse-detail-page .horse-name {
@@ -394,29 +394,39 @@
     }
 
     .horse-detail-page .measurement-list-card {
-        padding: 12px;
+        padding: 0px;
     }
 
     .horse-detail-page .measurement-card-date {
-        font-size: 13px;
-    }
-
-    .horse-detail-page .measurement-list-card .card-buttons {
-        gap: 0;
+        font-size: 12px !important;
     }
 
     .horse-detail-page .measurement-icon-button {
-        width: 32px;
+        width: 30px !important;
         height: 22px;
     }
 
+    .horse-detail-page .measurement-list-card .card-buttons {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0px;
+        min-width: 0;
+        max-width: 110%;
+    }
+
     .horse-detail-page .measurement-icon-button img {
-        width: 38px !important;
-        height: 38px !important;
+        width: 20px !important;
+        height: 28px !important;
     }
 
     .info-details {
         width: 100% !important;
         justify-content: center;
+    }
+
+    p div {
+        font-size: 12px !important;
     }
 }

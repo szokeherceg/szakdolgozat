@@ -141,5 +141,10 @@
   "measurement_image_hint": "A méréshez olyan oldalnézeti képet használj, amelyen a ló teljes teste látható, és szerepel rajta egy ArUco jelölő.",
   "measurement_image": "Mérési kép",
   "horse_already_exist": "A megadott chipazonosítóhoz már tartozik ló.",
-  "invalid_measurement": "Az értéknek a megengedett tartományon belül kell lennie."
+  "invalid_measurement": "Az értéknek a megengedett tartományon belül kell lennie.",
+  "height_range": "A marmagasság 50 és 175 cm között lehet.",
+  "weight_range": "A tömeg 25 és 900 kg között lehet.",
+  "girth_range": "Az övméret 40 és 230 cm között lehet.",
+  "cannon_girth_range": "A szárkörméret 6 és 32 cm között lehet.",
+  "measurement_before_birth": "A mérés dátuma nem lehet korábbi a ló születési dátumánál."
 }

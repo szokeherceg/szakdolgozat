@@ -5,14 +5,25 @@ import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import DatePicker from "react-datepicker";
 import classNames from "classnames";
 import { toast } from "react-toastify";
+
 import { FormSetUp, Input, Button, Header, Select } from "../components";
 import { DataNameModel } from "../models";
 
+import "react-datepicker/dist/react-datepicker.css";
 import "./registration/registration.css";
 
 const apiUrl = import.meta.env.VITE_BASE_URL;
+
+const formatDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
 
 const horseSchema = yup.object({
   name: yup.string().required("required_name"),
@@ -62,6 +73,7 @@ export const AddHorse = () => {
     handleSubmit,
     control,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<HorseFormData>({
     resolver: yupResolver(horseSchema),
@@ -85,6 +97,7 @@ export const AddHorse = () => {
   });
 
   const color = watch("color");
+  const birthDate = watch("birth_date");
 
   const genderOptions: SelectOption[] = [
     { value: "male", label: t("male") },
@@ -247,7 +260,23 @@ export const AddHorse = () => {
 
         <div className="input-group">
           <label htmlFor="birth_date">{t("birth_date")}</label>
-          <Input id="birth_date" type="date" {...register("birth_date")} />
+          <DatePicker
+            id="birth_date"
+            selected={
+              birthDate ? new Date(`${birthDate.slice(0, 10)}T00:00:00`) : null
+            }
+            onChange={(date: Date | null) => {
+              setValue("birth_date", date ? formatDate(date) : "", {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+            }}
+            dateFormat="yyyy-MM-dd"
+            placeholderText={t("datetimeformat")}
+            className="date-picker-input"
+            autoComplete="off"
+          />
+          <input type="hidden" {...register("birth_date")} />
         </div>
 
         <div className="input-group">

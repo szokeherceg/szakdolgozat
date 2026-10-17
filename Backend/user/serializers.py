@@ -1,8 +1,8 @@
-
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.utils import timezone
 
 from .models import User, HorseData, HorseMeasurement, UserHorse
 
@@ -118,12 +118,16 @@ class HorseDataSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
+
     def validate_chip_number(self, value):
         value = value.strip()
 
-        if value and HorseData.objects.filter(
-            chip_number=value
-        ).exclude(pk=self.instance.pk if self.instance else None).exists():
+        if (
+            value
+            and HorseData.objects.filter(chip_number=value)
+            .exclude(pk=self.instance.pk if self.instance else None)
+            .exists()
+        ):
             raise serializers.ValidationError(
                 "Ez a chipazonosító már szerepel az adatbázisban."
             )
@@ -152,6 +156,27 @@ class HorseMeasurementSerializer(serializers.ModelSerializer):
             "inserted_at",
             "ai_image",
         ]
+
+    def validate(self, attrs):
+        horse = self.context.get("horse") or getattr(self.instance, "horse", None)
+
+        measured_at = attrs.get(
+            "measured_at",
+            getattr(self.instance, "measured_at", None),
+        )
+
+        if horse and horse.birth_date and measured_at:
+            measured_date = measured_at
+
+            if timezone.is_aware(measured_date):
+                measured_date = timezone.localtime(measured_date)
+
+            if measured_date.date() < horse.birth_date:
+                raise serializers.ValidationError(
+                    {"measured_at": "measurement_before_birth"}
+                )
+
+        return attrs
 
 
 class UserHorseSerializer(serializers.ModelSerializer):
