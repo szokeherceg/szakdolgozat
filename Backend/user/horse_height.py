@@ -1,627 +1,311 @@
+import logging
 from pathlib import Path
-
-from django.conf import settings
 
 import cv2
 import numpy as np
 import torch
+from django.conf import settings
 from ultralytics import YOLO
 
-AI_MODEL_DIR = Path("/mnt/c/Users/admin/Documents/SULI/szakdolgozat/Backend/ai_model")
-HORSE_POSE_PATH = Path(
-    "/mnt/c/Users/admin/Documents/SULI/szakdolgozat/Backend/ai_model/train_files/runs/pose/horse_pose_006_finetune_video_v1-2/weights/best.pt"
-)
-HOOF_POSE_PATH = Path(
-    "/mnt/c/Users/admin/Documents/SULI/szakdolgozat/Backend/ai_model/train_files/runs/pose/hoof_pose/hoof_pose_001/weights/best.pt"
-)
-SEG_MODEL_PATH = "yolo26m-seg.pt"
-
-
-DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
-
-
-HORSE_CONF = 0.50
-HORSE_IOU = 0.85
-HORSE_IMGSZ = 1280
-
-HOOF_CONF = 0.15
-HOOF_IOU = 0.50
-HOOF_IMGSZ = 1280
-HOOF_KP_CONF = 0.75
-
-SEG_CONF = 0.25
-
-WITHERS_IDX = 18
-HORSE_CATEGORY = 17
-
-LEFT_FRONT_INDEX = 13
-RIGHT_FRONT_INDEX = 14
-
-HOOF_ASSOCIATION_MAX_DISTANCE_RATIO = 0.30
-
-ARUCO_SIZE_CM = 20.0
-ARUCO_MARKER_ID = 0
-ARUCO_DICTIONARY = cv2.aruco.DICT_4X4_50
-ARUCO_MIN_PERIMETER = 40
-
-WITHERS_MAX_DISTANCE = 100
-
-
-horse_pose_006 = YOLO(str(HORSE_POSE_PATH))
-hoof_pose_001 = YOLO(str(HOOF_POSE_PATH))
-seg_model = YOLO(SEG_MODEL_PATH)
-
-
-def get_horse_mask(image):
-    result = seg_model.predict(
-        source=image,
-        conf=SEG_CONF,
-        device=DEVICE,
-        verbose=False,
-    )[0]
-
-    if result.masks is None or result.boxes is None:
-        return None
-
-    classes = result.boxes.cls.cpu().numpy().astype(int)
-    confidences = result.boxes.conf.cpu().numpy()
-
-    horse_indices = np.where(classes == HORSE_CATEGORY)[0]
-
-    if len(horse_indices) == 0:
-        return None
-
-    best = horse_indices[np.argmax(confidences[horse_indices])]
-
-    mask = (result.masks.data[best].cpu().numpy() > 0.5).astype(np.uint8)
-
-    height, width = image.shape[:2]
-
-    if mask.shape != (height, width):
-        mask = cv2.resize(
-            mask,
-            (width, height),
-            interpolation=cv2.INTER_NEAREST,
-        )
-
-    return mask
-
-
-def project_point_to_mask(
-    x,
-    y,
-    mask,
-):
-    if mask is None:
-        return float(x), float(y)
-
-    height, width = mask.shape
-
-    x_int = int(round(x))
-    y_int = int(round(y))
-
-    if 0 <= x_int < width and 0 <= y_int < height and mask[y_int, x_int]:
-        return float(x), float(y)
-
-    ys, xs = np.where(mask)
-
-    if len(xs) == 0:
-        return float(x), float(y)
-
-    distances_sq = (xs.astype(np.float32) - float(x)) ** 2 + (
-        ys.astype(np.float32) - float(y)
-    ) ** 2
-
-    index = int(np.argmin(distances_sq))
-
-    distance = float(np.sqrt(distances_sq[index]))
-
-    if distance > WITHERS_MAX_DISTANCE:
-        return float(x), float(y)
-
-    return (
-        float(xs[index]),
-        float(ys[index]),
-    )
-
-
-def get_horse_points(
-    image,
-    horse_mask,
-):
-    result = horse_pose_006.predict(
-        source=image,
-        imgsz=HORSE_IMGSZ,
-        conf=HORSE_CONF,
-        iou=HORSE_IOU,
-        device=DEVICE,
-        verbose=False,
-    )[0]
-
-    if result.keypoints is None:
-        return None
-
-    if len(result.keypoints) == 0:
-        return None
-
-    points = result.keypoints.xy.cpu().numpy()
-
-    if result.keypoints.conf is None:
-        confidences = None
-    else:
-        confidences = result.keypoints.conf.cpu().numpy()
-
-    points = points[0]
-
-    if confidences is None:
-        confidence_points = None
-    else:
-        confidence_points = confidences[0]
-
-    if WITHERS_IDX >= len(points):
-        return None
-
-    withers_x, withers_y = points[WITHERS_IDX]
-
-    if withers_x <= 0 or withers_y <= 0:
-        return None
-
-    if confidence_points is None:
-        withers_conf = 1.0
-    else:
-        withers_conf = float(confidence_points[WITHERS_IDX])
-
-    withers_x, withers_y = project_point_to_mask(
-        withers_x,
-        withers_y,
-        horse_mask,
-    )
-
-    front_hooves = []
-
-    for index in (
-        LEFT_FRONT_INDEX,
-        RIGHT_FRONT_INDEX,
-    ):
-        if index >= len(points):
-            continue
-
-        x, y = points[index]
-
-        if x <= 0 or y <= 0:
-            continue
-
-        if confidence_points is None:
-            confidence = 1.0
-        else:
-            confidence = float(confidence_points[index])
-
-        front_hooves.append(
-            {
-                "x": float(x),
-                "y": float(y),
-                "conf": confidence,
-                "index": index,
-            }
-        )
-
-    return {
-        "withers": {
-            "x": float(withers_x),
-            "y": float(withers_y),
-            "conf": withers_conf,
-        },
-        "front_hooves": front_hooves,
-    }
-
-
-def choose_front_hoof_point(
-    front_hooves,
-):
-    if not front_hooves:
-        return None
-
-    return max(
-        front_hooves,
-        key=lambda hoof: (
-            hoof["y"],
-            hoof["conf"],
-        ),
-    )
-
-
-def get_hoof_predictions(image):
-    result = hoof_pose_001.predict(
-        source=image,
-        imgsz=HOOF_IMGSZ,
-        conf=HOOF_CONF,
-        iou=HOOF_IOU,
-        device=DEVICE,
-        verbose=False,
-    )[0]
-
-    if result.boxes is None:
-        return []
-
-    if result.keypoints is None:
-        return []
-
-    if result.keypoints.conf is None:
-        keypoint_confidences = None
-    else:
-        keypoint_confidences = result.keypoints.conf.cpu().numpy()
-
-    hooves = []
-
-    for i in range(len(result.boxes)):
-        points = result.keypoints.xy[i].cpu().numpy()
-
-        if len(points) == 0:
-            continue
-
-        x = float(points[0][0])
-        y = float(points[0][1])
-
-        if keypoint_confidences is None:
-            kp_conf = 1.0
-        else:
-            kp_conf = float(keypoint_confidences[i][0])
-
-        if kp_conf < HOOF_KP_CONF:
-            continue
-
-        box = result.boxes.xyxy[i].cpu().numpy()
-
-        x1 = int(round(box[0]))
-        y1 = int(round(box[1]))
-        x2 = int(round(box[2]))
-        y2 = int(round(box[3]))
-
-        if x2 <= x1 or y2 <= y1:
-            continue
-
-        hooves.append(
-            {
-                "x": x,
-                "y": y,
-                "x1": x1,
-                "y1": y1,
-                "x2": x2,
-                "y2": y2,
-                "conf": float(result.boxes.conf[i].item()),
-                "kp_conf": kp_conf,
-            }
-        )
-
-    return hooves
-
-
-def is_point_inside_mask(
-    mask,
-    x,
-    y,
-    radius=6,
-):
-    if mask is None:
-        return False
-
-    height, width = mask.shape
-
-    x = int(round(x))
-    y = int(round(y))
-
-    if x < 0 or y < 0 or x >= width or y >= height:
-        return False
-
-    x1 = max(
-        0,
-        x - radius,
-    )
-    y1 = max(
-        0,
-        y - radius,
-    )
-    x2 = min(
-        width,
-        x + radius + 1,
-    )
-    y2 = min(
-        height,
-        y + radius + 1,
-    )
-
-    region = mask[
-        y1:y2,
-        x1:x2,
-    ]
-
-    if region.size == 0:
-        return False
-
-    return np.mean(region > 0) >= 0.20
-
-
-def filter_hooves(
-    hooves,
-    horse_mask,
-):
-    return [
-        hoof
-        for hoof in hooves
-        if is_point_inside_mask(
-            horse_mask,
-            hoof["x"],
-            hoof["y"],
-        )
-    ]
-
-
-def find_hoof_bottom(
-    image,
-    hoof,
-    horse_mask,
-):
-    height, width = image.shape[:2]
-
-    x1 = hoof["x1"]
-    y1 = hoof["y1"]
-    x2 = hoof["x2"]
-    y2 = hoof["y2"]
-
-    box_width = max(
-        1,
-        x2 - x1,
-    )
-
-    box_height = max(
-        1,
-        y2 - y1,
-    )
-
-    pad_x = int(round(box_width * 0.15))
-
-    pad_y = int(round(box_height * 0.10))
-
-    roi_x1 = max(
-        0,
-        x1 - pad_x,
-    )
-
-    roi_x2 = min(
-        width - 1,
-        x2 + pad_x,
-    )
-
-    roi_y1 = max(
-        0,
-        y1 - pad_y,
-    )
-
-    roi_y2 = min(
-        height - 1,
-        y2 + pad_y,
-    )
-
-    search_start_y = max(
-        int(round(hoof["y"])),
-        y1 + int(round(box_height * 0.15)),
-    )
-
-    search_start_y = min(
-        search_start_y,
-        roi_y2,
-    )
-
-    if horse_mask is not None:
-        roi_mask = horse_mask[
-            search_start_y : roi_y2 + 1,
-            roi_x1 : roi_x2 + 1,
+logger = logging.getLogger(__name__)
+
+
+class HorseMeasurer:
+    def __init__(self, horse_path, hoof_path, seg_path, device=None):
+        self.device = device or ("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.horse_model = YOLO(horse_path)
+        self.hoof_model = YOLO(hoof_path)
+        self.seg_model = YOLO(seg_path)
+
+        self.withers_idx = 14
+        self.left_knee_idx = 9
+        self.right_knee_idx = 10
+        self.horse_class_id = 17
+
+        self.aruco_size_cm = 20.0
+        self.aruco_min_perimeter = 40
+        self.aruco_max_distortion = 1.3
+
+        self.seg_conf = 0.25
+        self.horse_conf = 0.50
+        self.horse_iou = 0.85
+        self.hoof_conf = 0.15
+        self.hoof_iou = 0.50
+        self.hoof_kp_conf = 0.75
+
+    def _get_horse_silhouette_mask(self, img):
+        pred_res = self.seg_model.predict(
+            img, conf=self.seg_conf, device=self.device, verbose=False
+        )[0]
+        if pred_res.masks is None or pred_res.boxes is None:
+            return None
+
+        classes = pred_res.boxes.cls.cpu().numpy().astype(int)
+        horse_indices = np.where(classes == self.horse_class_id)[0]
+        if len(horse_indices) == 0:
+            return None
+
+        best_horse_idx = horse_indices[
+            np.argmax(pred_res.boxes.conf.cpu().numpy()[horse_indices])
         ]
+        horse_mask = (pred_res.masks.data[best_horse_idx].cpu().numpy() > 0.5).astype(
+            np.uint8
+        )
+        h, w = img.shape[:2]
 
-        if roi_mask.size > 0:
-            rows = []
+        if horse_mask.shape != (h, w):
+            return cv2.resize(horse_mask, (w, h), interpolation=cv2.INTER_NEAREST)
+        return horse_mask
 
-            for local_y in range(roi_mask.shape[0]):
-                row = roi_mask[local_y]
+    def _get_horse_body_points(self, img):
+        pred_res = self.horse_model.predict(
+            img,
+            imgsz=1280,
+            conf=self.horse_conf,
+            iou=self.horse_iou,
+            device=self.device,
+            verbose=False,
+        )[0]
+        if (
+            pred_res.keypoints is None
+            or pred_res.boxes is None
+            or len(pred_res.boxes) == 0
+        ):
+            return None, None
 
-                if np.mean(row > 0) >= 0.10:
-                    rows.append(local_y)
+        best_horse_idx = int(np.argmax(pred_res.boxes.conf.cpu().numpy()))
+        pts = pred_res.keypoints.xy[best_horse_idx].cpu().numpy()
 
-            if rows:
-                bottom_y = search_start_y + max(rows)
+        required_max_idx = max(
+            self.withers_idx,
+            self.left_knee_idx,
+            self.right_knee_idx,
+        )
+        if len(pts) <= required_max_idx:
+            return None, None
 
-                maximum_y = min(
-                    height - 1,
-                    y2 + int(round(box_height * 0.15)),
-                )
+        withers = pts[self.withers_idx]
+        if withers[1] <= 0:
+            return None, None
 
-                return min(
-                    bottom_y,
-                    maximum_y,
-                )
+        knee_points = [
+            pts[idx]
+            for idx in (self.left_knee_idx, self.right_knee_idx)
+            if pts[idx][1] > 0
+        ]
+        if not knee_points:
+            return None, None
 
-    return min(
-        height - 1,
-        y2,
-    )
+        knee = max(knee_points, key=lambda point: point[1])
+        return withers, knee
 
+    def _find_hoof_bottom_y(self, img, knee, horse_mask):
+        pred_res = self.hoof_model.predict(
+            img,
+            imgsz=1280,
+            conf=self.hoof_conf,
+            iou=self.hoof_iou,
+            device=self.device,
+            verbose=False,
+        )[0]
+        if pred_res.boxes is None or pred_res.keypoints is None:
+            return None
 
-def choose_hoof(
-    hooves,
-    front_hoof_point,
-    image,
-):
-    if not hooves or front_hoof_point is None:
-        return None
-
-    max_distance = image.shape[1] * HOOF_ASSOCIATION_MAX_DISTANCE_RATIO
-
-    best_hoof = None
-    best_distance = None
-
-    for hoof in hooves:
-        distance = np.sqrt(
-            (hoof["x"] - front_hoof_point["x"]) ** 2
-            + (hoof["y"] - front_hoof_point["y"]) ** 2
+        h, w = img.shape[:2]
+        max_dist = w * 0.30
+        keypoint_conf = (
+            pred_res.keypoints.conf.cpu().numpy()
+            if pred_res.keypoints.conf is not None
+            else None
         )
 
-        if distance > max_distance:
-            continue
+        best_hoof = None
+        min_dist = float("inf")
 
-        if best_distance is None or distance < best_distance:
-            best_distance = distance
-            best_hoof = hoof
+        for hoof_idx, hoof_box in enumerate(pred_res.boxes.xyxy.cpu().numpy()):
+            pts = pred_res.keypoints.xy[hoof_idx].cpu().numpy()
+            if len(pts) == 0:
+                continue
 
-    return best_hoof
+            if (
+                keypoint_conf is not None
+                and keypoint_conf[hoof_idx][0] < self.hoof_kp_conf
+            ):
+                continue
 
+            hx, hy = pts[0]
+            dist = np.hypot(hx - knee[0], hy - knee[1])
 
-def detect_aruco(image):
-    dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICTIONARY)
+            if dist > max_dist or dist >= min_dist:
+                continue
 
-    parameters = cv2.aruco.DetectorParameters()
+            px, py = int(round(hx)), int(round(hy))
+            if horse_mask is not None:
+                if not (0 <= px < w and 0 <= py < h):
+                    continue
+                roi = horse_mask[
+                    max(0, py - 6) : min(h, py + 7), max(0, px - 6) : min(w, px + 7)
+                ]
+                if roi.size == 0 or np.mean(roi > 0) < 0.20:
+                    continue
 
-    detector = cv2.aruco.ArucoDetector(
-        dictionary,
-        parameters,
-    )
+            min_dist = dist
+            best_hoof = (hoof_box, (hx, hy))
 
-    gray = cv2.cvtColor(
-        image,
-        cv2.COLOR_BGR2GRAY,
-    )
+        if not best_hoof:
+            return None
 
-    corners, ids, _ = detector.detectMarkers(gray)
+        hoof_box, (hx, hy) = best_hoof
+        x1, y1, x2, y2 = map(int, np.round(hoof_box))
+        box_h = max(1, y2 - y1)
 
-    if ids is None:
+        if horse_mask is not None:
+            search_y = max(int(round(hy)), y1 + int(box_h * 0.15))
+            roi_x1 = max(0, x1 - int(box_h * 0.15))
+            roi_x2 = min(w, x2 + int(box_h * 0.15) + 1)
+
+            if search_y < y2 and roi_x1 < roi_x2:
+                roi = horse_mask[search_y:y2, roi_x1:roi_x2]
+                if roi.size > 0:
+                    valid_rows = np.flatnonzero(np.mean(roi > 0, axis=1) >= 0.10)
+                    if valid_rows.size > 0:
+                        return int(
+                            min(search_y + valid_rows[-1], y2 + int(box_h * 0.15))
+                        )
+
+        return int(min(h - 1, max(0, y2)))
+
+    def _refine_withers_y(self, withers, horse_mask):
+        if horse_mask is None:
+            return withers[1]
+
+        wx, wy = int(round(withers[0])), int(round(withers[1]))
+        h, w = horse_mask.shape[:2]
+
+        y_min, y_max = max(0, wy - 80), min(h, wy + 81)
+        x_min, x_max = max(0, wx - 5), min(w, wx + 5)
+
+        if y_min >= y_max or x_min >= x_max:
+            return withers[1]
+
+        roi = horse_mask[y_min:y_max, x_min:x_max]
+        profile = np.mean(roi, axis=1) > 0.30
+        local_y = wy - y_min
+
+        if not (0 <= local_y < len(profile)):
+            return withers[1]
+
+        if profile[local_y]:
+            for idx in range(local_y, -1, -1):
+                if not profile[idx]:
+                    return float(y_min + idx + 1)
+        else:
+            for idx in range(local_y, len(profile)):
+                if profile[idx]:
+                    return float(y_min + idx)
+
+        return withers[1]
+
+    def _calculate_scale(self, img):
+        if not hasattr(cv2, "aruco"):
+            return None
+
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+
+        if hasattr(cv2.aruco, "ArucoDetector"):
+            detector = cv2.aruco.ArucoDetector(
+                aruco_dict, cv2.aruco.DetectorParameters()
+            )
+            corners, ids, _ = detector.detectMarkers(gray)
+        else:
+            corners, ids, _ = cv2.aruco.detectMarkers(gray, aruco_dict)
+
+        if ids is None:
+            return None
+
+        for pts, marker_id in zip(corners, ids.flatten()):
+            if int(marker_id) == 0:
+                pts = pts.reshape(4, 2).astype(np.float32)
+                perimeter = cv2.arcLength(pts.reshape(-1, 1, 2), True)
+                if perimeter < self.aruco_min_perimeter:
+                    continue
+
+                sides = [
+                    np.linalg.norm(pts[idx] - pts[(idx + 1) % 4]) for idx in range(4)
+                ]
+                min_side = min(sides)
+                max_side = max(sides)
+
+                if min_side <= 0 or (max_side / min_side) > self.aruco_max_distortion:
+                    continue
+
+                mean_side = float(np.mean(sides))
+                return self.aruco_size_cm / mean_side
         return None
 
-    for (
-        marker_corners,
-        marker_id,
-    ) in zip(
-        corners,
-        ids.flatten(),
-    ):
-        if int(marker_id) != ARUCO_MARKER_ID:
-            continue
+    def process(self, image_path):
+        img = cv2.imread(str(image_path))
+        if img is None:
+            return None, None
 
-        points = marker_corners.reshape(4, 2).astype(np.float32)
+        pixel_scale = self._calculate_scale(img)
+        if not pixel_scale:
+            return None, None
 
-        perimeter = cv2.arcLength(
-            points.reshape(
-                -1,
-                1,
-                2,
-            ),
-            True,
+        horse_mask = self._get_horse_silhouette_mask(img)
+        withers, knee = self._get_horse_body_points(img)
+        if withers is None or knee is None:
+            return None, None
+
+        hoof_y = self._find_hoof_bottom_y(img, knee, horse_mask)
+        if hoof_y is None:
+            return None, None
+
+        withers_y = self._refine_withers_y(withers, horse_mask)
+        height_px = hoof_y - withers_y
+        if height_px <= 0:
+            return None, None
+
+        height_cm = round(float(height_px * pixel_scale), 1)
+
+        annotated = img.copy()
+        wx, wy = int(round(withers[0])), int(round(withers_y))
+        hy = int(round(hoof_y))
+
+        cv2.line(annotated, (wx, wy), (wx, hy), (0, 0, 255), 10)
+
+        out_dir = Path(settings.MEDIA_ROOT) / "ai_results"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out_path = out_dir / f"horse_{Path(image_path).stem}_measurement.jpg"
+
+        cv2.putText(
+            annotated,
+            f"{height_cm:.1f} cm",
+            (max(10, wx + 15), max(40, (wy + hy) // 2)),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            5.0,
+            (0, 0, 255),
+            25,
+            cv2.LINE_AA,
         )
 
-        if perimeter < ARUCO_MIN_PERIMETER:
-            continue
+        if not cv2.imwrite(str(out_path), annotated):
+            return height_cm, None
 
-        sides = []
-
-        for i in range(4):
-            p1 = points[i]
-            p2 = points[(i + 1) % 4]
-
-            sides.append(float(np.linalg.norm(p2 - p1)))
-
-        pixel_size = float(np.mean(sides))
-
-        return ARUCO_SIZE_CM / pixel_size
-
-    return None
+        return height_cm, out_path
 
 
-def measure_horse(
-    image_path,
-):
-    image = cv2.imread(str(image_path))
+measurer = HorseMeasurer(
+    "/mnt/c/Users/admin/Documents/SULI/szakdolgozat/Backend/ai_model/train_files/runs/pose/horse_pose_007/weights/best.pt",
+    "/mnt/c/Users/admin/Documents/SULI/szakdolgozat/Backend/ai_model/train_files/runs/pose/hoof_pose/hoof_pose_001/weights/best.pt",
+    "yolo26m-seg.pt",
+)
 
-    if image is None:
-        return None
 
-    horse_mask = get_horse_mask(image)
-
-    cm_per_pixel = detect_aruco(image)
-
-    if cm_per_pixel is None:
-        return None
-
-    horse_points = get_horse_points(
-        image,
-        horse_mask,
-    )
-
-    if horse_points is None:
-        return None
-
-    withers = horse_points["withers"]
-
-    front_hoof_point = choose_front_hoof_point(horse_points["front_hooves"])
-
-    if front_hoof_point is None:
-        return None
-
-    hooves = get_hoof_predictions(image)
-
-    hooves = filter_hooves(
-        hooves,
-        horse_mask,
-    )
-
-    hoof = choose_hoof(
-        hooves,
-        front_hoof_point,
-        image,
-    )
-
-    if hoof is None:
-        return None
-
-    hoof_bottom_y = find_hoof_bottom(
-        image,
-        hoof,
-        horse_mask,
-    )
-
-    height_px = hoof_bottom_y - withers["y"]
-
-    if height_px <= 0:
-        return None
-
-    height = height_px * cm_per_pixel
-    height = round(float(height), 1)
-
-    result_dir = Path(settings.MEDIA_ROOT) / "ai_results"
-    result_dir.mkdir(parents=True, exist_ok=True)
-    result_path = result_dir / f"horse_{Path(image_path).stem}_measurement.jpg"
-    annotated = image.copy()
-
-    withers_x = int(round(withers["x"]))
-    withers_y = int(round(withers["y"]))
-    hoof_x = int(round(hoof["x"]))
-    hoof_y = int(round(hoof_bottom_y))
-
-    cv2.circle(annotated, (withers_x, withers_y), 8, (0, 255, 0), -1)
-    cv2.circle(annotated, (hoof_x, hoof_y), 8, (0, 0, 255), -1)
-    cv2.line(annotated, (withers_x, withers_y), (withers_x, hoof_y), (0, 255, 0), 4)
-
-    text = f"{height:.1f} cm"
-    text_x = max(10, min(withers_x + 15, annotated.shape[1] - 180))
-    text_y = max(40, (withers_y + hoof_y) // 2)
-
-    cv2.putText(
-        annotated,
-        text,
-        (text_x, text_y),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        1.0,
-        (0, 255, 0),
-        3,
-        cv2.LINE_AA,
-    )
-    cv2.imwrite(str(result_path), annotated)
-
-    return height, result_path
+def measure_horse(image_path):
+    try:
+        return measurer.process(image_path)
+    except Exception as e:
+        logger.error("Hiba a mérés során: %s", e, exc_info=True)
+        return None, None
