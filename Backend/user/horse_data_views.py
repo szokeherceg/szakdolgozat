@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
+from pathlib import Path
 
 from .models import HorseData, HorseMeasurement, UserHorse
 from .serializers import HorseDataSerializer, HorseMeasurementSerializer
@@ -281,7 +282,7 @@ class HorseMeasurementAIView(APIView):
                     {"success": False},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-
+            result_path = Path(result_path)
             with result_path.open("rb") as image:
                 measurement.ai_image.save(
                     result_path.name,

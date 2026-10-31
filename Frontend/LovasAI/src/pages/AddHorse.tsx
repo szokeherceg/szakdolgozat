@@ -105,15 +105,13 @@ export const AddHorse = () => {
     { value: "gelding", label: t("gelding") },
   ];
 
-  const colorOptions: SelectOption[] = [
-    { value: "bay", label: t("bay") },
-    { value: "chestnut", label: t("chestnut") },
-    { value: "black", label: t("black") },
-    { value: "grey", label: t("grey") },
-    { value: "dun", label: t("dun") },
-    { value: "roan", label: t("roan") },
-    { value: "other", label: t("other") },
-  ];
+    const colorOptions: SelectOption[] = [
+      { value: "bay", label: t("bay") },
+      { value: "chestnut", label: t("chestnut") },
+      { value: "black", label: t("black") },
+      { value: "roan", label: t("roan") },
+      { value: "other", label: t("other") },
+    ];
 
   const onSubmit = async (data: HorseFormData) => {
     setLoading(true);

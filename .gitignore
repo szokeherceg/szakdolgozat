@@ -223,3 +223,8 @@ Backend/ai_model/visual_tests/marmagassag_fused
 Backend/ai_model/visual_tests/
 Backend/user/migrations/
 Backend/ai_model/dataset_gen/horse_yolo_pose_dataset_final_v3/
+Backend/horse10_raw/
+Backend/ai_model/dataset_gen/horse30_dataset/
+Backend/horse_yolo_10/
+Backend/ai_model/hoof_detection_dataset/
+Backend/ai_model/dataset_gen/horse_dataset/
