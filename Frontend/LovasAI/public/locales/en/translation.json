@@ -116,12 +116,9 @@
   "select_option": "Select",
   "select_horse_sex": "Select sex",
   "select_horse_color": "Select a coat color",
-
   "bay": "Bay",
   "chestnut": "Chestnut",
   "black": "Black",
-  "grey": "Grey",
-  "dun": "Dun",
   "roan": "Roan",
   "other": "Other",
   "required_chip_number": "Microchip number is required.",
@@ -145,5 +142,9 @@
   "weight_range": "Weight must be between 25 and 900 kg.",
   "girth_range": "Girth must be between 40 and 230 cm.",
   "cannon_girth_range": "Cannon circumference must be between 6 and 32 cm.",
-  "measurement_before_birth": "The measurement date cannot be earlier than the horse's date of birth."
+  "measurement_before_birth": "The measurement date cannot be earlier than the horse's date of birth.",
+  "is_healthy": "Is the horse healthy?",
+  "healthy": "Healthy",
+  "yes": "Yes",
+  "no": "No"
 }

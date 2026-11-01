@@ -120,8 +120,6 @@
   "bay": "Pej",
   "chestnut": "Sárga",
   "black": "Fekete",
-  "grey": "Szürke",
-  "dun": "Fakó",
   "roan": "Deres",
   "other": "Egyéb",
   "other_color_note": "Ha a ló színe nem szerepel a listában, válaszd az Egyéb lehetőséget.",
@@ -146,5 +144,9 @@
   "weight_range": "A tömeg 25 és 900 kg között lehet.",
   "girth_range": "Az övméret 40 és 230 cm között lehet.",
   "cannon_girth_range": "A szárkörméret 6 és 32 cm között lehet.",
-  "measurement_before_birth": "A mérés dátuma nem lehet korábbi a ló születési dátumánál."
+  "measurement_before_birth": "A mérés dátuma nem lehet korábbi a ló születési dátumánál.",
+  "is_healthy": "Egészséges?",
+  "healthy": "Egészséges",
+  "yes": "Igen",
+  "no": "Nem"
 }

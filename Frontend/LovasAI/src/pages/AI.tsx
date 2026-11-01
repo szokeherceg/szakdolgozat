@@ -56,7 +56,6 @@ export const AI = () => {
   const [horse, setHorse] = useState<Horse | null>(null);
   const [measurement, setMeasurement] = useState<HorseMeasurement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
@@ -142,7 +141,7 @@ export const AI = () => {
       return;
     }
 
-    setIsAnalyzing(true);
+    setIsLoading(true);
 
     try {
       const response = await axios.post<AIResponse>(
@@ -184,7 +183,7 @@ export const AI = () => {
       console.error("Error while running AI analysis:", error);
       toast.error(t("update_failed"));
     } finally {
-      setIsAnalyzing(false);
+      setIsLoading(false);
     }
   };
 
@@ -298,7 +297,7 @@ export const AI = () => {
             <Button
               type="button"
               onClick={handleAnalysis}
-              disabled={isAnalyzing || !measurement.image}
+              disabled={isLoading || !measurement.image}
             >
               {t("save")}
             </Button>

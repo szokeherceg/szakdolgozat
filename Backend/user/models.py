@@ -48,6 +48,7 @@ class HorseData(models.Model):
 
     birth_date = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=50, blank=True, default="")
+    is_healthy = models.BooleanField(default=True)
     color = models.CharField(max_length=100, blank=True, default="")
     markings = models.TextField(blank=True, default="")
     branding = models.CharField(max_length=255, blank=True, default="")

@@ -103,6 +103,7 @@ class HorseDataSerializer(serializers.ModelSerializer):
             "studbook_number",
             "birth_date",
             "gender",
+            "is_healthy",
             "color",
             "markings",
             "branding",

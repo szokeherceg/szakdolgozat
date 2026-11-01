@@ -4,7 +4,7 @@ import type { Ref } from "react";
 import "./select.css";
 
 export interface SelectOption {
-  value: string;
+  value: string | number | boolean;
   label: string;
 }
 
@@ -39,8 +39,8 @@ export const Select: React.FC<SelectProps> = ({
       inputId={inputId}
       name={name}
       options={options}
-      value={options.find((option) => option.value === value) ?? null}
-      onChange={(option) => onChange(option?.value ?? "")}
+      value={options.find((option) => String(option.value) === value) ?? null}
+      onChange={(option) => onChange(String(option?.value ?? ""))}
       onBlur={onBlur}
       placeholder={placeholder}
       isClearable={isClearable}

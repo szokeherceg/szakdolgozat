@@ -24,6 +24,7 @@ interface Horse {
   studbook_number?: string;
   birth_date?: string | null;
   gender?: string;
+  is_healthy?: boolean;
   color?: string;
   markings?: string;
   branding?: string;
@@ -68,7 +69,6 @@ export const HorseDetail = () => {
   const [horse, setHorse] = useState<Horse | null>(null);
   const [measurements, setMeasurements] = useState<HorseMeasurement[]>([]);
   const [loading, setLoading] = useState(true);
-  const [measurementSearch, setMeasurementSearch] = useState("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [measurementsError, setMeasurementsError] = useState(false);
@@ -138,22 +138,6 @@ export const HorseDetail = () => {
 
   const filteredMeasurements = useMemo(() => {
     return measurements.filter((measurement) => {
-      const search = measurementSearch.trim().toLowerCase();
-
-      const matchesSearch =
-        !search ||
-        [
-          measurement.measured_at,
-          measurement.height,
-          measurement.weight,
-          measurement.girth,
-          measurement.cannon_girth,
-        ].some((value) =>
-          String(value ?? "")
-            .toLowerCase()
-            .includes(search),
-        );
-
       const measuredDate = new Date(measurement.measured_at);
 
       if (Number.isNaN(measuredDate.getTime())) {
@@ -180,13 +164,9 @@ export const HorseDetail = () => {
           )
         : null;
 
-      return (
-        matchesSearch &&
-        (!start || measuredDate >= start) &&
-        (!end || measuredDate <= end)
-      );
+      return (!start || measuredDate >= start) && (!end || measuredDate <= end);
     });
-  }, [measurements, measurementSearch, startDate, endDate]);
+  }, [measurements, startDate, endDate]);
 
   const showField = (label: string, value?: string | number | null) =>
     value !== undefined && value !== null && value !== "" ? (
@@ -274,7 +254,7 @@ export const HorseDetail = () => {
 
               {showField(t("stable_name"), horse.stable_name)}
               {showField(t("chip_number"), horse.chip_number)}
-
+              {showField(t("healthy"), horse.is_healthy !== undefined ? (horse.is_healthy ? t("yes") : t("no")) : null)}
               {showAllData && (
                 <>
                   {showField(t("studbook_number"), horse.studbook_number)}

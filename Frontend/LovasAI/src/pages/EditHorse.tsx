@@ -26,6 +26,7 @@ const horseSchema = yup.object({
   birth_date: yup.string().optional(),
   gender: yup.string().optional(),
   color: yup.string().optional(),
+  is_healthy: yup.boolean().optional(),
   markings: yup.string().optional(),
   branding: yup.string().optional(),
   breeder: yup.string().optional(),
@@ -107,6 +108,11 @@ export const EditHorse = () => {
     { value: "black", label: t("black") },
     { value: "roan", label: t("roan") },
     { value: "other", label: t("other") },
+  ];
+
+  const isHealthyOptions = [
+    { value: true, label: t("yes") },
+    { value: false, label: t("no") },
   ];
 
   useEffect(() => {
@@ -318,6 +324,28 @@ export const EditHorse = () => {
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 placeholder={t("select_horse_sex")}
+                isClearable
+                isSearchable
+              />
+            )}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="is_healthy">{t("is_healthy")}</label>
+          <Controller
+            name="is_healthy"
+            control={control}
+            render={({ field }) => (
+              <Select
+                inputId="is_healthy"
+                name={field.name}
+                ref={field.ref}
+                options={isHealthyOptions}
+                value={field.value === undefined ? "" : String(field.value)}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                placeholder={t("is_healthy")}
                 isClearable
                 isSearchable
               />
