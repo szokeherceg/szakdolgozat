@@ -1,0 +1,29 @@
+button {
+  height: 40px;
+  width: 150px;
+  background-color: #728599;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3f4e5e;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled,
+button:disabled:hover {
+  background-color: #728599;
+  box-shadow: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  button {
+    width: calc(100% - 10px);
+    font-size: 14px;
+  }
+}

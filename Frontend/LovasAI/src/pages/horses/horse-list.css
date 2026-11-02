@@ -1,0 +1,204 @@
+.horse-list-page .chess {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+.horse-list-page .card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+  width: 95%;
+  max-width: 900px;
+  min-width: 0;
+  margin: 10px 0;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.horse-list-page .card:hover {
+  background-color: #f0f0f0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.horse-list-page .card-image {
+  flex-shrink: 0;
+  width: 200px;
+  height: 150px;
+  border-radius: 10px;
+  object-fit: cover;
+  background-color: #ddd;
+}
+
+.horse-list-page .card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.horse-list-page .card-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.horse-list-page .card-top h2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.horse-list-page .card-buttons {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.horse-list-page .card-buttons img {
+  width: 30px;
+  height: 30px;
+  transition: transform 0.3s ease;
+}
+
+.horse-list-page .card-buttons .image-component:hover {
+  transform: scale(1.1);
+}
+
+.horse-list-page .list-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0 50px 20px;
+}
+
+.horse-list-page .horse-list-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 20px;
+}
+
+.horse-list-page .search-container {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  width: 65%;
+  min-width: 0;
+}
+
+.horse-list-page .search-container .search-input {
+  flex: 1 1 0;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.horse-list-page .search-container .search-input input,
+.horse-list-page .search-container .search-input .react-datepicker-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.horse-list-page .search-container .search-input input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.horse-list-page .search-container .search-input label {
+  padding-left: 0;
+  text-align: left;
+}
+
+.horse-list-page .search-warning {
+  margin-bottom: 10px;
+  color: red;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+  .horse-list-page .search-container {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .horse-list-page .list-header {
+    padding: 0 10px 20px;
+  }
+
+  .horse-list-page .card {
+    width: 100%;
+    gap: 16px;
+    padding: 12px;
+  }
+
+  .horse-list-page .card-image {
+    width: 160px;
+    height: 120px;
+  }
+
+  .horse-list-page .card-top h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 480px) {
+  .horse-list-page .card {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .horse-list-page .card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .horse-list-page .card-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .horse-list-page .search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .horse-list-page .horse-list-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+}

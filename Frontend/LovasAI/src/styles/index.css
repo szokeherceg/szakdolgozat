@@ -1,0 +1,28 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle, #728599, #121b3b);
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: "Poppins", sans-serif;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scrollbar-width: none;
+}
+
+#root {
+  width: 100%;
+  min-height: 100%;
+  transition: padding-left 0.3s ease;
+}
+
+.Toastify__close-button {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}

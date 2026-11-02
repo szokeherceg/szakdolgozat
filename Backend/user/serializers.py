@@ -1,10 +1,21 @@
-from rest_framework import serializers
-from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import timezone
+from rest_framework import serializers
 
-from .models import User, HorseData, HorseMeasurement, UserHorse
+from .models import HorseData, HorseMeasurement, User, UserHorse
+
+WEAK_PASSWORD_PARTS = ("jelszo", "password", "qwerty", "admin", "123")
+
+
+def validate_user_password(password, user):
+    if any(part in password.lower() for part in WEAK_PASSWORD_PARTS):
+        raise serializers.ValidationError("week-password")
+
+    try:
+        validate_password(password, user)
+    except DjangoValidationError as error:
+        raise serializers.ValidationError(error.messages)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,34 +32,14 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined",
             "is_active",
         ]
+        read_only_fields = ["id", "date_joined", "is_active"]
 
     def validate_password(self, value):
-        forbidden_words = [
-            "jelszo",
-            "password",
-            "qwerty",
-            "admin",
-            "123",
-            "1234",
-            "123456789",
-        ]
-
-        if any(word in value.lower() for word in forbidden_words):
-            raise serializers.ValidationError("week-password")
-
-        user = self.instance
-
-        if user is None:
-            user = User(
-                email=self.initial_data.get("email", ""),
-                name=self.initial_data.get("name", ""),
-            )
-
-        try:
-            validate_password(value, user)
-        except DjangoValidationError as error:
-            raise serializers.ValidationError(error.messages)
-
+        user = self.instance or User(
+            email=self.initial_data.get("email", ""),
+            name=self.initial_data.get("name", ""),
+        )
+        validate_user_password(value, user)
         return value
 
     def create(self, validated_data):
@@ -58,25 +49,6 @@ class UserSerializer(serializers.ModelSerializer):
             name=validated_data.get("name"),
             lang=validated_data.get("lang", "hu"),
         )
-
-
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
-
-    def validate(self, data):
-        user = authenticate(
-            username=data.get("email"),
-            password=data.get("password"),
-        )
-
-        if user is None:
-            raise serializers.ValidationError("Invalid email or password")
-
-        if not user.is_active:
-            raise serializers.ValidationError("User account is disabled")
-
-        return {"user": user}
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
@@ -90,6 +62,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "date_joined",
             "is_active",
         ]
+        read_only_fields = ["id", "date_joined", "is_active"]
 
 
 class HorseDataSerializer(serializers.ModelSerializer):
@@ -123,12 +96,11 @@ class HorseDataSerializer(serializers.ModelSerializer):
     def validate_chip_number(self, value):
         value = value.strip()
 
-        if (
-            value
-            and HorseData.objects.filter(chip_number=value)
-            .exclude(pk=self.instance.pk if self.instance else None)
-            .exists()
-        ):
+        duplicates = HorseData.objects.filter(chip_number=value)
+        if self.instance:
+            duplicates = duplicates.exclude(pk=self.instance.pk)
+
+        if value and duplicates.exists():
             raise serializers.ValidationError(
                 "Ez a chipazonosító már szerepel az adatbázisban."
             )
@@ -151,28 +123,20 @@ class HorseMeasurementSerializer(serializers.ModelSerializer):
             "image",
             "ai_image",
         ]
-        read_only_fields = [
-            "id",
-            "horse",
-            "inserted_at",
-            "ai_image",
-        ]
+        read_only_fields = ["id", "horse", "inserted_at", "ai_image"]
 
     def validate(self, attrs):
         horse = self.context.get("horse") or getattr(self.instance, "horse", None)
-
         measured_at = attrs.get(
             "measured_at",
             getattr(self.instance, "measured_at", None),
         )
 
         if horse and horse.birth_date and measured_at:
-            measured_date = measured_at
+            if timezone.is_aware(measured_at):
+                measured_at = timezone.localtime(measured_at)
 
-            if timezone.is_aware(measured_date):
-                measured_date = timezone.localtime(measured_date)
-
-            if measured_date.date() < horse.birth_date:
+            if measured_at.date() < horse.birth_date:
                 raise serializers.ValidationError(
                     {"measured_at": "measurement_before_birth"}
                 )

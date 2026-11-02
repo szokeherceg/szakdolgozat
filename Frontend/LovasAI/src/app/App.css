@@ -1,0 +1,19 @@
+.Toastify__toast {
+  width: 400px;
+  max-width: 100%;
+}
+
+.Toastify__close-button {
+  position: absolute;
+  top: 0;
+  right: 10px !important;
+  width: fit-content;
+  height: auto;
+  padding: 0;
+}
+
+@media (max-width: 480px) {
+  .Toastify__toast {
+    width: auto;
+  }
+}

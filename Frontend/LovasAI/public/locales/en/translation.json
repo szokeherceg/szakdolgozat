@@ -146,5 +146,12 @@
   "is_healthy": "Is the horse healthy?",
   "healthy": "Healthy",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "could_not_load": "Failed to load the data.",
+  "invalid_number": "Please enter a number only (e.g. 152 or 152.5).",
+  "date_in_future": "The date cannot be in the future.",
+  "too_long": "The text is too long.",
+  "name_too_long": "The name can be at most 30 characters long.",
+  "horse_chip_number": "Microchip number",
+  "other_color_note": "If the horse's color is not in the list, choose Other."
 }

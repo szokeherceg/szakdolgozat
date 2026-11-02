@@ -131,7 +131,7 @@
   "horse_image_hint": "JPG vagy PNG formátum, legfeljebb 5 MB.",
   "missing_token": "Nincs bejelentkezési token.",
   "saving": "Mentés",
-  "chip_number": "Azonsoító",
+  "chip_number": "Azonosító",
   "show_less": "Kevesebb",
   "show_more": "Több",
   "add_measurement": "Mérés hozzáadása",
@@ -148,5 +148,10 @@
   "is_healthy": "Egészséges?",
   "healthy": "Egészséges",
   "yes": "Igen",
-  "no": "Nem"
+  "no": "Nem",
+  "could_not_load": "Az adatok betöltése sikertelen.",
+  "invalid_number": "Csak számot adj meg (pl. 152 vagy 152,5).",
+  "date_in_future": "A dátum nem lehet a jövőben.",
+  "too_long": "A megadott szöveg túl hosszú.",
+  "name_too_long": "A név legfeljebb 30 karakter lehet."
 }

@@ -1,16 +1,13 @@
 export enum DataNameModel {
-  HORSE_NAME = "name",
   HORSE_GENDER = "gender",
   HORSE_BREED = "breed",
   HORSE_AGE = "age",
   HORSE_WEIGHT = "weight",
   HORSE_HEIGHT = "height",
   HORSE_DESC = "desc",
-  HORSE_IMAGE = "image",
-  USER_NAME = "name",
-  USER_PASSWORD = "password",
   ENGLISH = "en",
   HUNGARIAN = "hu",
   ACCESS_TOKEN = "accessToken",
   REFRESH_TOKEN = "refreshToken",
+  SESSION_EXPIRY = "session_expiry",
 }
