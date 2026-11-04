@@ -89,6 +89,7 @@ export const horseDefaultValues = {
   studbook_number: "",
   birth_date: "",
   gender: "",
+  is_healthy: true,
   color: "",
   markings: "",
   branding: "",

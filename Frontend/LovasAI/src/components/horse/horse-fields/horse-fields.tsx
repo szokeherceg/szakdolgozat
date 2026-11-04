@@ -79,6 +79,7 @@ export const HorseFields = ({ form, isEdit = false }: HorseFieldsProps) => {
     name: SelectFieldName,
     options: SelectOption[],
     placeholder: string,
+    isClearable = true,
   ) => (
     <Controller
       name={name}
@@ -93,7 +94,7 @@ export const HorseFields = ({ form, isEdit = false }: HorseFieldsProps) => {
           onChange={field.onChange}
           onBlur={field.onBlur}
           placeholder={placeholder}
-          isClearable
+          isClearable={isClearable}
           isSearchable
         />
       )}
@@ -141,7 +142,7 @@ export const HorseFields = ({ form, isEdit = false }: HorseFieldsProps) => {
         label={t("is_healthy")}
         error={errors.is_healthy}
       >
-        {selectField("is_healthy", isHealthyOptions, t("is_healthy"))}
+        {selectField("is_healthy", isHealthyOptions, t("is_healthy"), false)}
       </FormField>
 
       <FormField id="color" label={t("color")}>

@@ -90,7 +90,7 @@
   "send": "Send",
   "reset_password": "Set a new password",
   "new_password": "New password",
-  "invalid_reset_link": "Invalid link",
+  "invalid_reset_link": "This link has expired or has already been used. Please request a new one.",
   "password_reset_success": "Password updated successfully",
   "forgot_password_question": "Forgot your password?",
   "email_sent": "Email sent",
@@ -153,5 +153,7 @@
   "too_long": "The text is too long.",
   "name_too_long": "The name can be at most 30 characters long.",
   "horse_chip_number": "Microchip number",
-  "other_color_note": "If the horse's color is not in the list, choose Other."
+  "other_color_note": "If the horse's color is not in the list, choose Other.",
+  "password_reset_failed": "Password reset failed.",
+  "request_new_link": "Request new link"
 }

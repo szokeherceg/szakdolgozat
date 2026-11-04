@@ -16,6 +16,8 @@ import {
 import Show from "../../assets/show-password.svg";
 import Hide from "../../assets/hide-password.svg";
 
+import { ForgotPasswordModal } from "./ForgotPassword";
+
 import "../../styles/pages.css";
 
 export const ResetPassword = () => {
@@ -26,6 +28,8 @@ export const ResetPassword = () => {
 
   const uid = searchParams.get("uid");
   const token = searchParams.get("token");
+  const [linkInvalid, setLinkInvalid] = useState(!uid || !token);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const {
     register,
@@ -46,6 +50,7 @@ export const ResetPassword = () => {
     clearErrors();
 
     if (!uid || !token) {
+      setLinkInvalid(true);
       toast.error(t("invalid_reset_link"));
       return;
     }
@@ -70,6 +75,7 @@ export const ResetPassword = () => {
         responseError === "invalid-or-expired-token" ||
         responseError === "invalid-reset-request"
       ) {
+        setLinkInvalid(true);
         toast.error(t("invalid_reset_link"));
       } else if (Array.isArray(responseError)) {
         setError("password", {
@@ -86,52 +92,64 @@ export const ResetPassword = () => {
   };
 
   return (
-    <FormSetUp onSubmit={handleSubmit(onSubmit)} className="settings">
-      <h2 className="settings-header">{t("reset_password")}</h2>
+    <>
+      <FormSetUp onSubmit={handleSubmit(onSubmit)} className="settings">
+        <h2 className="settings-header">{t("reset_password")}</h2>
 
-      <label className="block text-sm font-medium text-gray-600">
-        {t("new_password")}
-      </label>
-      <Input
-        type="password"
-        placeholder={t("new_password")}
-        {...register("password", {
-          required: t("required_field"),
-          minLength: {
-            value: MIN_PASSWORD_LENGTH,
-            message: t("password_too_short"),
-          },
-          validate: (value) => !isWeakPassword(value) || t("weak_password"),
-        })}
-        srcShow={Show}
-        srcHide={Hide}
-      />
-      <FieldError message={errors.password?.message} />
+        <label className="block text-sm font-medium text-gray-600">
+          {t("new_password")}
+        </label>
+        <Input
+          type="password"
+          placeholder={t("new_password")}
+          {...register("password", {
+            required: t("required_field"),
+            minLength: {
+              value: MIN_PASSWORD_LENGTH,
+              message: t("password_too_short"),
+            },
+            validate: (value) => !isWeakPassword(value) || t("weak_password"),
+          })}
+          srcShow={Show}
+          srcHide={Hide}
+        />
+        <FieldError message={errors.password?.message} />
 
-      <label className="block text-sm font-medium text-gray-600">
-        {t("password2")}
-      </label>
-      <Input
-        type="password"
-        placeholder={t("password2")}
-        {...register("password2", {
-          required: t("required_field"),
-          validate: (value) =>
-            value === watch("password") || t("passwords_do_not_match"),
-        })}
-        srcShow={Show}
-        srcHide={Hide}
-      />
-      <FieldError message={errors.password2?.message} />
+        <label className="block text-sm font-medium text-gray-600">
+          {t("password2")}
+        </label>
+        <Input
+          type="password"
+          placeholder={t("password2")}
+          {...register("password2", {
+            required: t("required_field"),
+            validate: (value) =>
+              value === watch("password") || t("passwords_do_not_match"),
+          })}
+          srcShow={Show}
+          srcHide={Hide}
+        />
+        <FieldError message={errors.password2?.message} />
 
-      <div className="settings-buttons">
-        <Button type="button" onClick={() => navigate("/SignIn")}>
-          {t("back")}
-        </Button>
-        <Button type="submit" disabled={loading}>
-          {t("save")}
-        </Button>
-      </div>
-    </FormSetUp>
+        <div className="settings-buttons">
+          <Button type="button" onClick={() => navigate("/SignIn")}>
+            {t("back")}
+          </Button>
+          {linkInvalid ? (
+            <Button type="button" onClick={() => setShowForgotPassword(true)}>
+              {t("request_new_link")}
+            </Button>
+          ) : (
+            <Button type="submit" disabled={loading}>
+              {t("save")}
+            </Button>
+          )}
+        </div>
+      </FormSetUp>
+
+      {showForgotPassword && (
+        <ForgotPasswordModal onClose={() => setShowForgotPassword(false)} />
+      )}
+    </>
   );
 };

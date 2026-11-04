@@ -66,6 +66,8 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
 
 class HorseDataSerializer(serializers.ModelSerializer):
+    is_healthy = serializers.BooleanField(required=False, default=True)
+
     class Meta:
         model = HorseData
         fields = [

@@ -90,7 +90,7 @@
   "send": "Küldés",
   "reset_password": "Új jelszó beállítása",
   "new_password": "Új jelszó",
-  "invalid_reset_link": "Érvénytelen hivatkozás",
+  "invalid_reset_link": "A link lejárt vagy már fel lett használva. Kérj új linket.",
   "password_reset_success": "Jelszó sikeres frissítése",
   "forgot_password_question": "Elfelejtette jelszavát?",
   "email_sent": "E-mail elküldve",
@@ -153,5 +153,7 @@
   "invalid_number": "Csak számot adj meg (pl. 152 vagy 152,5).",
   "date_in_future": "A dátum nem lehet a jövőben.",
   "too_long": "A megadott szöveg túl hosszú.",
-  "name_too_long": "A név legfeljebb 30 karakter lehet."
+  "name_too_long": "A név legfeljebb 30 karakter lehet.",
+  "password_reset_failed": "A jelszó visszaállítása sikertelen.",
+  "request_new_link": "Új link kérése"
 }

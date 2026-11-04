@@ -60,6 +60,7 @@ export const EditHorse = () => {
           setValue(key, horse[key] ?? "");
         });
         setValue("birth_date", horse.birth_date?.slice(0, 10) ?? "");
+        setValue("is_healthy", horse.is_healthy);
       } catch (error) {
         console.error("Failed to fetch horse data:", error);
         toast.error(t("could_not_save"));
@@ -80,6 +81,10 @@ export const EditHorse = () => {
       textFields.forEach((key) => {
         formData.append(key, data[key] ?? "");
       });
+
+      if (data.is_healthy !== undefined) {
+        formData.append("is_healthy", String(data.is_healthy));
+      }
 
       if (data.image && data.image.length > 0) {
         formData.append("image", data.image[0]);
