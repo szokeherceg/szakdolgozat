@@ -9,5 +9,5 @@ const isAuthenticated = () => {
 };
 
 export const ProtectedRoute = () => {
-  return isAuthenticated() ? <Outlet /> : <Navigate to="/" />;
+  return isAuthenticated() ? <Outlet /> : <Navigate to="/SignIn" />;
 };
