@@ -67,6 +67,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
 class HorseDataSerializer(serializers.ModelSerializer):
     is_healthy = serializers.BooleanField(required=False, default=True)
+    chip_number = serializers.CharField(max_length=100)
 
     class Meta:
         model = HorseData
@@ -96,13 +97,11 @@ class HorseDataSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "created_at", "updated_at"]
 
     def validate_chip_number(self, value):
-        value = value.strip()
-
         duplicates = HorseData.objects.filter(chip_number=value)
         if self.instance:
             duplicates = duplicates.exclude(pk=self.instance.pk)
 
-        if value and duplicates.exists():
+        if duplicates.exists():
             raise serializers.ValidationError(
                 "Ez a chipazonosító már szerepel az adatbázisban."
             )
@@ -126,6 +125,10 @@ class HorseMeasurementSerializer(serializers.ModelSerializer):
             "ai_image",
         ]
         read_only_fields = ["id", "horse", "inserted_at", "ai_image"]
+        extra_kwargs = {
+            "measured_at": {"required": True},
+            "image": {"required": True, "allow_null": False},
+        }
 
     def validate(self, attrs):
         horse = self.context.get("horse") or getattr(self.instance, "horse", None)

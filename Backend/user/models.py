@@ -42,7 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class HorseData(models.Model):
     name = models.CharField(max_length=255)
-    chip_number = models.CharField(max_length=100, blank=True, default="")
+    chip_number = models.CharField(max_length=100, unique=True)
     stable_name = models.CharField(max_length=255, blank=True, default="")
     studbook_number = models.CharField(max_length=100, blank=True, default="")
 
@@ -54,7 +54,7 @@ class HorseData(models.Model):
     branding = models.CharField(max_length=255, blank=True, default="")
 
     breeder = models.CharField(max_length=255, blank=True, default="")
-    owner = models.CharField(max_length=255, blank=True, default="")
+    owner = models.CharField(max_length=255)
     father = models.CharField(max_length=255, blank=True, default="")
     mother = models.CharField(max_length=255, blank=True, default="")
     maternal_grandsire = models.CharField(max_length=255, blank=True, default="")
@@ -76,15 +76,6 @@ class HorseData(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["chip_number"],
-                condition=~models.Q(chip_number=""),
-                name="unique_horse_chip_number",
-            ),
-        ]
 
     def __str__(self):
         return self.name
