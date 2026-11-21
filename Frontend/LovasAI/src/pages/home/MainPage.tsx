@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useEffect } from "react";
-import { PageLayout } from "../../components";
+import { Button, PageLayout } from "../../components";
 import { apiUrl } from "../../utils/api";
 
 import "../../styles/pages.css";
@@ -25,32 +25,38 @@ export const MainPage = () => {
   return (
     <PageLayout className="page-layout main-page">
       <div className="main-content">
-        <h2>{t("what_is_this")}</h2>
-        <p>{t("what_is_this_desc")}</p>
+        <section className="home-card home-welcome">
+          <h2>{t("welcome")}</h2>
+          <p>{t("welcome_desc")}</p>
+        </section>
 
-        <h2>{t("goal")}</h2>
-        <p>{t("goal_desc")}</p>
+        <section className="home-card home-marker">
+          <img
+            src="/aruco_jelolo.svg"
+            alt="ArUco"
+            className="home-marker-image"
+          />
+          <div className="home-marker-text">
+            <h2>{t("marker_title")}</h2>
+            <p>{t("marker_desc")}</p>
+            <Button
+              type="button"
+              onClick={() => window.open("/aruco_jelolo_20cm.pdf", "_blank")}
+            >
+              {t("marker_download")}
+            </Button>
+          </div>
+        </section>
 
-        <h2>{t("who_is_it_for")}</h2>
-        <ul>
-          <li>{t("farmers")}</li>
-          <li>{t("veterinarians")}</li>
-          <li>{t("breeders")}</li>
-        </ul>
-
-        <h2>{t("how_it_works")}</h2>
-        <ol>
-          <li>{t("step_upload")}</li>
-          <li>{t("step_analysis")}</li>
-          <li>{t("step_results")}</li>
-        </ol>
-
-        <h2>{t("why_use_it")}</h2>
-        <ul>
-          <li>{t("fast_accurate")}</li>
-          <li>{t("user_friendly")}</li>
-          <li>{t("ai_processing")}</li>
-        </ul>
+        <section className="home-card">
+          <h2>{t("first_steps")}</h2>
+          <ol className="home-steps">
+            <li>{t("step_add_horse")}</li>
+            <li>{t("step_photo")}</li>
+            <li>{t("step_add_measurement")}</li>
+            <li>{t("step_run_ai")}</li>
+          </ol>
+        </section>
       </div>
     </PageLayout>
   );
