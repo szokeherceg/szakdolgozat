@@ -45,10 +45,6 @@ class PasswordResetRequestView(APIView):
                 send_password_reset_email(user)
             except Exception:
                 logger.exception("Password reset email could not be sent")
-                return Response(
-                    {"error": "email-send-failed"},
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                )
 
         return Response({"message": "email_sent"})
 

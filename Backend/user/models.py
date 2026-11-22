@@ -148,6 +148,14 @@ class UserHorse(models.Model):
     horse = models.ForeignKey(HorseData, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "horse"],
+                name="unique_user_horse",
+            ),
+        ]
+
     def __str__(self):
         return f"{self.user.email} - {self.horse.name}"
 

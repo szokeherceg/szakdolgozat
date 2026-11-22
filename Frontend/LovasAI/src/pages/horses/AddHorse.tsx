@@ -41,14 +41,7 @@ export const AddHorse = () => {
         }
       });
 
-      const response = await axios.post(`${apiUrl}/horse-data/`, formData);
-      const horseId = response.data.id;
-
-      if (!horseId) {
-        throw new Error("The created horse ID was not returned.");
-      }
-
-      await axios.post(`${apiUrl}/user-horses/`, { horse_id: horseId });
+      await axios.post(`${apiUrl}/horse-data/`, formData);
 
       toast.success(t("data_saved_successfully"));
       navigate("/HorsesList");

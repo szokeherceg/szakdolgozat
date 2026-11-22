@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.utils.dateparse import parse_date
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -25,8 +26,9 @@ class HorseDataView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        horse = serializer.save()
-        UserHorse.objects.create(user=request.user, horse=horse)
+        with transaction.atomic():
+            horse = serializer.save()
+            UserHorse.objects.create(user=request.user, horse=horse)
 
         return Response(
             {"message": "Horse data saved successfully!", "id": horse.id},
@@ -58,7 +60,11 @@ class HorseDetailView(APIView):
         if horse is None:
             return not_found(HORSE_NOT_FOUND)
 
-        horse.delete()
+        if horse.users.exclude(pk=request.user.pk).exists():
+            UserHorse.objects.filter(user=request.user, horse=horse).delete()
+        else:
+            horse.delete()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

@@ -11,6 +11,7 @@ import { isInDateRange } from "../../utils/date";
 import Trash from "./../../assets/trash.svg";
 import Edit from "./../../assets/edit-246.png";
 import NotFound from "./../../assets/notfound.png";
+import BlackHorse from "../../assets/black-horse.svg";
 
 import "./horse-list.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -132,9 +133,9 @@ export const HorsesList = () => {
             onClick={() => navigate(`/HorseDetail/${horse.id}`)}
           >
             <img
-              src={`${apiUrl}${horse.image}`}
+              src={horse.image ? `${apiUrl}${horse.image}` : BlackHorse}
               alt={horse.name}
-              className="card-image"
+              className={`card-image${horse.image ? "" : " card-image-placeholder"}`}
             />
             <div className="card-content">
               <div className="card-top">

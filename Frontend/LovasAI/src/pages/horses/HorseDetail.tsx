@@ -12,6 +12,7 @@ import Trash from "./../../assets/trash.svg";
 import AI from "./../../assets/AI.svg";
 import Edit from "./../../assets/edit-246.png";
 import NotFound from "../../assets/notfound.png";
+import BlackHorse from "../../assets/black-horse.svg";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./horse-detail.css";
@@ -117,13 +118,11 @@ export const HorseDetail = () => {
       ) : (
         <div className="horse-details">
           <div className="horse-info">
-            {horse.image && (
-              <img
-                src={getMediaUrl(horse.image)}
-                alt={horse.name}
-                className="modal-image"
-              />
-            )}
+            <img
+              src={horse.image ? getMediaUrl(horse.image) : BlackHorse}
+              alt={horse.name}
+              className={`modal-image${horse.image ? "" : " modal-image-placeholder"}`}
+            />
 
             <section className="info-details">
               <h2 className="horse-name">{horse.name}</h2>

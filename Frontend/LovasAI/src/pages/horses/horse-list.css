@@ -202,3 +202,10 @@
     gap: 12px;
   }
 }
+
+.horse-list-page .card-image-placeholder {
+  object-fit: contain;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #eef1f4;
+}

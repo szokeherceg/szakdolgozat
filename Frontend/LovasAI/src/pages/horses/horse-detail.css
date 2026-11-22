@@ -367,3 +367,10 @@
         font-size: 12px !important;
     }
 }
+
+.horse-detail-page .modal-image-placeholder {
+    object-fit: contain;
+    padding: 24px;
+    box-sizing: border-box;
+    background-color: #eef1f4;
+}

@@ -15,7 +15,7 @@ export const isValidEmail = (email: string) =>
   yup.string().email().isValidSync(email);
 
 const SERVER_MESSAGE_KEYS: Record<string, string> = {
-  "week-password": "weak_password",
+  "weak-password": "weak_password",
 };
 
 export const serverMessage = (value: unknown) => {

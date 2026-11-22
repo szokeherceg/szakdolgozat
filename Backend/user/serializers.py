@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import timezone
@@ -6,11 +8,40 @@ from rest_framework import serializers
 from .models import HorseData, HorseMeasurement, User, UserHorse
 
 WEAK_PASSWORD_PARTS = ("jelszo", "password", "qwerty", "admin", "123")
+IMAGE_CONTENT_TYPES = ("image/jpeg", "image/png")
+MAX_IMAGE_SIZE = 5 * 1024 * 1024
+
+
+def validate_not_in_future(value):
+    if value is None:
+        return value
+
+    original = value
+    if isinstance(value, datetime):
+        if timezone.is_aware(value):
+            value = timezone.localtime(value)
+        value = value.date()
+
+    if value > timezone.localdate():
+        raise serializers.ValidationError("date_in_future")
+    return original
+
+
+def validate_image_file(value):
+    if value is None:
+        return value
+
+    content_type = getattr(value, "content_type", None)
+    if content_type not in IMAGE_CONTENT_TYPES:
+        raise serializers.ValidationError("invalid_file_type")
+    if value.size > MAX_IMAGE_SIZE:
+        raise serializers.ValidationError("file_too_large")
+    return value
 
 
 def validate_user_password(password, user):
     if any(part in password.lower() for part in WEAK_PASSWORD_PARTS):
-        raise serializers.ValidationError("week-password")
+        raise serializers.ValidationError("weak-password")
 
     try:
         validate_password(password, user)
@@ -96,15 +127,19 @@ class HorseDataSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
 
+    def validate_birth_date(self, value):
+        return validate_not_in_future(value)
+
+    def validate_image(self, value):
+        return validate_image_file(value)
+
     def validate_chip_number(self, value):
         duplicates = HorseData.objects.filter(chip_number=value)
         if self.instance:
             duplicates = duplicates.exclude(pk=self.instance.pk)
 
         if duplicates.exists():
-            raise serializers.ValidationError(
-                "Ez a chipazonosító már szerepel az adatbázisban."
-            )
+            raise serializers.ValidationError("horse_already_exist")
 
         return value
 
@@ -129,6 +164,12 @@ class HorseMeasurementSerializer(serializers.ModelSerializer):
             "measured_at": {"required": True},
             "image": {"required": True, "allow_null": False},
         }
+
+    def validate_measured_at(self, value):
+        return validate_not_in_future(value)
+
+    def validate_image(self, value):
+        return validate_image_file(value)
 
     def validate(self, attrs):
         horse = self.context.get("horse") or getattr(self.instance, "horse", None)

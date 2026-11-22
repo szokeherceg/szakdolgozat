@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
 
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.core.files import File
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -15,6 +16,7 @@ from ..access import (
     get_user_measurement,
     not_found,
 )
+from ..models import HorseMeasurement
 from ..serializers import HorseMeasurementSerializer
 from ..services.horse_height import measure_horse
 from .helpers import save_or_400
@@ -106,6 +108,15 @@ class HorseMeasurementAIView(APIView):
                 )
 
             result_path = Path(result_path)
+
+            try:
+                HorseMeasurement._meta.get_field("height").run_validators(height)
+            except DjangoValidationError:
+                result_path.unlink(missing_ok=True)
+                return Response(
+                    {"success": False},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
             if measurement.ai_image and Path(measurement.ai_image.path) != result_path:
                 measurement.ai_image.delete(save=False)
