@@ -5,12 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import { Button, PageLayout } from "../../components";
-import {
-  AIResponseModel,
-  DataNameModel,
-  HorseModel,
-  MeasurementModel,
-} from "../../models";
+import { AIResponseModel, HorseModel, MeasurementModel } from "../../models";
 import { apiUrl, getMediaUrl } from "../../utils/api";
 
 
@@ -132,48 +127,42 @@ export const AI = () => {
             />
 
             <section className="info-details">
-              <h2 className="horse-name">{horse.name}</h2>
+              <h2 className="horse-name ai-horse-name">{horse.name}</h2>
 
-              <p>
-                <strong>{t("page_measurements")}:</strong>{" "}
-                {new Date(measurement.measured_at).toLocaleDateString()}
-              </p>
+              <dl className="ai-values">
+                <dt>{t("measurement_date")}</dt>
+                <dd>{new Date(measurement.measured_at).toLocaleDateString()}</dd>
 
-              {horse.gender && (
-                <p>
-                  {t(DataNameModel.HORSE_GENDER)}: {t(horse.gender)}
-                </p>
-              )}
+                {measurement.height != null && (
+                  <>
+                    <dt>{t("height")}</dt>
+                    <dd>{measurement.height}</dd>
+                  </>
+                )}
 
-              {horse.breed && (
-                <p>
-                  {t(DataNameModel.HORSE_BREED)}: {t(horse.breed)}
-                </p>
-              )}
+                {measurement.weight != null && (
+                  <>
+                    <dt>{t("weight")}</dt>
+                    <dd>{measurement.weight}</dd>
+                  </>
+                )}
 
-              {horse.age != null && (
-                <p>
-                  {t(DataNameModel.HORSE_AGE)}: {horse.age}
-                </p>
-              )}
+                {measurement.girth != null && (
+                  <>
+                    <dt>{t("girth")}</dt>
+                    <dd>{measurement.girth}</dd>
+                  </>
+                )}
 
-              {measurement.height != null && (
-                <p>
-                  {t(DataNameModel.HORSE_HEIGHT)}: {measurement.height} cm
-                </p>
-              )}
+                {measurement.cannon_girth != null && (
+                  <>
+                    <dt>{t("cannon_girth")}</dt>
+                    <dd>{measurement.cannon_girth}</dd>
+                  </>
+                )}
+              </dl>
 
-              {measurement.weight != null && (
-                <p>
-                  {t(DataNameModel.HORSE_WEIGHT)}: {measurement.weight} kg
-                </p>
-              )}
-
-              {horse.desc && (
-                <p className="description-text">
-                  {t(DataNameModel.HORSE_DESC)}: {horse.desc}
-                </p>
-              )}
+              <p className="ai-description">{t("ai_measurement_desc")}</p>
             </section>
           </div>
 
@@ -187,7 +176,7 @@ export const AI = () => {
               onClick={handleAnalysis}
               disabled={isLoading || !measurement.image}
             >
-              {t("save")}
+              {t("start_ai_measurement")}
             </Button>
           </div>
         </div>

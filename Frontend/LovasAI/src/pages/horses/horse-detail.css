@@ -1,4 +1,5 @@
 .horse-detail-page {
+    container-type: inline-size;
     box-sizing: border-box;
     min-width: 0;
 }
@@ -31,7 +32,7 @@
     display: block;
     flex-shrink: 0;
     align-self: flex-start;
-    width: min(400px, 45%);
+    width: min(350px, 45%);
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
@@ -40,12 +41,13 @@
 
 .horse-detail-page .info-details {
     flex: 1;
+    box-sizing: border-box;
     min-width: 0;
 }
 
 .horse-detail-page .horse-name {
     margin: 0 0 12px;
-    font-size: clamp(1.5rem, 6vw, 5rem);
+    font-size: clamp(1.5rem, 4vw, 4.25rem);
     font-weight: 600;
     overflow-wrap: anywhere;
 }
@@ -264,13 +266,13 @@
     margin-top: 4px;
 }
 
-@media (max-width: 1024px) {
+@container (max-width: 900px) {
     .horse-detail-page .measurement-search-container {
         width: 100%;
     }
 }
 
-@media (max-width: 768px) {
+@container (max-width: 700px) {
     .horse-detail-page .horse-info,
     .horse-detail-page .measurements-section {
         padding: 16px;
@@ -288,7 +290,7 @@
     }
 }
 
-@media (max-width: 600px) {
+@container (max-width: 560px) {
     .horse-detail-page .horse-info {
         flex-direction: column;
         align-items: center;
@@ -321,7 +323,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@container (max-width: 440px) {
     .horse-detail-page .horse-info,
     .horse-detail-page .measurements-section {
         padding: 12px;
@@ -363,9 +365,6 @@
         width: 100%;
     }
 
-    p div {
-        font-size: 12px !important;
-    }
 }
 
 .horse-detail-page .modal-image-placeholder {
@@ -373,4 +372,120 @@
     padding: 24px;
     box-sizing: border-box;
     background-color: #eef1f4;
+}
+
+.horse-detail-page .ai-values {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
+    gap: 6px 16px;
+    margin: 0 0 16px;
+}
+
+.horse-detail-page .ai-horse-name {
+    margin-bottom: 20px;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+}
+
+.horse-detail-page .ai-values dt {
+    font-weight: 600;
+}
+
+.horse-detail-page .ai-values dd {
+    margin: 0;
+    color: #333;
+}
+
+.horse-detail-page .ai-description {
+    margin: 0;
+    color: #333;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.horse-detail-page .field-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 16px;
+    margin: 6px 0;
+    line-height: 1.4;
+}
+
+.horse-detail-page .field-label {
+    flex: 0 0 11rem;
+    font-weight: 600;
+}
+
+.horse-detail-page .field-value {
+    flex: 1 1 8rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.horse-detail-page .measurement-values .field-row {
+    margin: 4px 0;
+}
+
+.horse-detail-page .measurement-values .field-label {
+    flex-basis: 10rem;
+}
+
+@container (max-width: 560px) {
+    .horse-detail-page .ai-values {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .horse-detail-page .ai-values dd {
+        margin-bottom: 10px;
+    }
+
+    .horse-detail-page .field-label {
+        flex-basis: 100%;
+    }
+
+    .horse-detail-page .field-row {
+        margin: 8px 0;
+    }
+
+    .horse-detail-page .ai-description {
+        text-align: left;
+    }
+}
+
+/* Fektetett telefonon az AI-oldal leírása a kártya teljes szélességén fut végig */
+@media (orientation: landscape) and (max-height: 520px) {
+    @container (min-width: 561px) {
+        .horse-detail-page .horse-info:has(.ai-values) {
+            display: grid;
+            grid-template-columns: 1fr min(400px, 45%);
+            column-gap: 24px;
+            align-items: start;
+        }
+
+        .horse-detail-page .horse-info:has(.ai-values) .info-details {
+            display: contents;
+        }
+
+        .horse-detail-page .horse-info:has(.ai-values) .modal-image {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            width: 100%;
+        }
+
+        .horse-detail-page .horse-info:has(.ai-values) .ai-horse-name {
+            grid-column: 1;
+            grid-row: 1;
+            margin: 0 0 12px;
+        }
+
+        .horse-detail-page .horse-info:has(.ai-values) .ai-values {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .horse-detail-page .horse-info:has(.ai-values) .ai-description {
+            grid-column: 1 / -1;
+            grid-row: 3;
+        }
+    }
 }

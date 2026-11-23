@@ -92,9 +92,10 @@ export const HorseDetail = () => {
 
   const showField = (label: string, value?: string | number | null) =>
     value !== undefined && value !== null && value !== "" ? (
-      <p key={label}>
-        <div>{label}:</div> {value}
-      </p>
+      <div className="field-row" key={label}>
+        <span className="field-label">{label}</span>
+        <span className="field-value">{value}</span>
+      </div>
     ) : null;
 
   const handleDeleteMeasurement = async (measurementId: number) => {
