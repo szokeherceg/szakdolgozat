@@ -12,7 +12,7 @@ i18n
       loadPath: "/locales/{{lng}}/{{ns}}.json",
     },
     load: "languageOnly",
-    supportedLngs: ["en", "de", "ja", "hu"],
+    supportedLngs: ["hu","en"],
     fallbackLng: "hu",
     interpolation: {
       escapeValue: false,
